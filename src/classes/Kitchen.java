@@ -14,7 +14,7 @@ public class Kitchen {
 	protected String name;
 	
 	public Kitchen(String name){
-		Node kitchenSpace = new Node("KitchenSpace", new TupleSpace());
+		Node kitchenSpace = new Node("KitchenSpace"+name, new TupleSpace());
 		Agent kitchenAgent = new KitchenAgent("1");
 		kitchenSpace.addPort(DinnerClub.vp);
 		kitchenSpace.addAgent(kitchenAgent);

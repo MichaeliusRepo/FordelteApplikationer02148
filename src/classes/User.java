@@ -13,7 +13,7 @@ public class User {
 	protected Node userSpace;
 	
 	public User(String name) {
-		userSpace = new Node("UserSpace", new TupleSpace());
+		userSpace = new Node("UserSpace"+name, new TupleSpace());
 		Agent userAgent = new UserAgent("1");
 		userSpace.addPort(DinnerClub.vp);
 		userSpace.addAgent(userAgent);
