@@ -15,7 +15,7 @@ import org.cmg.resp.topology.VirtualPort;
 
 public class DinnerClub {
 	
-	public static VirtualPort vp = new VirtualPort(8080);
+	public static VirtualPort vp = new VirtualPort(1337);
 	
 	public static void main(String[] argv) {
 		
