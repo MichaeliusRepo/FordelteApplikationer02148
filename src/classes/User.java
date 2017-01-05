@@ -23,14 +23,10 @@ public static class UserAgent extends Agent {
 
 		@Override
 		protected void doRun() {
-			Tuple tq = new Tuple("Q","message","start(P)");
-			System.out.println(tq.getElementAt(String.class,2));
-			Tuple tr = new Tuple("R","message","start(P)");
-			System.out.println(tr.getElementAt(String.class,2));
+			
 
 			try {
-				put(tq, Self.SELF);
-				put(tr, Self.SELF);
+				
 				
 			} catch (Exception e) {
 				e.printStackTrace();
