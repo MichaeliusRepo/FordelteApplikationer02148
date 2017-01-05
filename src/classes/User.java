@@ -27,17 +27,18 @@ public static class UserAgent extends Agent {
 		
 		public UserAgent(String id) {
 			super(id);
+			p = new PointToPoint("KitchenSpace",DinnerClub.vp.getAddress());
 		
 
 		}
 
 		@Override
 		protected void doRun() {
-			Tuple t = new Tuple("message");
+			Tuple t = new Tuple("Day","message");
 			
 
 			try {
-				put(t,Self.SELF);
+				put(t,p);
 				System.out.println("in user "+t.getElementAt(String.class,0));
 				
 			} catch (Exception e) {

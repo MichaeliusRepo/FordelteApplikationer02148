@@ -35,12 +35,14 @@ public class Kitchen {
 
 			@Override
 			protected void doRun() {
-				Template t = new Template(new FormalTemplateField(String.class));
+				Template t = new Template(new ActualTemplateField("Day"),new FormalTemplateField(String.class));
 
 				try {
-					query(t,p);
-					Tuple tuple = get(t,p);
-					System.out.println("in Kitchen " + tuple.getElementAt(0));
+					while(true){
+						query(t,Self.SELF);
+						Tuple tuple = get(t,Self.SELF);
+						System.out.println("in Kitchen " + tuple.getElementAt(0));
+					}
 					
 				} catch (Exception e) {
 					e.printStackTrace();

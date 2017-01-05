@@ -19,8 +19,11 @@ public class DinnerClub {
 	
 	public static void main(String[] argv) {
 		
-		User user = new User("User");
 		Kitchen kitchen = new Kitchen("Kichen 6");
+		User user = new User("User");
+		
+		
+		
 
 
 
