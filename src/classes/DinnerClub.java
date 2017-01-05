@@ -16,19 +16,26 @@ import org.cmg.resp.topology.VirtualPort;
 public class DinnerClub {
 	
 	public static VirtualPort vp = new VirtualPort(1337);
+	public static Kitchen kitchen;
+	public static User user;
 	
 	public static void main(String[] argv) {
 		
-		Kitchen kitchen = new Kitchen("Kichen 6");
-		User user = new User("User");
+		kitchen = new Kitchen("Kichen 6");
+		user = new User("User");
+		user.setKitchen(kitchen.name);
+		kitchen.addUser(user.name);
 		
+		//kitchen.start();
+		//user.start();
 		
-		
-
-
-
-		
-		
-		
+	}
+	
+	public static Kitchen getKitchen(){
+		return kitchen;
+	}
+	
+	public static User getUser(){
+		return user;
 	}
 }
