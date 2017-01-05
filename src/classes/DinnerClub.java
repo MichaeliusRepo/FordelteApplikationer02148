@@ -13,18 +13,14 @@ import org.cmg.resp.topology.Self;
 import org.cmg.resp.topology.VirtualPort;
 
 
-
-
 public class DinnerClub {
 	
 	public static VirtualPort vp = new VirtualPort(8080);
 	
 	public static void main(String[] argv) {
 		
-		User user = new User("Emilie");
-		System.out.println(user.name);
+		User user = new User("User");
 		Kitchen kitchen = new Kitchen("Kichen 6");
-		System.out.println(kitchen.name);
 
 
 

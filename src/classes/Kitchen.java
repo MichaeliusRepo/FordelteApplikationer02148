@@ -16,6 +16,7 @@ public class Kitchen {
 	public Kitchen(String name){
 		Node kitchenSpace = new Node("KitchenSpace", new TupleSpace());
 		Agent kitchenAgent = new KitchenAgent("1");
+		kitchenSpace.addPort(DinnerClub.vp);
 		kitchenSpace.addAgent(kitchenAgent);
 		this.name = name;
 		kitchenSpace.start();
@@ -37,9 +38,8 @@ public class Kitchen {
 				Template t = new Template(new FormalTemplateField(String.class));
 
 				try {
-					System.out.println("kitchen first");
+					query(t,p);
 					Tuple tuple = get(t,p);
-					System.out.println("after");
 					System.out.println("in Kitchen " + tuple.getElementAt(0));
 					
 				} catch (Exception e) {

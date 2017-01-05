@@ -15,6 +15,7 @@ public class User {
 	public User(String name) {
 		userSpace = new Node("UserSpace", new TupleSpace());
 		Agent userAgent = new UserAgent("1");
+		userSpace.addPort(DinnerClub.vp);
 		userSpace.addAgent(userAgent);
 		this.name = name;
 		userSpace.start();
