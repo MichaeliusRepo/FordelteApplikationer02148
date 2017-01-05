@@ -15,11 +15,11 @@ public class Kitchen {
 	protected Node kitchenSpace;
 
 	public Kitchen(String name) {
+		this.name = name;
 		kitchenSpace = new Node("KitchenSpace" + name, new TupleSpace());
 		kitchenSpace.addPort(DinnerClub.vp);
 		Agent kitchenAgent = new KitchenAgent(name);
 		kitchenSpace.addAgent(kitchenAgent);
-		this.name = name;
 		kitchenSpace.start();
 
 	}
@@ -43,7 +43,7 @@ public class Kitchen {
 					Tuple tuple = get(t, Self.SELF);
 					p = new PointToPoint(tuple.getElementAt(String.class, 0), DinnerClub.vp.getAddress());
 					// query(t, Self.SELF);
-					System.out.println("in Kitchen " + tuple.getElementAt(0));
+					System.out.println("in Kitchen " + tuple.getElementAt(String.class, 0));
 					put(tuple, p);
 
 				}

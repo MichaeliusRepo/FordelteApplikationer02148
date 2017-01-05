@@ -13,18 +13,17 @@ public class User {
 	protected Node userSpace;
 	protected String kitchenName;
 	protected UserAgent userAgent;
-	
-	/*public User(String name){
-		//TODO - Lav user uden navn
-	}*/
-	
+
+	/*
+	 * public User(String name){ //TODO - Lav user uden navn }
+	 */
+
 	public User(String name, String kitchenName) {
 		
-		
+		this.name = name;
 		userSpace = new Node("UserSpace" + name, new TupleSpace());
 		userSpace.addPort(DinnerClub.vp);
-		this.name = name;
-		userAgent = new UserAgent(kitchenName);
+		userAgent = new UserAgent(name);
 		userSpace.addAgent(userAgent);
 		setKitchen(kitchenName);
 		userSpace.start();
@@ -34,14 +33,14 @@ public class User {
 
 		protected static PointToPoint p;
 
-		public UserAgent(String kitchenName) {
-			super(kitchenName);
+		public UserAgent(String name) {
+			super(name);
 
 		}
 
 		@Override
 		protected void doRun() {
-			Tuple t = new Tuple("UserSpace" + name,"Day", "message");
+			Tuple t = new Tuple("UserSpace" + name, "Day", "message");
 
 			try {
 				put(t, p);
@@ -51,8 +50,8 @@ public class User {
 				e.printStackTrace();
 			}
 		}
-		
-		public void setKitchenPointer(String kitchenName){
+
+		public void setKitchenPointer(String kitchenName) {
 			p = new PointToPoint("KitchenSpace" + kitchenName, DinnerClub.vp.getAddress());
 		}
 	}
@@ -61,10 +60,10 @@ public class User {
 		// TODO Auto-generated method stu;
 		this.kitchenName = kitchenName;
 		userAgent.setKitchenPointer(kitchenName);
-		
+
 	}
-	
-	public String getKitcen(){
+
+	public String getKitcen() {
 		return kitchenName;
 	}
 
