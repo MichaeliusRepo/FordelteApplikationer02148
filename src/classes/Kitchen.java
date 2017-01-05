@@ -15,8 +15,10 @@ public class Kitchen {
 	protected Node kitchenSpace;
 
 	public Kitchen(String name) {
-		kitchenSpace = new Node("KitchenSpace", new TupleSpace());
+		kitchenSpace = new Node("KitchenSpace" + name, new TupleSpace());
 		kitchenSpace.addPort(DinnerClub.vp);
+		Agent kitchenAgent = new KitchenAgent(name);
+		kitchenSpace.addAgent(kitchenAgent);
 		this.name = name;
 		kitchenSpace.start();
 
@@ -28,19 +30,22 @@ public class Kitchen {
 
 		public KitchenAgent(String userName) {
 			super(userName);
-			p = new PointToPoint("UserSpace" + userName, DinnerClub.vp.getAddress());
 
 		}
 
 		@Override
 		protected void doRun() {
-			Template t = new Template(new ActualTemplateField("Day"), new FormalTemplateField(String.class));
+			Template t = new Template(new FormalTemplateField(String.class), new ActualTemplateField("Day"),
+					new FormalTemplateField(String.class));
 
 			try {
 				while (true) {
-					query(t, Self.SELF);
 					Tuple tuple = get(t, Self.SELF);
+					p = new PointToPoint(tuple.getElementAt(String.class, 0), DinnerClub.vp.getAddress());
+					// query(t, Self.SELF);
 					System.out.println("in Kitchen " + tuple.getElementAt(0));
+					put(tuple, p);
+
 				}
 
 			} catch (Exception e) {
@@ -48,17 +53,4 @@ public class Kitchen {
 			}
 		}
 	}
-
-	public void start() {
-		kitchenSpace.start();
-
-	}
-
-	public void addUser(String userName) {
-		// TODO Auto-generated method stub
-		Agent kitchenAgent = new KitchenAgent(userName);
-		kitchenSpace.addAgent(kitchenAgent);
-
-	}
-
 }

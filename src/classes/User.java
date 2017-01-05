@@ -11,11 +11,22 @@ import org.cmg.resp.topology.VirtualPort;
 public class User {
 	protected String name;
 	protected Node userSpace;
-
-	public User(String name) {
+	protected String kitchenName;
+	protected UserAgent userAgent;
+	
+	/*public User(String name){
+		//TODO - Lav user uden navn
+	}*/
+	
+	public User(String name, String kitchenName) {
+		
+		
 		userSpace = new Node("UserSpace" + name, new TupleSpace());
 		userSpace.addPort(DinnerClub.vp);
 		this.name = name;
+		userAgent = new UserAgent(kitchenName);
+		userSpace.addAgent(userAgent);
+		setKitchen(kitchenName);
 		userSpace.start();
 	}
 
@@ -23,15 +34,14 @@ public class User {
 
 		protected static PointToPoint p;
 
-		public UserAgent(String id) {
-			super(id);
-			p = new PointToPoint("KitchenSpace", DinnerClub.vp.getAddress());
+		public UserAgent(String kitchenName) {
+			super(kitchenName);
 
 		}
 
 		@Override
 		protected void doRun() {
-			Tuple t = new Tuple("Day", "message");
+			Tuple t = new Tuple("UserSpace" + name,"Day", "message");
 
 			try {
 				put(t, p);
@@ -41,17 +51,21 @@ public class User {
 				e.printStackTrace();
 			}
 		}
-	}
-
-	public void start() {
-		userSpace.start();
+		
+		public void setKitchenPointer(String kitchenName){
+			p = new PointToPoint("KitchenSpace" + kitchenName, DinnerClub.vp.getAddress());
+		}
 	}
 
 	public void setKitchen(String kitchenName) {
-		// TODO Auto-generated method stub
-		Agent userAgent = new UserAgent(kitchenName);
-		userSpace.addAgent(userAgent);
+		// TODO Auto-generated method stu;
+		this.kitchenName = kitchenName;
+		userAgent.setKitchenPointer(kitchenName);
 		
+	}
+	
+	public String getKitcen(){
+		return kitchenName;
 	}
 
 }
