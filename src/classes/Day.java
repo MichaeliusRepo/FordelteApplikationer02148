@@ -10,8 +10,10 @@ public class Day {
 		
 		Node daySpace = new Node("day", new TupleSpace());
 		Agent dayAgent = new DayAgent("day");
+		daySpace.addPort(DinnerClub.vp);
 		
 		daySpace.addAgent(dayAgent);
+		daySpace.start();
 	}
 	
 	public static class DayAgent extends Agent{
