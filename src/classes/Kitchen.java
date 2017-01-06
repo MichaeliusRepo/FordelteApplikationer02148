@@ -11,14 +11,14 @@ import org.cmg.resp.knowledge.FormalTemplateField;
 import org.cmg.resp.knowledge.Template;
 
 public class Kitchen {
-	protected String name;
-	protected Node kitchenSpace;
+	protected String kitchenName;
+	protected static Node kitchenSpace;
 
-	public Kitchen(String name) {
-		this.name = name;
-		kitchenSpace = new Node("KitchenSpace" + name, new TupleSpace());
+	public Kitchen(String kitchenName) {
+		this.kitchenName = kitchenName;
+		kitchenSpace = new Node("KitchenSpace" + kitchenName, new TupleSpace());
 		kitchenSpace.addPort(DinnerClub.vp);
-		Agent kitchenAgent = new KitchenAgent(name);
+		Agent kitchenAgent = new KitchenAgent(kitchenName);
 		kitchenSpace.addAgent(kitchenAgent);
 		kitchenSpace.start();
 
@@ -28,23 +28,28 @@ public class Kitchen {
 
 		protected static PointToPoint p;
 
-		public KitchenAgent(String userName) {
-			super(userName);
+		public KitchenAgent(String kitchenName) {
+			super(kitchenName);
 
 		}
 
 		@Override
 		protected void doRun() {
-			Template t = new Template(new FormalTemplateField(String.class), new ActualTemplateField("Day"),
-					new FormalTemplateField(String.class));
+			Template tAddDay = new Template(new FormalTemplateField(String.class), 
+					new ActualTemplateField("New Day"),
+					new FormalTemplateField(int.class),
+					new FormalTemplateField(int.class),
+					new FormalTemplateField(int.class)
+					);
 
 			try {
 				while (true) {
-					Tuple tuple = get(t, Self.SELF);
-					p = new PointToPoint(tuple.getElementAt(String.class, 0), DinnerClub.vp.getAddress());
-					// query(t, Self.SELF);
-					System.out.println("in Kitchen " + tuple.getElementAt(String.class, 0));
-					put(tuple, p);
+					//System.out.println("kitchen name: "+kitchenSpace.getName());
+					//Tuple tuple = get(tAddDay, Self.SELF);
+					//System.out.println("in kitchen again");
+					//p = new PointToPoint(tuple.getElementAt(String.class, 0), DinnerClub.vp.getAddress());
+					//System.out.println("in Kitchen " + tuple.getElementAt(String.class, 0));
+					//put(tuple, p);
 
 				}
 
