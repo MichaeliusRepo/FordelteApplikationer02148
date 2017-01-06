@@ -13,12 +13,9 @@ import org.cmg.resp.topology.Self;
 import org.cmg.resp.topology.VirtualPort;
 
 
-public class DinnerClub {
+public class Server {
 	
 	public static VirtualPort vp = new VirtualPort(1337);
-	
-	public static void main(String[] argv) {
-		
+	Node server = new Node("Server", new TupleSpace());
 
-	}
 }
