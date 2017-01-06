@@ -14,8 +14,8 @@ import org.cmg.resp.knowledge.FormalTemplateField;
 import org.cmg.resp.knowledge.Template;
 
 public class User {
-	protected String UserName;
-	protected Node userSpace;
+	protected static String userName;
+	protected static Node userSpace;
 	protected String kitchenName;
 	protected UserAgent userAgent;
 
@@ -23,12 +23,12 @@ public class User {
 	 * public User(String name){ //TODO - Lav user uden navn }
 	 */
 
-	public User(String UserName, String kitchenName) {
+	public User(String userName, String kitchenName) {
 
-		this.UserName = UserName;
-		userSpace = new Node("UserSpace" + UserName, new TupleSpace());
+		this.userName = userName;
+		userSpace = new Node("UserSpace" + userName, new TupleSpace());
 		userSpace.addPort(Server.vp);
-		userAgent = new UserAgent(UserName);
+		userAgent = new UserAgent(userName);
 		userSpace.addAgent(userAgent);
 		userSpace.start();
 	}
@@ -47,5 +47,44 @@ public class User {
 
 		}
 	}
+	
+	public static class AddDayAgent extends Agent {
+
+		protected static PointToPoint p;
+		protected int day,mounth,year;
+
+		public AddDayAgent(int day, int mounth, int year) {
+			super(""+day+mounth+year);
+			p = new PointToPoint("Server Monitor", Server.vp.getAddress());
+			this.day = day;
+			this.mounth = mounth;
+			this.year = year;
+			
+
+		}
+
+		@Override
+		protected void doRun() {
+			Tuple newDay = new Tuple("New Day", day, mounth, year, User.userName);
+			Tuple t = new Tuple("Server", newDay);
+			Template template = new Template(new ActualTemplateField(User.userName), new FormalTemplateField(Tuple.class));
+			
+			try {
+				put(t,p);
+				get(template,p);
+				
+			} catch (InterruptedException | IOException e) {
+				e.printStackTrace();
+			}
+			
+
+		}
+	}
+	
+	public void AddDay(int day, int mounth, int year){
+		AddDayAgent addDay = new AddDayAgent(day, mounth, year);
+		userSpace.addAgent(addDay);
+	}
+	
 
 }
