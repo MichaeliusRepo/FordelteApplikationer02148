@@ -9,22 +9,21 @@ public class Budget {
 
 	public Budget() {
 		budgetSpace = new Node("Budget", new TupleSpace());
-		budgetSpace.addPort(Server.vp);	
-		
+		budgetSpace.addPort(Server.vp);
+
 	}
-	
+
 	public static class BudgetAgent extends Agent {
 
 		public BudgetAgent(String name) {
 			super(name);
-			
+
 		}
 
 		@Override
 		protected void doRun() throws Exception {
-			
-			
+
 		}
-		
+
 	}
 }
