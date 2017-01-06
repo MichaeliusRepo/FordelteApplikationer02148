@@ -38,23 +38,24 @@ public class Kitchen {
 		@Override
 		protected void doRun() {
 			Tuple cmd;
-			Template cmdTemp = new Template(new FormalTemplateField(String.class), new FormalTemplateField(Tuple.class));
+			Template cmdTemp = new Template(new FormalTemplateField(String.class),
+					new FormalTemplateField(Tuple.class));
 			try {
-				switch(get(cmdTemp, Self.SELF).getElementAt(String.class, 0)) {
+				switch (get(cmdTemp, Self.SELF).getElementAt(String.class, 0)) {
 				case "newDayCMD":
 					break;
-				
+
 				case "2":
 					break;
 				}
-			} catch(Exception e) {
-				
+			} catch (Exception e) {
+
 			}
 		}
-		
+
 		protected void addDay(int day, int month, int year) {
 			Day newDay = new Day(day, month, year);
-			
+
 		}
 	}
 }
