@@ -27,7 +27,7 @@ public class User {
 
 		this.UserName = UserName;
 		userSpace = new Node("UserSpace" + UserName, new TupleSpace());
-		userSpace.addPort(DinnerClub.vp);
+		userSpace.addPort(Server.vp);
 		userAgent = new UserAgent(UserName);
 		userSpace.addAgent(userAgent);
 		userSpace.start();
