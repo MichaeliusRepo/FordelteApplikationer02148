@@ -17,7 +17,7 @@ public class Kitchen {
 	public Kitchen(String kitchenName) {
 		this.kitchenName = kitchenName;
 		kitchenSpace = new Node("KitchenSpace" + kitchenName, new TupleSpace());
-		kitchenSpace.addPort(DinnerClub.vp);
+		kitchenSpace.addPort(Server.vp);
 		Agent kitchenAgent = new KitchenAgent(kitchenName);
 		kitchenSpace.addAgent(kitchenAgent);
 		kitchenSpace.start();
