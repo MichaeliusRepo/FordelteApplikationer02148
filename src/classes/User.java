@@ -69,13 +69,6 @@ public class User {
 			try {
 				put(t,p);
 				System.out.println("in user message: " + t.getElementAt(String.class, 0) + " sending to "+p.getName());
-				t = get(new Template(new FormalTemplateField(String.class), 
-						new ActualTemplateField("New Day"),
-						new FormalTemplateField(int.class),
-						new FormalTemplateField(int.class),
-						new FormalTemplateField(int.class)
-						),p);
-				System.out.println("in user message: " + t.getElementAt(String.class, 0) + " sending to "+p.getName());
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
