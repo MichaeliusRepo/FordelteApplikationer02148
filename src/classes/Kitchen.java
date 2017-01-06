@@ -35,27 +35,7 @@ public class Kitchen {
 
 		@Override
 		protected void doRun() {
-			Template tAddDay = new Template(new FormalTemplateField(String.class), 
-					new ActualTemplateField("New Day"),
-					new FormalTemplateField(Integer.class),
-					new FormalTemplateField(Integer.class),
-					new FormalTemplateField(Integer.class)
-					);
-
-
-			try {
-				while (true) {
-					System.out.println("kitchen name: "+kitchenSpace.getName());
-					Tuple tuple = get(tAddDay, Self.SELF);
-					p = new PointToPoint(tuple.getElementAt(String.class, 0), DinnerClub.vp.getAddress());
-					System.out.println("in Kitchen " + tuple.getElementAt(String.class, 0));
-					//put(tuple, p);
-
-				}
-
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			
 		}
 	}
 }

@@ -9,7 +9,7 @@ public class Budget {
 
 	public Budget() {
 		budgetSpace = new Node("Budget", new TupleSpace());
-		budgetSpace.addPort(DinnerClub.vp);		
+		budgetSpace.addPort(DinnerClub.vp);	
 		
 	}
 	

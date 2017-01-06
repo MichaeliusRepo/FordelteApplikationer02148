@@ -24,13 +24,12 @@ public class User {
 	 */
 
 	public User(String UserName, String kitchenName) {
-		
+
 		this.UserName = UserName;
 		userSpace = new Node("UserSpace" + UserName, new TupleSpace());
 		userSpace.addPort(DinnerClub.vp);
 		userAgent = new UserAgent(UserName);
 		userSpace.addAgent(userAgent);
-		setKitchen(kitchenName);
 		userSpace.start();
 	}
 
@@ -45,49 +44,8 @@ public class User {
 
 		@Override
 		protected void doRun() {
-			Tuple t = new Tuple("UserSpace" + name, "Day", "message");
 
-			try {
-				addDay(10,1,2017);
-				
-				t = get(new Template(new FormalTemplateField(String.class),
-						new FormalTemplateField(String.class),
-						new FormalTemplateField(String.class)),Self.SELF);
-				System.out.println("in user again " + t.getElementAt(String.class, 0));
-
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-
-		public void setKitchenPointer(String kitchenName) {
-			p = new PointToPoint("KitchenSpace" + kitchenName, DinnerClub.vp.getAddress());
-		}
-		
-		public void addDay(int day, int mounth, int year){
-			Tuple t = new Tuple("UserSpace" + name, "New Day", day, mounth, year);
-			try {
-				put(t,p);
-				System.out.println("in user message: " + t.getElementAt(String.class, 0) + " sending to "+p.getName());
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			
 		}
 	}
-
-	public void setKitchen(String kitchenName) {
-		this.kitchenName = kitchenName;
-		userAgent.setKitchenPointer(kitchenName);
-
-	}
-
-	public String getKitcen() {
-		return kitchenName;
-	}
-	
-
 
 }

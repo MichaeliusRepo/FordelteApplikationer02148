@@ -19,8 +19,6 @@ public class DinnerClub {
 	
 	public static void main(String[] argv) {
 		
-		Kitchen kitchen = new Kitchen("Kitchen6");
-		User user1 = new User("Emilie", "Kitchen6");
-		//User user2 = new User("Mathias", "Kitchen6");
+
 	}
 }
