@@ -6,7 +6,7 @@ import org.cmg.resp.knowledge.ts.TupleSpace;
 
 public class Day {
 
-	public Day() {
+	public Day(int day, int month, int year) {
 		
 		Node daySpace = new Node("day", new TupleSpace());
 		Agent dayAgent = new DayAgent("day");
