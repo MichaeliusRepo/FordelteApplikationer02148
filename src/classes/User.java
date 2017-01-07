@@ -16,7 +16,6 @@ import org.cmg.resp.knowledge.Template;
 @SuppressWarnings("unused")
 public class User {
 	protected String userName;
-	protected String userSpaceName;
 	protected static Node userSpace;
 	protected String kitchenName;
 	// protected UserAgent userAgent;
@@ -26,10 +25,9 @@ public class User {
 	 */
 
 	public User(String userName, String kitchenName) {
-
 		this.userName = userName;
-		this.userSpaceName = "UserSpace" + userName;
-		userSpace = new Node(userSpaceName, new TupleSpace());
+		this.kitchenName = kitchenName;
+		userSpace = new Node(userName, new TupleSpace());
 		userSpace.addPort(Server.vp);
 		// userAgent = new UserAgent(userName);
 		// userSpace.addAgent(userAgent);
@@ -143,16 +141,17 @@ public class User {
 
 		@Override
 		protected void doRun() {
-			Tuple dataTuple = new Tuple(userSpaceName, day, month, year);
+			Tuple dataTuple = new Tuple(userName, kitchenName, day, month, year);
 			Tuple t = new Tuple("addDay", dataTuple);
-			Template feedback = new Template(new ActualTemplateField(userSpaceName), new FormalTemplateField(Tuple.class));
+			Template feedback = new Template(new ActualTemplateField("addDay Feedback"), new FormalTemplateField(Tuple.class));
 
 			try {
-				put(t, p);
-				System.out.println("AddDay sent to Server.");
+				put(t, p); // AddDay sent to server
 				
-				get(feedback, Self.SELF);
-				System.out.println(name + " got feedback that method executed successfully!");
+				t = get(feedback, Self.SELF);
+				dataTuple = t.getElementAt(Tuple.class,1);
+				System.out.println(dataTuple.getElementAt(String.class, 1));
+				System.out.println(userName + " got feedback that method executed successfully!");
 				System.out.println("VICTORY \\o/");
 			} catch (Exception e) {
 				e.printStackTrace();

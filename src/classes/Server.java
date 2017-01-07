@@ -1,6 +1,7 @@
 package classes;
 
 import classes.User;
+import classes.User.AddDayAgent;
 import classes.Kitchen;
 
 import java.util.LinkedList;
@@ -47,9 +48,12 @@ public class Server {
 
 	}
 
-	public static class Monitor extends Agent {
+	public class Monitor extends Agent {
+
+		AddDayAgent addDay = new AddDayAgent("AddDayAgent");
 
 		Tuple t;
+		Tuple tupleData;
 		Template what = new Template(new FormalTemplateField(String.class), new FormalTemplateField(Tuple.class));
 
 		public Monitor(String who) {
@@ -77,22 +81,36 @@ public class Server {
 					// list = getAll(what);
 
 					t = get(what, Self.SELF);
+					tupleData = t.getElementAt(Tuple.class, 1);
 
 					switch (t.getElementAt(String.class, 0)) {
 					case "addDay":
 
-						Tuple tupleData = t.getElementAt(Tuple.class, 1);
-						System.out.println("Server Monitor saw date " + tupleData.getElementAt(Integer.class, 1) + "/"
-								+ tupleData.getElementAt(Integer.class, 2) + "/"
-								+ tupleData.getElementAt(Integer.class, 3));
-						
-						System.out.println("Pretend that I validated adding this date.");
-						System.out.println("Pretend that I added a day from serverside!");
-						
-						String userSpaceName = tupleData.getElementAt(String.class, 0);
-						PointToPoint p = new PointToPoint(userSpaceName, vp.getAddress());
-						put(new Tuple(userSpaceName,tupleData),p);
-						System.out.println("Server sent feedback.");
+						System.out.println(
+								"Server Monitor was requested to add date " + tupleData.getElementAt(Integer.class, 2)
+										+ "/" + tupleData.getElementAt(Integer.class, 3) + "/"
+										+ tupleData.getElementAt(Integer.class, 4) + " to "
+										+ tupleData.getElementAt(String.class, 1));
+
+						/*
+						 * Since the tuple went in here, this is a great time to
+						 * check that the user is a valid source and not
+						 * malicious
+						 */
+
+						addDay.initialize(t);
+						exec(addDay);
+
+						break;
+
+					case "addDay Feedback":
+
+						tupleData = t.getElementAt(Tuple.class, 1);
+						String userName = tupleData.getElementAt(String.class, 0);
+						String kitchenName = tupleData.getElementAt(String.class, 1);
+						PointToPoint p = new PointToPoint(userName, vp.getAddress());
+						put(new Tuple("addDay Feedback", tupleData), p);
+						System.out.println("Server transfers feedback from " + kitchenName + " to " + userName);
 
 						break;
 
@@ -110,8 +128,34 @@ public class Server {
 		}
 	}
 
+	//
+	public class AddDayAgent extends Agent {
+
+		Tuple t;
+
+		public AddDayAgent(String who) {
+			super(who);
+		}
+
+		@Override
+		protected void doRun() {
+			try {
+				Tuple tupleData = t.getElementAt(Tuple.class, 1);
+				String kitchenName = tupleData.getElementAt(String.class, 1);
+				PointToPoint p = new PointToPoint(kitchenName, vp.getAddress());
+				put(t, p);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		void initialize(Tuple t) {
+			this.t = t;
+		}
+	}
+
 	// Copy-pasta this agent whenever you need to make a new one!
-	public static class TemplatusMaximus extends Agent {
+	public class TemplatusMaximus extends Agent {
 
 		public TemplatusMaximus(String who) {
 			super(who);
