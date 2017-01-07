@@ -16,7 +16,14 @@ import org.cmg.resp.topology.PointToPoint;
 import org.cmg.resp.topology.Self;
 import org.cmg.resp.topology.VirtualPort;
 
-@SuppressWarnings("unused") // A.K.A. STFU import warnings
+@SuppressWarnings("unused")
+// A guy is standing on the corner of the street smoking one cigarette after
+// another. A lady walking by notices him and says "Hey, don't you know that
+// those things can kill you? I mean, didn't you see the giant warning on the
+// box?!" "That's OK" says the guy, puffing casually, "I'm a computer
+// programmer" "So? What's that got to do with anything?" "We don't care about
+// warnings. We only care about errors."
+
 public class Server {
 
 	public static VirtualPort vp = new VirtualPort(1337); // 1337 h4x0r
@@ -30,10 +37,10 @@ public class Server {
 		Agent monitor = new Monitor("Server Monitor");
 		server.addAgent(monitor);
 		server.start();
-
 	}
 
 	public static class Monitor extends Agent {
+		
 
 		public Monitor(String who) {
 			super(who);
@@ -50,7 +57,11 @@ public class Server {
 
 				// This is an example of how to use getAll methods from jRESP
 				// LinkedList<Tuple> list = new LinkedList<Tuple>();
+
+				// use this to copy all tuples
 				// list = queryAll(what);
+
+				// use this to obtain all tuples
 				// list = getAll(what);
 
 				t = get(what, Self.SELF);
@@ -90,34 +101,44 @@ public class Server {
 
 }
 
-
 /*
  * 1. Uno!
+ * 
  * Create User
+ * 
  * Create Kitchen (creates budget automatically)
- * Create Day
- * Assign user to day (sign up to eating at a day)
+ * 
+ * Create Day Assign user to day (sign up to eating at a day)
  * 
  * 2. Deux
+ * 
  * Set cook on day (private)
+ * 
  * Get cook on day
  * 
  * 3. Trois
+ * 
  * Calculate who's cookin' (automatically distributes staffing)
  * 
  * 4. Quatre
+ * 
  * Set price on a day's cooking (in Day.class)
+ * 
  * Get price from day's cooking (send to user)
  * 
  * 5. Quins
+ * 
  * Get WHO and HOW MANY are signed up to a day.
  * 
  * 6. Six
+ * 
  * Make budget.
  * 
  * 7. Seben
+ * 
  * Close signups.
  * 
  * 8. Acht
+ * 
  * Handling of guests...?
  */
