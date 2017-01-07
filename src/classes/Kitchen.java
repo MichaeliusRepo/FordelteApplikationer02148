@@ -14,7 +14,6 @@ import org.cmg.resp.topology.Self;
 public class Kitchen {
 	protected String kitchenName;
 	protected static Node kitchenSpace;
-	protected LinkedList<Day> days;
 
 	public Kitchen(String kitchenName) {
 		this.kitchenName = kitchenName;
@@ -29,6 +28,7 @@ public class Kitchen {
 	public static class KitchenAgent extends Agent {
 
 		protected static PointToPoint p;
+		private static LinkedList<Day> days;
 
 		public KitchenAgent(String kitchenName) {
 			super(kitchenName);
@@ -37,6 +37,9 @@ public class Kitchen {
 
 		@Override
 		protected void doRun() {
+			
+			
+			
 			Tuple cmd;
 			Template cmdTemp = new Template(new FormalTemplateField(String.class),
 					new FormalTemplateField(Tuple.class));
@@ -55,7 +58,7 @@ public class Kitchen {
 
 		protected void addDay(int day, int month, int year) {
 			Day newDay = new Day(day, month, year);
-
+			days.add(newDay);
 		}
 	}
 }
