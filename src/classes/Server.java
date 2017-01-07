@@ -16,7 +16,7 @@ import org.cmg.resp.topology.PointToPoint;
 import org.cmg.resp.topology.Self;
 import org.cmg.resp.topology.VirtualPort;
 
-@SuppressWarnings("unused") // A.K.A. STFU import warnings
+@SuppressWarnings("unused") // insert that programmer joke here
 public class Server {
 
 	public static VirtualPort vp = new VirtualPort(1337); // 1337 h4x0r
@@ -30,7 +30,6 @@ public class Server {
 		Agent monitor = new Monitor("Server Monitor");
 		server.addAgent(monitor);
 		server.start();
-
 	}
 
 	public static class Monitor extends Agent {
@@ -50,7 +49,11 @@ public class Server {
 
 				// This is an example of how to use getAll methods from jRESP
 				// LinkedList<Tuple> list = new LinkedList<Tuple>();
+				
+				// use this to copy all tuples
 				// list = queryAll(what);
+				
+				// use this to obtain all tuples
 				// list = getAll(what);
 
 				t = get(what, Self.SELF);
