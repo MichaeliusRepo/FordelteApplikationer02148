@@ -34,13 +34,23 @@ public class Server {
 
 	private void initialize() {
 		Node server = new Node("Server", new TupleSpace());
+		server.addPort(vp);
 		Agent monitor = new Monitor("Server Monitor");
 		server.addAgent(monitor);
 		server.start();
+		
+		// MOCK CODE
+		String kitchenName = "Den Store Bagedyst";
+		User NortiousMaximus = new User("Nortious Maximus",kitchenName);
+		Kitchen kitchen = new Kitchen(kitchenName);
+		NortiousMaximus.addDay(7, 1, 2017);
+		
 	}
 
 	public static class Monitor extends Agent {
-		
+
+		Tuple t;
+		Template what = new Template(new FormalTemplateField(String.class), new FormalTemplateField(Tuple.class));
 
 		public Monitor(String who) {
 			super(who);
@@ -48,37 +58,45 @@ public class Server {
 
 		@Override
 		protected void doRun() {
-			Tuple t;
-			Template what = new Template(new FormalTemplateField(String.class), new FormalTemplateField(Tuple.class));
-			try {
-				// t = query(what, Self.SELF);
-				// System.out.println(" " + name + " saw " +
-				// t.getElementAt(String.class, 1));
 
-				// This is an example of how to use getAll methods from jRESP
-				// LinkedList<Tuple> list = new LinkedList<Tuple>();
+			while (true) {
 
-				// use this to copy all tuples
-				// list = queryAll(what);
+				try {
+					// t = query(what, Self.SELF);
+					// System.out.println(" " + name + " saw " +
+					// t.getElementAt(String.class, 1));
 
-				// use this to obtain all tuples
-				// list = getAll(what);
+					// This is an example of how to use getAll methods from
+					// jRESP
+					// LinkedList<Tuple> list = new LinkedList<Tuple>();
 
-				t = get(what, Self.SELF);
+					// use this to copy all tuples
+					// list = queryAll(what);
 
-				switch (t.getElementAt(String.class, 0)) {
-				case "AddDay":
-					System.out.println("Check info from kitchen and day");
-					System.out.println("Send confirmation to the user.");
+					// use this to obtain all tuples
+					// list = getAll(what);
 
-				case "CreateKitchen":
-					System.out.println("Create Agent that will create a valid kitchen");
-					System.out.println("Send confirmation to the user. Command was handled successfully.");
+					t = get(what, Self.SELF);
+
+					switch (t.getElementAt(String.class, 0)) {
+					case "New Day": case "Add Day":
+						
+						System.out.println("Check info from kitchen and day");
+						System.out.println("Send confirmation to the user.");
+						
+						break;
+
+					case "CreateKitchen":
+						System.out.println("Create Agent that will create a valid kitchen");
+						System.out.println("Send confirmation to the user. Command was handled successfully.");
+						break;
+					}
+
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
-
-			} catch (Exception e) {
-				e.printStackTrace();
 			}
+
 		}
 	}
 
