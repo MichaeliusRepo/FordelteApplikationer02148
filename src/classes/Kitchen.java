@@ -130,7 +130,7 @@ public class Kitchen {
 					feedback = "Date " + day + "/" + month + "/" + year + " already exists in " + kitchenName;
 				}
 
-				Tuple feedbackData = new Tuple(user, feedback);
+				Tuple feedbackData = new Tuple(user, feedback, kitchenName);
 				put(new Tuple("addDay Feedback", feedbackData), p);
 
 			} catch (Exception e) {

@@ -151,7 +151,7 @@ public class User {
 				t = get(feedback, Self.SELF);
 				dataTuple = t.getElementAt(Tuple.class,1);
 				System.out.println(dataTuple.getElementAt(String.class, 1));
-				System.out.println(userName + " got feedback that method executed successfully!");
+				System.out.println(userName + " got SOME feedback.");
 				System.out.println("VICTORY \\o/");
 			} catch (Exception e) {
 				e.printStackTrace();
