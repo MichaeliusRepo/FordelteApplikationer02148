@@ -37,15 +37,13 @@ public class Kitchen {
 
 		@Override
 		protected void doRun() {
-			
-			
-			
 			Tuple cmd;
 			Template cmdTemp = new Template(new FormalTemplateField(String.class),
 					new FormalTemplateField(Tuple.class));
 			try {
 				switch (get(cmdTemp, Self.SELF).getElementAt(String.class, 0)) {
 				case "newDayCMD":
+					
 					break;
 
 				case "2":
@@ -56,9 +54,31 @@ public class Kitchen {
 			}
 		}
 
-		protected void addDay(int day, int month, int year) {
-			Day newDay = new Day(day, month, year);
-			days.add(newDay);
+	}
+
+	public static class NewDayAgent extends Agent {
+		
+		int day, month, year;
+
+		public NewDayAgent(String name, int day, int month, int year) {
+			super(name);
+			this.day = day;
+			this.month = month;
+			this.year = year;
 		}
+
+		@Override
+		protected void doRun() throws Exception {
+			try {
+				newDay(day, month, year);
+			} catch (Exception e) {
+				
+			}
+		}
+		
+		public static void newDay(int day, int month, int year) {
+			new Day(day, month, year);
+		}
+
 	}
 }
