@@ -55,7 +55,10 @@ public class Kitchen {
 					try {
 
 						t = get(what, Self.SELF);
-
+						
+						// TODO Each case should create a new agent to
+						// execute the task instead of using an existing
+						// one. Avoids bottlenecking(?)
 						switch (t.getElementAt(String.class, 0)) {
 						case "addDay":
 							addDay(t.getElementAt(Tuple.class, 1));
@@ -138,7 +141,6 @@ public class Kitchen {
 			}
 		}
 
-
 		void initialize(Tuple t) {
 			tupleData = t;
 		}
@@ -158,31 +160,6 @@ public class Kitchen {
 				e.printStackTrace();
 			}
 
-	}
-
-	public static class NewDayAgent extends Agent {
-		
-		int day, month, year;
-
-		public NewDayAgent(String name, int day, int month, int year) {
-			super(name);
-			this.day = day;
-			this.month = month;
-			this.year = year;
-
-		}
-
-		@Override
-		protected void doRun() throws Exception {
-			try {
-				newDay(day, month, year);
-			} catch (Exception e) {
-				
-			}
-		}
-		
-		public static void newDay(int day, int month, int year) {
-			new Day(day, month, year);
 		}
 
 	}

@@ -65,9 +65,6 @@ public class Server {
 		Tuple tupleData;
 		Template what = new Template(new FormalTemplateField(String.class), new FormalTemplateField(Tuple.class));
 
-		Tuple t;
-		Template what = new Template(new FormalTemplateField(String.class), new FormalTemplateField(Tuple.class));
-
 		public Monitor(String who) {
 			super(who);
 		}

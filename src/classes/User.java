@@ -82,6 +82,9 @@ public class User {
 
 						t = get(what, Self.SELF);
 
+						// TODO Each case should create a new agent to
+						// execute the task instead of using an existing
+						// one. Avoids bottlenecking(?)
 						switch (t.getElementAt(String.class, 0)) {
 						case "addDay":
 							Tuple dataTuple = t.getElementAt(Tuple.class, 1);
