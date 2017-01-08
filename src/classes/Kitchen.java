@@ -138,47 +138,11 @@ public class Kitchen {
 			}
 		}
 
+
 		void initialize(Tuple t) {
 			tupleData = t;
 		}
 	}
-
-	// public class AddDayAgent extends Agent {
-	//
-	// protected PointToPoint p;
-	// protected int day, month, year;
-	//
-	// public AddDayAgent(String who) {
-	// super("AddDayAgent");
-	// p = new PointToPoint("Server", Server.vp.getAddress());
-	// }
-	//
-	// @Override
-	// protected void doRun() {
-	// Tuple dataTuple = new Tuple(kitchenName, day, month, year);
-	// Tuple t = new Tuple("addDay", dataTuple);
-	// Template feedback = new Template(new ActualTemplateField(kitchenName),
-	// new FormalTemplateField(Tuple.class));
-	//
-	// try {
-	// put(t, p);
-	// System.out.println("AddDay sent to Server.");
-	//
-	// get(feedback, Self.SELF);
-	// System.out.println(name + " got feedback that method executed
-	// successfully!");
-	// System.out.println("VICTORY \\o/");
-	// } catch (Exception e) {
-	// e.printStackTrace();
-	// }
-	// }
-	//
-	// public void initialize(int day, int month, int year) {
-	// this.day = day;
-	// this.month = month;
-	// this.year = year;
-	// }
-	// }
 
 	public class GetDaysAgent extends Agent {
 
@@ -193,6 +157,33 @@ public class Kitchen {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+
+	}
+
+	public static class NewDayAgent extends Agent {
+		
+		int day, month, year;
+
+		public NewDayAgent(String name, int day, int month, int year) {
+			super(name);
+			this.day = day;
+			this.month = month;
+			this.year = year;
+
 		}
+
+		@Override
+		protected void doRun() throws Exception {
+			try {
+				newDay(day, month, year);
+			} catch (Exception e) {
+				
+			}
+		}
+		
+		public static void newDay(int day, int month, int year) {
+			new Day(day, month, year);
+		}
+
 	}
 }
