@@ -63,7 +63,6 @@ public class Budget {
 
 		String cmd;
 		String name;
-		int balance;
 		Tuple data;
 
 		public BalanceAgent(Tuple data, String cmd) {
@@ -71,7 +70,7 @@ public class Budget {
 			this.data = data;
 			this.cmd = cmd;
 			this.name = data.getElementAt(String.class, 0);
-			this.balance = data.getElementAt(Integer.class, 1);
+
 		}
 
 		@Override
@@ -84,7 +83,7 @@ public class Budget {
 					break;
 
 				case "addBalance":
-					addBalance();
+					addBalance(data.getElementAt(Integer.class, 1));
 					break;
 
 				}
@@ -93,7 +92,7 @@ public class Budget {
 			}
 		}
 
-		public void addBalance() {
+		public void addBalance(int balance) {
 			Template temp = new Template(new ActualTemplateField(name), new FormalTemplateField(Integer.class));
 			
 			
