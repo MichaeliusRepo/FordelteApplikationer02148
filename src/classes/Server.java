@@ -27,8 +27,8 @@ import org.cmg.resp.topology.VirtualPort;
 
 public class Server {
 
-	public static VirtualPort vp = new VirtualPort(1337); // 1337 h4x0r
-
+	public static VirtualPort vp = new VirtualPort(1337);
+	
 	public Server() {
 		initialize();
 	}

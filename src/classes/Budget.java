@@ -23,6 +23,11 @@ public class Budget {
 		@Override
 		protected void doRun() throws Exception {
 			
+			try {
+								
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
 		}
 
 	}
