@@ -28,7 +28,7 @@ import org.cmg.resp.topology.VirtualPort;
 public class Server {
 
 	public static VirtualPort vp = new VirtualPort(1337);
-	
+
 	public Server() {
 		initialize();
 	}
@@ -45,15 +45,15 @@ public class Server {
 		User NortiousMaximus = new User("Nortious Maximus", kitchenName);
 		Kitchen kitchen = new Kitchen(kitchenName);
 		NortiousMaximus.addDay(7, 1, 2017);
-		
+
 		try {
 			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		NortiousMaximus.addDay(7, 1, 2017);
+		// END MOCK CODE
 
 	}
 
