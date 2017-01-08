@@ -36,17 +36,18 @@ public class Budget {
 				
 				try {
 					
-					Tuple cmd = get(cmdTemp, Self.SELF);
-					String name = cmd.getElementAt(Tuple.class, 1).getElementAt(String.class, 0);
+					Tuple t = get(cmdTemp, Self.SELF);
+					Tuple data = t.getElementAt(Tuple.class, 1);
+					String cmd = t.getElementAt(String.class, 0);
 					
-					switch (cmd.getElementAt(String.class, 0)) {
+					switch (cmd) {
 					
 					case "getBalance":
-						exec(new BalanceAgent(name, "getBalance"));
+						exec(new BalanceAgent(data, cmd));
 						break;
 
-					case "setBalance":
-						exec(new BalanceAgent(name, "setBalance"));
+					case "addBalance":
+						exec(new BalanceAgent(data, cmd));
 						break;
 					}
 					
@@ -62,11 +63,15 @@ public class Budget {
 
 		String cmd;
 		String name;
+		int balance;
+		Tuple data;
 
-		public BalanceAgent(String who, String cmd) {
-			super(who);
+		public BalanceAgent(Tuple data, String cmd) {
+			super(data.getElementAt(String.class, 0));
+			this.data = data;
 			this.cmd = cmd;
-			this.name = who;
+			this.name = data.getElementAt(String.class, 0);
+			this.balance = data.getElementAt(Integer.class, 1);
 		}
 
 		@Override
@@ -75,11 +80,11 @@ public class Budget {
 				switch (cmd) {
 
 				case "getBalance":
-					getBalance(name);
+					getBalance();
 					break;
 
-				case "setBalance":
-					setBalance();
+				case "addBalance":
+					addBalance();
 					break;
 
 				}
@@ -88,15 +93,23 @@ public class Budget {
 			}
 		}
 
-		public void setBalance() {
-
+		public void addBalance() {
+			Template temp = new Template(new ActualTemplateField(name), new FormalTemplateField(Integer.class));
+			
+			
+			try{
+				Tuple t = get(temp, Self.SELF);
+				put(new Tuple(name, (t.getElementAt(Integer.class, 1) + balance)), Self.SELF);
+			} catch(Exception e) {
+				
+			}
 		}
 
-		public void getBalance(String name) {
+		public void getBalance() {
 			Template temp = new Template(new ActualTemplateField(name), new FormalTemplateField(Integer.class));
 			int balance;
 			try{
-				Tuple t = get(temp, Self.SELF);
+				Tuple t = query(temp, Self.SELF);
 				balance = t.getElementAt(Integer.class, 1);
 			} catch(Exception e) {
 				
