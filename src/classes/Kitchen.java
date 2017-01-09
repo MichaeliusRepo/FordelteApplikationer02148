@@ -108,25 +108,35 @@ public class Kitchen {
 		
 		//Metode til at tilføje ny dag
 		public void addDay(Tuple data){			
-			int day, month, year;
-			day = data.getElementAt(Integer.class, 2);
-			month = data.getElementAt(Integer.class, 3);
-			year = data.getElementAt(Integer.class, 4);
+			String user = data.getElementAt(String.class ,0);
+			String kitchen = data.getElementAt(String.class, 1);
+			
+			int day = data.getElementAt(Integer.class, 2);
+			int month = data.getElementAt(Integer.class, 3);
+			int year = data.getElementAt(Integer.class, 4);
 			
 		
 			Template checkDayTemplate = new Template(new ActualTemplateField(""+day+""+month+""+year),
 						new FormalTemplateField(Day.class));
 			
-			if(queryp(checkDayTemplate) == null){
-				try {
+			Tuple feedback;
+			try{
+				
+				if(queryp(checkDayTemplate) == null){
 					
 					put(new Tuple(""+day+""+month+""+year,new Day(day, month, year)),Self.SELF);
 					get(new Template(new ActualTemplateField("dayCreated")),""+day+""+month+""+year);
-					put(new Tuple("addDay Feedback", data),"Server");
-				} catch (Exception e) {
-					e.printStackTrace();
+				
+					feedback = new Tuple(user, kitchen,"" + day + "" + month + "" + year + " was created");					
+			
+				}else{
+					feedback = new Tuple(user, kitchen,"" + day + "" + month + "" + year + " was not created since the day already exits");
 				}
+				put(new Tuple("addDay Feedback", feedback),"Server");
+			}catch(Exception e){
+				e.printStackTrace();
 			}
+			
 			
 		}
 //			int day = tupleData.getElementAt(Integer.class, 2);
