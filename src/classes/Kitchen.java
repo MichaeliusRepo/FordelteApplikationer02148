@@ -80,7 +80,6 @@ public class Kitchen {
 			switch (cmd){
 				
 			case "addDay":
-				// TODO - lav en add day metode
 				addDay(data);
 				break;
 			
@@ -132,12 +131,10 @@ public class Kitchen {
 				}else{
 					feedback = new Tuple(user, kitchen,"" + day + "" + month + "" + year + " was not created since the day already exits");
 				}
-				put(new Tuple("addDay Feedback", feedback),"Server");
+				put(new Tuple("addDay Feedback", feedback),p);
 			}catch(Exception e){
 				e.printStackTrace();
-			}
-			
-			
+			}	
 		}
 //			int day = tupleData.getElementAt(Integer.class, 2);
 //			int month = tupleData.getElementAt(Integer.class, 3);
