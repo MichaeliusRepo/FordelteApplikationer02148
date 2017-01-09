@@ -107,8 +107,8 @@ public class Server {
 
 						Agent agent = new ServerAgent(command, t);
 						exec(agent);
-					}
 						break;
+					}
 
 					case "addDay Feedback":
 					case "addChef Feedback":
