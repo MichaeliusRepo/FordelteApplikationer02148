@@ -34,7 +34,7 @@ public class Server {
 	public Server() {
 		Node server = new Node("Server", new TupleSpace());
 		server.addPort(vp);
-		Agent monitor = new Monitor("Server Monitor");
+		Agent monitor = new Monitor("Monitor");
 		server.addAgent(monitor);
 		server.start();
 
@@ -105,8 +105,8 @@ public class Server {
 						 * malicious
 						 */
 
-						Agent addDay = new ServerAgent(command, t);
-						exec(addDay);
+						Agent agent = new ServerAgent(command, t);
+						exec(agent);
 					}
 						break;
 
