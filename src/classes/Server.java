@@ -110,9 +110,6 @@ public class Server {
 						String userName = tupleData.getElementAt(String.class, 0);
 						String kitchenName = tupleData.getElementAt(String.class, 1);
 						PointToPoint p = new PointToPoint(userName, vp.getAddress());
-						
-//						p = new PointToPoint("Server", Server.vp.getAddress());
-						
 						put(new Tuple(userName + " addDay Feedback", tupleData), p);
 						System.out.println("Server transfers feedback from " + kitchenName + " to " + userName);
 
