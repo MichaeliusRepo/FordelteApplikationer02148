@@ -40,16 +40,7 @@ public class Budget {
 						Tuple data = t.getElementAt(Tuple.class, 1);
 						String cmd = t.getElementAt(String.class, 0);
 
-						switch (cmd) {
-
-						case "getBalance":
-							exec(new BudgetAgent(data, cmd));
-							break;
-
-						case "addBalance":
-							exec(new BudgetAgent(data, cmd));
-							break;
-						}
+						exec(new BudgetAgent(data, cmd));
 					}
 
 				} catch (Exception e) {
@@ -63,14 +54,14 @@ public class Budget {
 	public static class BudgetAgent extends Agent {
 
 		String cmd;
-		String name;
+		String user;
 		Tuple data;
 
 		public BudgetAgent(Tuple data, String cmd) {
 			super(data.getElementAt(String.class, 0));
 			this.data = data;
 			this.cmd = cmd;
-			this.name = data.getElementAt(String.class, 0);
+			this.user = data.getElementAt(String.class, 0);
 
 		}
 
@@ -96,18 +87,18 @@ public class Budget {
 		}
 
 		public void addBalance(int balance) {
-			Template temp = new Template(new ActualTemplateField(name), new FormalTemplateField(Integer.class));
+			Template temp = new Template(new ActualTemplateField(user), new FormalTemplateField(Integer.class));
 
 			try {
 				Tuple t = get(temp, Self.SELF);
-				put(new Tuple(name, (t.getElementAt(Integer.class, 1) + balance)), Self.SELF);
+				put(new Tuple(user, (t.getElementAt(Integer.class, 1) + balance)), Self.SELF);
 			} catch (Exception e) {
 
 			}
 		}
 
 		public void getBalance() {
-			Template temp = new Template(new ActualTemplateField(name), new FormalTemplateField(Integer.class));
+			Template temp = new Template(new ActualTemplateField(user), new FormalTemplateField(Integer.class));
 			int balance;
 			try {
 				Tuple t = query(temp, Self.SELF);
@@ -116,6 +107,7 @@ public class Budget {
 
 			}
 		}
+		
 	}
 
 }
