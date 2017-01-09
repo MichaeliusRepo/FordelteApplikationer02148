@@ -29,6 +29,7 @@ public class Server {
 
 	public static VirtualPort vp = new VirtualPort(1337);
 	public ArrayList<User> users = new ArrayList<User>();
+	public ArrayList<Kitchen> kitchens = new ArrayList<Kitchen>();
 
 	public Server() {
 		Node server = new Node("Server", new TupleSpace());
@@ -146,11 +147,22 @@ public class Server {
 		return null;
 	}
 
-	public void newUser(String userName) {
-		User user = new User(userName, "Kitchen 6");
+	public void newUser(String userName, String kitchenName) {
+		int j = -1;
+		User user = new User(userName, kitchenName);
 		users.add(user);
+		for(int i = 0; i<kitchens.size(); i++){
+			if(kitchens.get(i).kitchenName.equals(kitchenName)){
+				j = i;
+			}
+		}
+		
+		if(j == -1){
+			System.out.println("Creating new kitchen: "+kitchenName);
+			Kitchen kitchen = new Kitchen(kitchenName);
+			kitchens.add(kitchen);
+		}
 	}
-
 }
 
 /*
