@@ -31,12 +31,27 @@ public class User {
 
 	public void addDay(int day, int month, int year) {
 		command = "addDay";
-		dayFormat(day,month,year);
+		dayFormat(day, month, year);
 	}
-	
+
 	public void addChef(int day, int month, int year) {
 		command = "addChef";
-		dayFormat(day,month,year);
+		dayFormat(day, month, year);
+	}
+
+	public void attendDay(int day, int month, int year) {
+		command = "attendDay";
+		dayFormat(day, month, year);
+	}
+
+	public void unattendDay(int day, int month, int year) {
+		command = "unattendDay";
+		dayFormat(day, month, year);
+	}
+
+	public void lockDay(int day, int month, int year) {
+		command = "lockDay";
+		dayFormat(day, month, year);
 	}
 
 	public void dayFormat(int day, int month, int year) {
@@ -59,7 +74,11 @@ public class User {
 			try {
 
 				switch (name) {
-				case "addDay": case "addChef": {
+				case "addDay":
+				case "addChef":
+				case "attendDay":
+				case "unattendDay":
+				case "lockDay": {
 					Tuple dataTuple = t.getElementAt(Tuple.class, 1);
 					Template feedback = new Template(new ActualTemplateField(userName + " " + command + " Feedback"),
 							new FormalTemplateField(Tuple.class));
