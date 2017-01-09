@@ -35,13 +35,14 @@ public class Main {
 			switch (cmd) {
 
 			case "day":
-				System.out.print("Enter day: ");
+				System.out.print("Enter day: (e.g. 01) ");
 				day = Integer.parseInt(in.nextLine());
-				System.out.print("Enter month: ");
+				System.out.print("Enter month: (e.g. 01) ");
 				month = Integer.parseInt(in.nextLine());
-				System.out.print("Enter year: ");
+				System.out.print("Enter year: (e.g. 2017) ");
 				year = Integer.parseInt(in.nextLine());
-				System.out.println("Please enter 'Add Day', 'Add Chef', 'Attend Day', 'Unattend Day' or 'Lock Day': ");
+				System.out.println("Please enter either \n "
+						+ "'Add Day', 'Add Chef', 'Attend Day', 'Unattend Day', 'Lock Day', 'Get Chef', 'Set Price', 'Get Price', 'Get Attendees': ");
 				String dayCmd = in.nextLine();
 				System.out.println("you entered: "+ dayCmd);
 				switch(dayCmd){
@@ -65,9 +66,24 @@ public class Main {
 				case "Lock Day":
 					user.lockDay(day, month, year);
 					break;	
+				
+				case "Get Chef":
+					user.getChef(day, month, year);
+					break;
+					
+				case "Set Price":
+					user.setPrice(day, month, year);
+					break;
+					
+				case "Get Price":
+					user.getPrice(day, month, year);
+					break;
+				case "Get Attendees":
+					user.getAttendees(day, month, year);
+					break;
 				}
 				break;
-
+			
 			case "Get my budget":
 				break;
 

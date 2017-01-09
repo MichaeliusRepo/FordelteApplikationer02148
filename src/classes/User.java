@@ -54,8 +54,8 @@ public class User {
 		dayFormat(day, month, year);
 	}
 
-	public void getCook(int day, int month, int year) {
-		command = "getCook";
+	public void getChef(int day, int month, int year) {
+		command = "getChef";
 		dayFormat(day, month, year);
 	}
 
@@ -99,7 +99,7 @@ public class User {
 				case "attendDay":
 				case "unattendDay":
 				case "lockDay": 
-				case "getCook":
+				case "getChef":
 				case "setPrice":
 				case "getPrice":
 				case "getAttendees":
