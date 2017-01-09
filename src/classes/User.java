@@ -73,7 +73,7 @@ public class User {
 		protected void doRun() {
 			try {
 
-				switch (name) {
+				switch (command) {
 				case "addDay":
 				case "addChef":
 				case "attendDay":
