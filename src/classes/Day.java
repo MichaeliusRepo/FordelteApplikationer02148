@@ -1,5 +1,8 @@
 package classes;
 
+import java.io.IOException;
+import java.util.LinkedList;
+
 import org.cmg.resp.behaviour.Agent;
 import org.cmg.resp.comp.Node;
 import org.cmg.resp.knowledge.ActualTemplateField;
@@ -52,11 +55,8 @@ public class Day {
 
 	public class DayAgent extends Agent {
 
-		String cmd;
-		String user;
-		String chef;
-		int attendees;
-		int price;
+		String cmd, user, chef;
+		int attendees, price;
 		Tuple data;
 
 		public DayAgent(Tuple data, String cmd) {
@@ -75,8 +75,11 @@ public class Day {
 
 					case "attendDay":
 						this.attendees = data.getElementAt(Integer.class, 2);
-						addUser(user, attendees);
+						attendDay(user, attendees);
 						break;
+
+					case "unattendDay":
+						unattendDay(user);
 
 					case "lockDay":
 						lockDay();
@@ -102,12 +105,29 @@ public class Day {
 			}
 		}
 
-		private void setPrice(int price) {
+		private void unattendDay(String user) {
+			String feedback = "unattendFeedback";
 			try {
-				if (queryp(new Template(new ActualTemplateField("price"),
+				if (getp(new Template(new ActualTemplateField(user), new FormalTemplateField(Integer.class))) == null) {
+					feedback(feedback, false);
+				} else {
+					feedback(feedback, true);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		private void setPrice(int price) {
+			String feedback = "setPriceFeedback";
+			try {
+				if (getp(new Template(new ActualTemplateField("price"),
 						new FormalTemplateField(Integer.class))) == null) {
-					
 					put(new Tuple("price", price), Self.SELF);
+					feedback(feedback, true);
+				} else {
+					put(new Tuple("price", price), Self.SELF);
+					feedback(feedback, false);
 				}
 
 			} catch (Exception e) {
@@ -118,7 +138,15 @@ public class Day {
 
 		private void addChef(String user) {
 			try {
-				put(new Tuple("chef", user), Self.SELF);
+				String feedback = "addChefFeedback";
+				LinkedList<Tuple> chefs = queryAll(
+						new Template(new ActualTemplateField("chef"), new FormalTemplateField(String.class)));
+				if (chefs.size() < 2) {
+					put(new Tuple("chef", user), Self.SELF);
+					feedback(feedback, true);
+				} else {
+					feedback(feedback, false);
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -132,14 +160,27 @@ public class Day {
 			}
 		}
 
-		private void addUser(String user, int attendees) {
+		private void attendDay(String user, int attendees) {
+			String feedback = "userAttendedFeedback";
 			try {
-				put(new Tuple(user, attendees), Self.SELF);
-				put(new Tuple("userAttended"), Self.SELF);
+				if (queryp(
+						new Template(new ActualTemplateField(user), new FormalTemplateField(Integer.class))) != null) {
+					put(new Tuple(user, attendees), Self.SELF);
+					feedback(feedback, true);
+				} else {
+					feedback(feedback, false);
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		}
 
+		private void feedback(String feedback, boolean result) {
+			try {
+				put(new Tuple(feedback, result), Self.SELF);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }
