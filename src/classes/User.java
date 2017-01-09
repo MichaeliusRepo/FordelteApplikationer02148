@@ -58,14 +58,17 @@ public class User {
 				case "addDay": {
 					Tuple dataTuple = t.getElementAt(Tuple.class, 1);
 					Template feedback = new Template(
-							new ActualTemplateField("addDay Feedback"),
-							new ActualTemplateField(dataTuple));
+							new ActualTemplateField(userName + " addDay Feedback"),
+							new FormalTemplateField(Tuple.class));
 
 					try {
 						put(t, p); // AddDay sent to server
 
 						t = get(feedback, Self.SELF);
-						System.out.println(t.getElementAt(String.class, 1));
+						
+						dataTuple = t.getElementAt(Tuple.class, 1);
+						
+						System.out.println(dataTuple.getElementAt(String.class, 2));
 						System.out.println(userName + " got SOME feedback.");
 						System.out.println("VICTORY \\o/");
 					} catch (Exception e) {
