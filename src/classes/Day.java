@@ -20,7 +20,7 @@ public class Day {
 		daySpace.start();
 	}
 
-	public static class DayMonitor extends Agent {
+	public class DayMonitor extends Agent {
 
 		Template cmdTemp = new Template(new FormalTemplateField(String.class), new FormalTemplateField(Tuple.class));
 
@@ -50,7 +50,7 @@ public class Day {
 
 	}
 
-	public static class DayAgent extends Agent {
+	public class DayAgent extends Agent {
 
 		String cmd;
 		String user;

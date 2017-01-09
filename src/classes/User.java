@@ -16,7 +16,7 @@ import org.cmg.resp.knowledge.Template;
 @SuppressWarnings("unused")
 public class User {
 	protected String userName;
-	protected static Node userSpace;
+	protected Node userSpace;
 	protected String kitchenName;
 	protected PointToPoint p = new PointToPoint("Server", Server.vp.getAddress());
 

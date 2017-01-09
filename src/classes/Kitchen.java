@@ -16,7 +16,7 @@ import org.cmg.resp.topology.Self;
 
 public class Kitchen {
 	protected String kitchenName;
-	protected static Node kitchenSpace;
+	protected Node kitchenSpace;
 
 	public Kitchen(String kitchenName) {
 		this.kitchenName = kitchenName;
