@@ -87,10 +87,16 @@ public class Server {
 					tupleData = t.getElementAt(Tuple.class, 1);
 
 					switch (t.getElementAt(String.class, 0)) {
-					case "addDay":
+					case "addDay": case "addChef":
+						String message;
+						if(t.getElementAt(String.class, 0).equals("addDay")){
+							message = "Server Monitor was requested to add date ";
+						}else {
+							message = "Server Monitor was requested to add chef on the date ";
+						}
 
 						System.out.println(
-								"Server Monitor was requested to add date " + tupleData.getElementAt(Integer.class, 2)
+								 message + tupleData.getElementAt(Integer.class, 2)
 										+ "/" + tupleData.getElementAt(Integer.class, 3) + "/"
 										+ tupleData.getElementAt(Integer.class, 4) + " to "
 										+ tupleData.getElementAt(String.class, 1));
@@ -101,8 +107,8 @@ public class Server {
 						 * malicious
 						 */
 
-						AddDayAgent addDay = new AddDayAgent("AddDayAgent", t);
-						exec(addDay);
+						ServerAgent agent = new ServerAgent("AddDayAgent", t);
+						exec(agent);
 
 						break;
 
@@ -132,11 +138,11 @@ public class Server {
 	}
 
 	//
-	public class AddDayAgent extends Agent {
+	public class ServerAgent extends Agent {
 
 		Tuple t;
 
-		public AddDayAgent(String who, Tuple t) {
+		public ServerAgent(String who, Tuple t) {
 			super(who);
 			this.t = t;
 		}

@@ -9,6 +9,7 @@ public class Main {
 		Server dinnerClub = new Server();
 		User user = null;
 		Scanner in = new Scanner(System.in);
+		int day,month,year;
 
 		while (user == null) {
 			System.out.print("Please enter user name: (write 'new user' to create new user): ");
@@ -35,12 +36,22 @@ public class Main {
 
 			case "Add Day":
 				System.out.print("Enter day: ");
-				int day = in.nextInt();
+				day = in.nextInt();
 				System.out.print("Enter month: ");
-				int month = in.nextInt();
+				month = in.nextInt();
 				System.out.print("Enter year: ");
-				int year = in.nextInt();
+				year = in.nextInt();
 				user.addDay(day, month, year);
+				break;
+				
+			case "Add Chef":
+				System.out.print("Enter day: ");
+				day = in.nextInt();
+				System.out.print("Enter month: ");
+				month = in.nextInt();
+				System.out.print("Enter year: ");
+				year = in.nextInt();
+				user.addChef(day, month, year);
 				break;
 
 			case "Get my budget":
