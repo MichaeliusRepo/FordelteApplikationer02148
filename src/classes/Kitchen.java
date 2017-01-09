@@ -178,7 +178,7 @@ public class Kitchen {
 			try {
 				p = new PointToPoint(target, Server.vp.getAddress());
 				Tuple feedbackTuple = get(new Template(new ActualTemplateField(feedback), new ActualTemplateField(user),
-						new FormalTemplateField(Boolean.class)), p);
+						new FormalTemplateField(Boolean.class), new FormalTemplateField(String.class)), p);
 				return feedbackTuple.getElementAt(Boolean.class,2);
 			} catch (Exception e) {
 				e.printStackTrace();
