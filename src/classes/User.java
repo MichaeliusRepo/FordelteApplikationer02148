@@ -31,12 +31,47 @@ public class User {
 
 	public void addDay(int day, int month, int year) {
 		command = "addDay";
-		dayFormat(day,month,year);
+		dayFormat(day, month, year);
 	}
-	
+
 	public void addChef(int day, int month, int year) {
 		command = "addChef";
-		dayFormat(day,month,year);
+		dayFormat(day, month, year);
+	}
+
+	public void attendDay(int day, int month, int year) {
+		command = "attendDay";
+		dayFormat(day, month, year);
+	}
+
+	public void unattendDay(int day, int month, int year) {
+		command = "unattendDay";
+		dayFormat(day, month, year);
+	}
+
+	public void lockDay(int day, int month, int year) {
+		command = "lockDay";
+		dayFormat(day, month, year);
+	}
+
+	public void getChef(int day, int month, int year) {
+		command = "getChef";
+		dayFormat(day, month, year);
+	}
+
+	public void setPrice(int day, int month, int year) {
+		command = "setPrice";
+		dayFormat(day, month, year);
+	}
+
+	public void getPrice(int day, int month, int year) {
+		command = "getPrice";
+		dayFormat(day, month, year);
+	}
+
+	public void getAttendees(int day, int month, int year) {
+		command = "getAttendees";
+		dayFormat(day, month, year);
 	}
 
 	public void dayFormat(int day, int month, int year) {
@@ -58,8 +93,18 @@ public class User {
 		protected void doRun() {
 			try {
 
-				switch (name) {
-				case "addDay": case "addChef": {
+				switch (command) {
+				case "addDay":
+				case "addChef":
+				case "attendDay":
+				case "unattendDay":
+				case "lockDay": 
+				case "getChef":
+				case "setPrice":
+				case "getPrice":
+				case "getAttendees":
+				
+				{
 					Tuple dataTuple = t.getElementAt(Tuple.class, 1);
 					Template feedback = new Template(new ActualTemplateField(userName + " " + command + " Feedback"),
 							new FormalTemplateField(Tuple.class));

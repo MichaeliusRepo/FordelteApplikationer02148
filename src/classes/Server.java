@@ -34,11 +34,12 @@ public class Server {
 	public Server() {
 		Node server = new Node("Server", new TupleSpace());
 		server.addPort(vp);
-		Agent monitor = new Monitor("Server Monitor");
+		Agent monitor = new Monitor("Monitor");
 		server.addAgent(monitor);
 		server.start();
 
 		// Adding temporary users:
+
 		User user1 = new User("Alexander", "kitchen 6");
 		User user2 = new User("Mathias", "kitchen 6");
 		User user3 = new User("Emilie", "kitchen 6");
@@ -83,15 +84,26 @@ public class Server {
 
 					t = get(what, Self.SELF);
 					tupleData = t.getElementAt(Tuple.class, 1);
+					String command = t.getElementAt(String.class, 0);
 
-					switch (t.getElementAt(String.class, 0)) {
+					switch (command) {
 					case "addDay":
+					case "addChef":
+					case "attendDay":
+					case "unattendDay":
+					case "lockDay":
+					case "getCook":
+					case "setPrice":
+					case "getPrice":
+					case "getAttendees":
+					
+					{
 
-						System.out.println(
-								"Server Monitor was requested to add date " + tupleData.getElementAt(Integer.class, 2)
-										+ "/" + tupleData.getElementAt(Integer.class, 3) + "/"
-										+ tupleData.getElementAt(Integer.class, 4) + " to "
-										+ tupleData.getElementAt(String.class, 1));
+						System.out.println("Server Monitor was requested to " + t.getElementAt(String.class, 0) + ", "
+								+ tupleData.getElementAt(Integer.class, 2) + "/"
+								+ tupleData.getElementAt(Integer.class, 3) + "/"
+								+ tupleData.getElementAt(Integer.class, 4) + " to "
+								+ tupleData.getElementAt(String.class, 1));
 
 						/*
 						 * Since the tuple went in here, this is a great time to
@@ -99,25 +111,34 @@ public class Server {
 						 * malicious
 						 */
 
-						AddDayAgent addDay = new AddDayAgent("AddDayAgent", t);
-						exec(addDay);
-
+						Agent agent = new ServerAgent(command, t);
+						exec(agent);
 						break;
+					}
 
 					case "addDay Feedback":
+					case "addChef Feedback":
+					case "attendDay Feedback":
+					case "unattendDay Feedback":
+					case "lockDay Feedback":
+					case "getCook Feedback":
+					case "setPrice Feedback":
+					case "getPrice Feedback":
+					case "getAttendees Feedback":
+					{
 
 						tupleData = t.getElementAt(Tuple.class, 1);
 						String userName = tupleData.getElementAt(String.class, 0);
 						String kitchenName = tupleData.getElementAt(String.class, 1);
 						PointToPoint p = new PointToPoint(userName, vp.getAddress());
-						put(new Tuple(userName + " addDay Feedback", tupleData), p);
+						put(new Tuple(userName + " " + command, tupleData), p);
 						System.out.println("Server transfers feedback from " + kitchenName + " to " + userName);
 
 						break;
+					}
 
-					case "CreateKitchen":
-						System.out.println("Create Agent that will create a valid kitchen");
-						System.out.println("Send confirmation to the user. Command was handled successfully.");
+					case "somethingElse":
+						System.out.println("Use this space for MROE code.");
 						break;
 					}
 
@@ -130,11 +151,11 @@ public class Server {
 	}
 
 	//
-	public class AddDayAgent extends Agent {
+	public class ServerAgent extends Agent {
 
 		Tuple t;
 
-		public AddDayAgent(String who, Tuple t) {
+		public ServerAgent(String who, Tuple t) {
 			super(who);
 			this.t = t;
 		}
@@ -148,9 +169,7 @@ public class Server {
 				put(t, p);
 			} catch (Exception e) {
 				e.printStackTrace();
-
 			}
-
 		}
 	}
 

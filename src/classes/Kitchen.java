@@ -92,27 +92,28 @@ public class Kitchen {
 				attendDay(data);
 				break;
 			case "addChef":
-				// TODO - lav en metode til at tilføje en chef(kan evt virke som
-				// change chef)
-				break;
 
+				System.out.println("Adding chef...?");
+				//TODO - lav en metode til at tilfï¿½je en chef(kan evt virke som change chef)
+				break;
+				
 			case "setPrice":
 				// TODO - lav metode til at fortælle hvor meget maden kostede på
 				// en dag
 				break;
+				
 			case "addBalance":
-				// TODO - tager prisen for maden og lægger det over i budget
+				//TODO - tager prisen for maden og lï¿½gger det over i budget
 				break;
+				
 			case "resetBalance":
-				// TODO - Metode der bruges til at nulstille balance på alle
-				// brugere når der skal betales
+				//TODO - Metode der bruges til at nulstille balance pï¿½ alle brugere nï¿½r der skal betales
 				break;
 			}
 		}
 
 		// Metode til at tilføje ny dag
 		private void addDay(Tuple data) {
-
 			int day = data.getElementAt(Integer.class, 2);
 			int month = data.getElementAt(Integer.class, 3);
 			int year = data.getElementAt(Integer.class, 4);
