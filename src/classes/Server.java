@@ -37,6 +37,23 @@ public class Server {
 		Agent monitor = new Monitor("Server Monitor");
 		server.addAgent(monitor);
 		server.start();
+		
+		
+		//temp users:
+		User user1 = new User("Alexander", "kitchen 6");
+		User user2 = new User("Mathias", "kitchen 6");
+		User user3 = new User("Emilie", "kitchen 6");
+		User user4 = new User("Jon", "kitchen 6");
+		User user5 = new User("Micheal", "kitchen 6");
+		
+		users.add(user1);
+		users.add(user2);
+		users.add(user3);
+		users.add(user4);
+		users.add(user5);
+		
+		Kitchen kitchen = new Kitchen("kitchen 6");
+		kitchens.add(kitchen);
 	}
 
 	public class Monitor extends Agent {
@@ -141,9 +158,11 @@ public class Server {
 	public User getUser(String userName) {
 		for (int i = 0; i < users.size(); i++) {
 			if (userName.equals(users.get(i).userName)) {
+				System.out.println("Welcome back "+userName);
 				return users.get(i);
 			}
 		}
+		System.out.println("sorry.. who are you?? "+userName);
 		return null;
 	}
 

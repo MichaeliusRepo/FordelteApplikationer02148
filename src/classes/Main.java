@@ -23,7 +23,7 @@ Server dinnerClub = new Server();
 	    User user = dinnerClub.getUser(userName);
 	    
 	    
-	    System.out.print("Please enter our command: ");
+	    System.out.print("Please enter your command: ");
 	    String cmd = in.nextLine();
 	    
 	    switch (cmd) {
