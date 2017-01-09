@@ -59,24 +59,6 @@ public class Kitchen {
 			}
 
 		}
-
-		/*protected void addDay(Tuple tupleData) {
-			try {
-				addDay.initialize(tupleData);
-				exec(addDay);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-
-		protected void getDays(Tuple tupleData) {
-			try {
-				exec(getDays);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-*/
 	}
 
 	public class KitchenAgent extends Agent {
@@ -99,6 +81,7 @@ public class Kitchen {
 				
 			case "addDay":
 				// TODO - lav en add day metode
+				addDay(data);
 				break;
 			
 			case "removeDay":
@@ -123,19 +106,28 @@ public class Kitchen {
 			}	
 		}
 		
+		//Metode til at tilføje ny dag
 		public void addDay(Tuple data){			
 			int day, month, year;
 			day = data.getElementAt(Integer.class, 2);
 			month = data.getElementAt(Integer.class, 3);
 			year = data.getElementAt(Integer.class, 4);
-			try {
-				
-				put(new Tuple(new Day(day, month, year)),Self.SELF);
-				get(new Template(new ActualTemplateField("dayCreated")),""+day+""+month+""+year);
-				put(new Tuple("addDay Feedback", data),"Server");
-			} catch (Exception e) {
-				e.printStackTrace();
+			
+		
+			Template checkDayTemplate = new Template(new ActualTemplateField(""+day+""+month+""+year),
+						new FormalTemplateField(Day.class));
+			
+			if(queryp(checkDayTemplate) == null){
+				try {
+					
+					put(new Tuple(""+day+""+month+""+year,new Day(day, month, year)),Self.SELF);
+					get(new Template(new ActualTemplateField("dayCreated")),""+day+""+month+""+year);
+					put(new Tuple("addDay Feedback", data),"Server");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
+			
 		}
 //			int day = tupleData.getElementAt(Integer.class, 2);
 //			int month = tupleData.getElementAt(Integer.class, 3);
