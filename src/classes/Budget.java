@@ -39,7 +39,7 @@ public class Budget {
 					Tuple t = get(cmdTemp, Self.SELF);
 					Tuple data = t.getElementAt(Tuple.class, 1);
 					String cmd = t.getElementAt(String.class, 0);
-					
+
 					while (true) {
 						switch (cmd) {
 
@@ -78,19 +78,19 @@ public class Budget {
 		@Override
 		protected void doRun() {
 			try {
-				while (true) {
-					switch (cmd) {
 
-					case "getBalance":
-						getBalance();
-						break;
+				switch (cmd) {
 
-					case "addBalance":
-						addBalance(data.getElementAt(Integer.class, 1));
-						break;
+				case "getBalance":
+					getBalance();
+					break;
 
-					}
+				case "addBalance":
+					addBalance(data.getElementAt(Integer.class, 1));
+					break;
+
 				}
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
