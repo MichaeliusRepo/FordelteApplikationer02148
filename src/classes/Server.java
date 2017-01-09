@@ -91,7 +91,13 @@ public class Server {
 					case "addChef":
 					case "attendDay":
 					case "unattendDay":
-					case "lockDay": {
+					case "lockDay":
+					case "getCook":
+					case "setPrice":
+					case "getPrice":
+					case "getAttendees":
+					
+					{
 
 						System.out.println("Server Monitor was requested to " + t.getElementAt(String.class, 0) + ", "
 								+ tupleData.getElementAt(Integer.class, 2) + "/"
@@ -114,7 +120,12 @@ public class Server {
 					case "addChef Feedback":
 					case "attendDay Feedback":
 					case "unattendDay Feedback":
-					case "lockDay Feedback": {
+					case "lockDay Feedback":
+					case "getCook Feedback":
+					case "setPrice Feedback":
+					case "getPrice Feedback":
+					case "getAttendees Feedback":
+					{
 
 						tupleData = t.getElementAt(Tuple.class, 1);
 						String userName = tupleData.getElementAt(String.class, 0);

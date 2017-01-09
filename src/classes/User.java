@@ -54,6 +54,26 @@ public class User {
 		dayFormat(day, month, year);
 	}
 
+	public void getCook(int day, int month, int year) {
+		command = "getCook";
+		dayFormat(day, month, year);
+	}
+
+	public void setPrice(int day, int month, int year) {
+		command = "setPrice";
+		dayFormat(day, month, year);
+	}
+
+	public void getPrice(int day, int month, int year) {
+		command = "getPrice";
+		dayFormat(day, month, year);
+	}
+
+	public void getAttendees(int day, int month, int year) {
+		command = "getAttendees";
+		dayFormat(day, month, year);
+	}
+
 	public void dayFormat(int day, int month, int year) {
 		Tuple t = new Tuple(command, new Tuple(userName, kitchenName, day, month, year));
 		Agent addDay = new UserAgent(command, t);
@@ -78,7 +98,13 @@ public class User {
 				case "addChef":
 				case "attendDay":
 				case "unattendDay":
-				case "lockDay": {
+				case "lockDay": 
+				case "getCook":
+				case "setPrice":
+				case "getPrice":
+				case "getAttendees":
+				
+				{
 					Tuple dataTuple = t.getElementAt(Tuple.class, 1);
 					Template feedback = new Template(new ActualTemplateField(userName + " " + command + " Feedback"),
 							new FormalTemplateField(Tuple.class));
