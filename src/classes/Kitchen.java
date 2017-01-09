@@ -132,7 +132,7 @@ public class Kitchen {
 				}else{
 					feedback = new Tuple(user, kitchen,"" + day + "" + month + "" + year + " was not created since the day already exits");
 				}
-				new PointToPoint("Server", Server.vp.getAddress());
+				p = new PointToPoint("Server", Server.vp.getAddress());
 				put(new Tuple("addDay Feedback", feedback),p);
 			}catch(Exception e){
 				e.printStackTrace();

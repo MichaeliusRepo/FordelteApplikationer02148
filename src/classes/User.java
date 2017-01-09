@@ -33,11 +33,11 @@ public class User {
 		Agent addDay = new UserAgent("addDay", t);
 		userSpace.addAgent(addDay);
 
-		try {
-			addDay.exec(addDay);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		try {
+//			addDay.exec(addDay);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 
 	}
 
@@ -65,7 +65,7 @@ public class User {
 						put(t, p); // AddDay sent to server
 
 						t = get(feedback, Self.SELF);
-						System.out.println(dataTuple.getElementAt(String.class, 1));
+						System.out.println(t.getElementAt(String.class, 1));
 						System.out.println(userName + " got SOME feedback.");
 						System.out.println("VICTORY \\o/");
 					} catch (Exception e) {
