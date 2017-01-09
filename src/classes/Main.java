@@ -26,7 +26,7 @@ public class Main {
 			user = dinnerClub.getUser(userName);
 		}
 
-		//for (int i = 0; i < 5; i++)
+		for (int i = 0; i < 5; i++)
 		{
 			System.out.println("Please enter your command: ");
 			String cmd = in.nextLine();
