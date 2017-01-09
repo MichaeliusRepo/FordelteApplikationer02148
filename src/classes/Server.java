@@ -37,21 +37,20 @@ public class Server {
 		Agent monitor = new Monitor("Server Monitor");
 		server.addAgent(monitor);
 		server.start();
-		
-		
-		//temp users:
+
+		// Adding temporary users:
 		User user1 = new User("Alexander", "kitchen 6");
 		User user2 = new User("Mathias", "kitchen 6");
 		User user3 = new User("Emilie", "kitchen 6");
 		User user4 = new User("Jon", "kitchen 6");
 		User user5 = new User("Michael", "kitchen 6");
-		
+
 		users.add(user1);
 		users.add(user2);
 		users.add(user3);
 		users.add(user4);
 		users.add(user5);
-		
+
 		Kitchen kitchen = new Kitchen("kitchen 6");
 		kitchens.add(kitchen);
 	}
@@ -100,7 +99,7 @@ public class Server {
 						 * malicious
 						 */
 
-						AddDayAgent addDay = new AddDayAgent("AddDayAgent",t);
+						AddDayAgent addDay = new AddDayAgent("AddDayAgent", t);
 						exec(addDay);
 
 						break;
@@ -158,11 +157,11 @@ public class Server {
 	public User getUser(String userName) {
 		for (int i = 0; i < users.size(); i++) {
 			if (userName.equals(users.get(i).userName)) {
-				System.out.println("Welcome back "+userName);
+				System.out.println("Welcome back, " + userName + "!");
 				return users.get(i);
 			}
 		}
-		System.out.println("sorry.. who are you?? "+userName);
+		System.out.println("sorry.. who are you?? " + userName);
 		return null;
 	}
 
@@ -170,15 +169,15 @@ public class Server {
 		int j = -1;
 		User user = new User(userName, kitchenName);
 		users.add(user);
-		
-		for(int i = 0; i<kitchens.size(); i++){
-			if(kitchens.get(i).kitchenName.equals(kitchenName)){
+
+		for (int i = 0; i < kitchens.size(); i++) {
+			if (kitchens.get(i).kitchenName.equals(kitchenName)) {
 				j = i;
 			}
 		}
-		
-		if(j == -1){
-			System.out.println("Creating new kitchen: "+kitchenName);
+
+		if (j == -1) {
+			System.out.println("Creating new kitchen: " + kitchenName);
 			Kitchen kitchen = new Kitchen(kitchenName);
 			kitchens.add(kitchen);
 		}
@@ -226,4 +225,3 @@ public class Server {
  * 
  * Handling of guests...?
  */
-
