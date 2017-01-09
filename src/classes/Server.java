@@ -3,6 +3,7 @@ package classes;
 import classes.User;
 import classes.Kitchen;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import org.cmg.resp.behaviour.Agent;
@@ -27,6 +28,7 @@ import org.cmg.resp.topology.VirtualPort;
 public class Server {
 
 	public static VirtualPort vp = new VirtualPort(1337);
+	public ArrayList<User> users = new ArrayList<User>();
 
 	public Server() {
 		initialize();
@@ -41,9 +43,10 @@ public class Server {
 
 		// MOCK CODE
 		String kitchenName = "Den Store Bagedyst";
-		User NortiousMaximus = new User("Nortious Maximus", kitchenName);
+		//User NortiousMaximus = new User("Nortious Maximus", kitchenName);
+		//users.add(NortiousMaximus);
 		Kitchen kitchen = new Kitchen(kitchenName);
-		NortiousMaximus.addDay(7, 1, 2017);
+		//NortiousMaximus.addDay(7, 1, 2017);
 
 		try {
 			Thread.sleep(5000);
@@ -51,7 +54,7 @@ public class Server {
 			e.printStackTrace();
 		}
 
-		NortiousMaximus.addDay(7, 1, 2017);
+		//NortiousMaximus.addDay(7, 1, 2017);
 		// END MOCK CODE
 
 	}
@@ -179,6 +182,20 @@ public class Server {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public User getUser(String userName) {
+		for(int i = 0; i<users.size();i++){
+			if(userName.equals(users.get(i).userName)){
+				return users.get(i);
+			}
+		}
+		return null;
+	}
+
+	public void newUser(String userName) {
+		User user = new User(userName, "Kitchen 6");
+		users.add(user);
 	}
 
 }
