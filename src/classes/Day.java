@@ -12,9 +12,13 @@ import org.cmg.resp.knowledge.ts.TupleSpace;
 import org.cmg.resp.topology.Self;
 
 public class Day {
+	
+	int day, month, year;
 
 	public Day(int day, int month, int year) {
-
+		this.day = day;
+		this.month = month;
+		this.year = year;
 		Node daySpace = new Node("" + day + "" + month + "" + year, new TupleSpace());
 		Agent dayAgent = new DayMonitor("day");
 		daySpace.addPort(Server.vp);
@@ -108,9 +112,9 @@ public class Day {
 			String feedback = "unattendFeedback";
 			try {
 				if (getp(new Template(new ActualTemplateField(user), new FormalTemplateField(Integer.class))) == null) {
-					feedback(feedback, false);
+					feedback(feedback, false, user + " isn't set to attend that day.");
 				} else {
-					feedback(feedback, true);
+					feedback(feedback, true, user + " is no longer attending on: " + day + "/" + month + "/" + year);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -120,13 +124,16 @@ public class Day {
 		private void setPrice(int price) {
 			String feedback = "setPriceFeedback";
 			try {
-				if (getp(new Template(new ActualTemplateField("price"),
-						new FormalTemplateField(Integer.class))) == null) {
+
+				Tuple t = getp(new Template(new ActualTemplateField("price"), new FormalTemplateField(Integer.class)));
+
+				if (t == null) {
 					put(new Tuple("price", price), Self.SELF);
-					feedback(feedback, true);
+					feedback(feedback, true, "The price was set to " + price);
 				} else {
 					put(new Tuple("price", price), Self.SELF);
-					feedback(feedback, false);
+					feedback(feedback, false, "The price was already set to " + t.getElementAt(Integer.class, 2)
+							+ ", but has been replaced.");
 				}
 
 			} catch (Exception e) {
@@ -140,11 +147,20 @@ public class Day {
 				String feedback = "addChefFeedback";
 				LinkedList<Tuple> chefs = queryAll(
 						new Template(new ActualTemplateField("chef"), new FormalTemplateField(String.class)));
+
 				if (chefs.size() < 2) {
-					put(new Tuple("chef", user), Self.SELF);
-					feedback(feedback, true);
+
+					if (queryp(new Template(new ActualTemplateField("chef"), new ActualTemplateField(user))) == null) {
+
+						put(new Tuple("chef", user), Self.SELF);
+						feedback(feedback, true, user + " was added as a chef.");
+
+					} else {
+						feedback(feedback, false, user + " is already a chef.");
+					}
+
 				} else {
-					feedback(feedback, false);
+					feedback(feedback, false, "There are already two chefs.");
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -162,21 +178,18 @@ public class Day {
 		private void attendDay(String user, int attendees) {
 			String feedback = "attendDayFeedback";
 			try {
-				if (queryp(
-						new Template(new ActualTemplateField(user), new FormalTemplateField(Integer.class))) != null) {
-					put(new Tuple(user, attendees), Self.SELF);
-					feedback(feedback, true);
-				} else {
-					feedback(feedback, false);
-				}
+				getp(new Template(new ActualTemplateField(user), new FormalTemplateField(Integer.class)));
+				put(new Tuple(user, attendees), Self.SELF);
+				feedback(feedback, true, "User added.");
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 
-		private void feedback(String feedback, boolean result) {
+		private void feedback(String feedback, boolean result, String message) {
 			try {
-				put(new Tuple(feedback, user, result), Self.SELF);
+				put(new Tuple(feedback, user, result, message), Self.SELF);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
