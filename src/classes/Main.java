@@ -16,13 +16,12 @@ Server dinnerClub = new Server();
 		    userName = in.nextLine();      
 		    System.out.println("You entered: " + userName);
 		    System.out.print("Please enter a dinner club's name: ");
-		    String kitchenName = in.nextLine();      
-		    System.out.println("You entered: " + kitchenName);
+		    String kitchenName = in.nextLine();
 	    	dinnerClub.newUser(userName,kitchenName);
 	    }
 	    User user = dinnerClub.getUser(userName);
 	    
-	    
+	    if(user != null){
 	    System.out.print("Please enter your command: ");
 	    String cmd = in.nextLine();
 	    
@@ -45,7 +44,9 @@ Server dinnerClub = new Server();
 	    		
 		    	break;
 	    }
-	    
+	    } else {
+	    	System.out.println("Bye");
+	    }
 	}
 
 }
