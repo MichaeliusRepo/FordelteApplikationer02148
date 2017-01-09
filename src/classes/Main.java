@@ -44,8 +44,8 @@ Server dinnerClub = new Server();
 	    	case "something":
 	    		
 		    	break;
-	    
 	    }
+	    
 	}
 
 }
