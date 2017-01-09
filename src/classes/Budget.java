@@ -31,26 +31,28 @@ public class Budget {
 
 		@Override
 		protected void doRun() throws Exception {
-			
+
 			while (true) {
-				
+
 				try {
-					
+
 					Tuple t = get(cmdTemp, Self.SELF);
 					Tuple data = t.getElementAt(Tuple.class, 1);
 					String cmd = t.getElementAt(String.class, 0);
 					
-					switch (cmd) {
-					
-					case "getBalance":
-						exec(new BalanceAgent(data, cmd));
-						break;
+					while (true) {
+						switch (cmd) {
 
-					case "addBalance":
-						exec(new BalanceAgent(data, cmd));
-						break;
+						case "getBalance":
+							exec(new BalanceAgent(data, cmd));
+							break;
+
+						case "addBalance":
+							exec(new BalanceAgent(data, cmd));
+							break;
+						}
 					}
-					
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -76,16 +78,18 @@ public class Budget {
 		@Override
 		protected void doRun() {
 			try {
-				switch (cmd) {
+				while (true) {
+					switch (cmd) {
 
-				case "getBalance":
-					getBalance();
-					break;
+					case "getBalance":
+						getBalance();
+						break;
 
-				case "addBalance":
-					addBalance(data.getElementAt(Integer.class, 1));
-					break;
+					case "addBalance":
+						addBalance(data.getElementAt(Integer.class, 1));
+						break;
 
+					}
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -94,24 +98,23 @@ public class Budget {
 
 		public void addBalance(int balance) {
 			Template temp = new Template(new ActualTemplateField(name), new FormalTemplateField(Integer.class));
-			
-			
-			try{
+
+			try {
 				Tuple t = get(temp, Self.SELF);
 				put(new Tuple(name, (t.getElementAt(Integer.class, 1) + balance)), Self.SELF);
-			} catch(Exception e) {
-				
+			} catch (Exception e) {
+
 			}
 		}
 
 		public void getBalance() {
 			Template temp = new Template(new ActualTemplateField(name), new FormalTemplateField(Integer.class));
 			int balance;
-			try{
+			try {
 				Tuple t = query(temp, Self.SELF);
 				balance = t.getElementAt(Integer.class, 1);
-			} catch(Exception e) {
-				
+			} catch (Exception e) {
+
 			}
 		}
 	}
