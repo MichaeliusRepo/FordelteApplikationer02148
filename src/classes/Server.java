@@ -151,6 +151,7 @@ public class Server {
 		int j = -1;
 		User user = new User(userName, kitchenName);
 		users.add(user);
+		
 		for(int i = 0; i<kitchens.size(); i++){
 			if(kitchens.get(i).kitchenName.equals(kitchenName)){
 				j = i;

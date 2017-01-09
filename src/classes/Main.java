@@ -46,9 +46,6 @@ Server dinnerClub = new Server();
 		    	break;
 	    
 	    }
-	    
-		
 	}
-	
 
 }
