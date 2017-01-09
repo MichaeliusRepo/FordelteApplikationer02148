@@ -1,6 +1,5 @@
 package classes;
 
-import java.io.IOException;
 import java.util.LinkedList;
 
 import org.cmg.resp.behaviour.Agent;
@@ -161,7 +160,7 @@ public class Day {
 		}
 
 		private void attendDay(String user, int attendees) {
-			String feedback = "userAttendedFeedback";
+			String feedback = "attendDayFeedback";
 			try {
 				if (queryp(
 						new Template(new ActualTemplateField(user), new FormalTemplateField(Integer.class))) != null) {
@@ -177,7 +176,7 @@ public class Day {
 
 		private void feedback(String feedback, boolean result) {
 			try {
-				put(new Tuple(feedback, result), Self.SELF);
+				put(new Tuple(feedback, user, result), Self.SELF);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
