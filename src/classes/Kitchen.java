@@ -26,22 +26,18 @@ public class Kitchen {
 		kitchenSpace = new Node(kitchenName, new TupleSpace());
 		kitchenSpace.addPort(Server.vp);
 		// Agent kitchenAgent = new KitchenAgent(kitchenName);
-		Agent monitor = new Monitor("Monitor");
+		Agent monitor = new KitchenMonitor("Monitor");
 		kitchenSpace.addAgent(monitor);
 		kitchenSpace.start();
 
 	}
 
-	public class Monitor extends Agent {
-
-		AddDayAgent addDay = new AddDayAgent("AddDayAgent");
-		GetDaysAgent getDays = new GetDaysAgent("GetDaysAgent");
-		// add remaining agents here
+	public class KitchenMonitor extends Agent {
 
 		Tuple t;
-		Template what = new Template(new FormalTemplateField(String.class), new FormalTemplateField(Tuple.class));
-
-		public Monitor(String who) {
+		Template kitchenTemplate = new Template(new FormalTemplateField(String.class), new FormalTemplateField(Tuple.class));
+		
+		public KitchenMonitor(String who) {
 			super(who);
 		}
 
@@ -53,22 +49,13 @@ public class Kitchen {
 				while (true) {
 
 					try {
-
-						t = get(what, Self.SELF);
 						
-						// TODO Each case should create a new agent to
-						// execute the task instead of using an existing
-						// one. Avoids bottlenecking(?)
-						switch (t.getElementAt(String.class, 0)) {
-						case "addDay":
-							addDay(t.getElementAt(Tuple.class, 1));
-							break;
-
-						case "getDays":
-							System.out.println("This is the syntax for switch/case with break.");
-							break;
-						}
-
+						t = get(kitchenTemplate, Self.SELF);
+						Tuple data = t.getElementAt(Tuple.class, 1);
+						String cmd = t.getElementAt(String.class, 0);
+						
+						exec(new KitchenAgent(cmd, data));
+						
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -80,7 +67,7 @@ public class Kitchen {
 
 		}
 
-		protected void addDay(Tuple tupleData) {
+		/*protected void addDay(Tuple tupleData) {
 			try {
 				addDay.initialize(tupleData);
 				exec(addDay);
@@ -96,57 +83,87 @@ public class Kitchen {
 				e.printStackTrace();
 			}
 		}
-
+*/
 	}
 
-	public class AddDayAgent extends Agent {
+	public class KitchenAgent extends Agent {
 
-		Tuple tupleData;
+		Tuple data;
+		String user;
+		String cmd;
 
-		public AddDayAgent(String who) {
-			super(who);
+		public KitchenAgent(String cmd, Tuple data) {
+			super(cmd);
+			this.data = data;
+			this.cmd = cmd;
+			this.user = data.getElementAt(String.class,0);
 		}
 
 		@Override
 		protected void doRun() {
-
-			String user = tupleData.getElementAt(String.class, 0);
-
-			int day = tupleData.getElementAt(Integer.class, 2);
-			int month = tupleData.getElementAt(Integer.class, 3);
-			int year = tupleData.getElementAt(Integer.class, 4);
-
-			Template date = new Template(new ActualTemplateField(day), new ActualTemplateField(month),
-					new ActualTemplateField(year));
-
-			try {
-				String feedback;
-
-				// check if this date exists in this kitchen already
-				if (null == queryp(date)) {
-					// add date
-					put(new Tuple(day, month, year), Self.SELF);
-					days.add(new Day(day, month, year));
-
-					feedback = "Date " + day + "/" + month + "/" + year + " added successfully to " + kitchenName;
-				} else {
-					feedback = "Date " + day + "/" + month + "/" + year + " already exists in " + kitchenName;
-				}
-
-				Tuple feedbackData = new Tuple(user, feedback, kitchenName);
-				put(new Tuple("addDay Feedback", feedbackData), p);
-
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-
-		void initialize(Tuple t) {
-			tupleData = t;
-		}
+			
+			switch (cmd){
+				
+			case "addDay":
+				// TODO - lav en add day metode
+				break;
+			
+			case "removeDay":
+				//Todo - lav en remove day metode
+				break;
+			case "attendDay":
+				//TODO - lav en attend day metode
+				break;
+			case "addChef":
+				//TODO - lav en metode til at tilføje en chef(kan evt virke som change chef)
+				break;
+			
+			case "setPrice":
+				//TODO - lav metode til at fortælle hvor meget maden kostede på en dag
+				break;
+			case "addBalance":
+				//TODO - tager prisen for maden og lægger det over i budget
+				break;
+			case "resetBalance":
+				//TODO - Metode der bruges til at nulstille balance på alle brugere når der skal betales
+				break;
+			}	
+				
+//			int day = tupleData.getElementAt(Integer.class, 2);
+//			int month = tupleData.getElementAt(Integer.class, 3);
+//			int year = tupleData.getElementAt(Integer.class, 4);
+//
+//			Template date = new Template(new ActualTemplateField(day), new ActualTemplateField(month),
+//					new ActualTemplateField(year));
+//
+//			try {
+//				String feedback;
+//
+//				// check if this date exists in this kitchen already
+//				if (null == queryp(date)) {
+//					// add date
+//					put(new Tuple(day, month, year), Self.SELF);
+//					days.add(new Day(day, month, year));
+//
+//					feedback = "Date " + day + "/" + month + "/" + year + " added successfully to " + kitchenName;
+//				} else {
+//					feedback = "Date " + day + "/" + month + "/" + year + " already exists in " + kitchenName;
+//				}
+//
+//				Tuple feedbackData = new Tuple(user, feedback, kitchenName);
+//				put(new Tuple("addDay Feedback", feedbackData), p);
+//
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//		}
+//
+//		void initialize(Tuple t) {
+//			tupleData = t;
+//		}
 	}
 
-	public class GetDaysAgent extends Agent {
+	/*public class GetDaysAgent extends Agent {
 
 		public GetDaysAgent(String who) {
 			super(who);
@@ -161,6 +178,6 @@ public class Kitchen {
 			}
 
 		}
-
+		*/
 	}
 }
