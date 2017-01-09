@@ -17,7 +17,6 @@ import org.cmg.resp.topology.Self;
 public class Kitchen {
 	protected String kitchenName;
 	protected static Node kitchenSpace;
-	protected PointToPoint p = new PointToPoint("Server", Server.vp.getAddress());
 
 	public Kitchen(String kitchenName) {
 		this.kitchenName = kitchenName;
@@ -62,7 +61,8 @@ public class Kitchen {
 	}
 
 	public class KitchenAgent extends Agent {
-
+		protected PointToPoint p;
+		
 		Tuple data;
 		String user;
 		String cmd;
@@ -124,13 +124,15 @@ public class Kitchen {
 				if(queryp(checkDayTemplate) == null){
 					
 					put(new Tuple(""+day+""+month+""+year,new Day(day, month, year)),Self.SELF);
-					get(new Template(new ActualTemplateField("dayCreated")),""+day+""+month+""+year);
+					p = new PointToPoint(""+day+""+month+""+year, Server.vp.getAddress());
+					get(new Template(new ActualTemplateField("dayCreated")),p);
 				
 					feedback = new Tuple(user, kitchen,"" + day + "" + month + "" + year + " was created");					
 			
 				}else{
 					feedback = new Tuple(user, kitchen,"" + day + "" + month + "" + year + " was not created since the day already exits");
 				}
+				new PointToPoint("Server", Server.vp.getAddress());
 				put(new Tuple("addDay Feedback", feedback),p);
 			}catch(Exception e){
 				e.printStackTrace();
