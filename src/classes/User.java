@@ -19,6 +19,7 @@ public class User {
 	protected Node userSpace;
 	protected String kitchenName;
 	protected PointToPoint p = new PointToPoint("Server", Server.vp.getAddress());
+	protected String command;
 
 	public User(String userName, String kitchenName) {
 		this.userName = userName;
@@ -29,16 +30,19 @@ public class User {
 	}
 
 	public void addDay(int day, int month, int year) {
-		Tuple t = new Tuple("addDay", new Tuple(userName, kitchenName, day, month, year));
-		Agent addDay = new UserAgent("addDay", t);
+		command = "addDay";
+		dayFormat(day,month,year);
+	}
+	
+	public void addChef(int day, int month, int year) {
+		command = "addChef";
+		dayFormat(day,month,year);
+	}
+
+	public void dayFormat(int day, int month, int year) {
+		Tuple t = new Tuple(command, new Tuple(userName, kitchenName, day, month, year));
+		Agent addDay = new UserAgent(command, t);
 		userSpace.addAgent(addDay);
-
-//		try {
-//			addDay.exec(addDay);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-
 	}
 
 	public class UserAgent extends Agent {
@@ -55,19 +59,18 @@ public class User {
 			try {
 
 				switch (name) {
-				case "addDay": {
+				case "addDay": case "addChef": {
 					Tuple dataTuple = t.getElementAt(Tuple.class, 1);
-					Template feedback = new Template(
-							new ActualTemplateField(userName + " addDay Feedback"),
+					Template feedback = new Template(new ActualTemplateField(userName + " " + command + " Feedback"),
 							new FormalTemplateField(Tuple.class));
 
 					try {
 						put(t, p); // AddDay sent to server
 
 						t = get(feedback, Self.SELF);
-						
+
 						dataTuple = t.getElementAt(Tuple.class, 1);
-						
+
 						System.out.println(dataTuple.getElementAt(String.class, 2));
 						System.out.println(userName + " got SOME feedback.");
 						System.out.println("VICTORY \\o/");
