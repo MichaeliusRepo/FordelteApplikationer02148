@@ -39,7 +39,7 @@ public class Server {
 		server.start();
 
 		// Adding temporary users:
-	
+
 		User user2 = new User("Mathias", "kitchen 6");
 		User user3 = new User("Emilie", "kitchen 6");
 		User user4 = new User("Jon", "kitchen 6");
@@ -51,7 +51,6 @@ public class Server {
 		users.add(user3);
 		users.add(user4);
 		users.add(user5);
-		
 
 		Kitchen kitchen = new Kitchen("kitchen 6");
 		kitchens.add(kitchen);
@@ -85,21 +84,17 @@ public class Server {
 
 					t = get(what, Self.SELF);
 					tupleData = t.getElementAt(Tuple.class, 1);
+					String command = t.getElementAt(String.class, 0);
 
-					switch (t.getElementAt(String.class, 0)) {
-					case "addDay": case "addChef":
-						String message;
-						if(t.getElementAt(String.class, 0).equals("addDay")){
-							message = "Server Monitor was requested to add date ";
-						}else {
-							message = "Server Monitor was requested to add chef on the date ";
-						}
+					switch (command) {
+					case "addDay":
+					case "addChef":
 
-						System.out.println(
-								 message + tupleData.getElementAt(Integer.class, 2)
-										+ "/" + tupleData.getElementAt(Integer.class, 3) + "/"
-										+ tupleData.getElementAt(Integer.class, 4) + " to "
-										+ tupleData.getElementAt(String.class, 1));
+						System.out.println("Server Monitor was requested to " + t.getElementAt(String.class, 0) + ", "
+								+ tupleData.getElementAt(Integer.class, 2) + "/"
+								+ tupleData.getElementAt(Integer.class, 3) + "/"
+								+ tupleData.getElementAt(Integer.class, 4) + " to "
+								+ tupleData.getElementAt(String.class, 1));
 
 						/*
 						 * Since the tuple went in here, this is a great time to
@@ -107,25 +102,24 @@ public class Server {
 						 * malicious
 						 */
 
-						ServerAgent agent = new ServerAgent("AddDayAgent", t);
-						exec(agent);
+						Agent addDay = new ServerAgent(command, t);
+						exec(addDay);
 
 						break;
 
-					case "addDay Feedback":
+					case "addDay Feedback": case "addChef Feedback":
 
 						tupleData = t.getElementAt(Tuple.class, 1);
 						String userName = tupleData.getElementAt(String.class, 0);
 						String kitchenName = tupleData.getElementAt(String.class, 1);
 						PointToPoint p = new PointToPoint(userName, vp.getAddress());
-						put(new Tuple(userName + " addDay Feedback", tupleData), p);
+						put(new Tuple(userName + " " + command, tupleData), p);
 						System.out.println("Server transfers feedback from " + kitchenName + " to " + userName);
 
 						break;
 
-					case "CreateKitchen":
-						System.out.println("Create Agent that will create a valid kitchen");
-						System.out.println("Send confirmation to the user. Command was handled successfully.");
+					case "somethingElse":
+						System.out.println("Use this space for MROE code.");
 						break;
 					}
 
@@ -156,9 +150,7 @@ public class Server {
 				put(t, p);
 			} catch (Exception e) {
 				e.printStackTrace();
-
 			}
-
 		}
 	}
 
