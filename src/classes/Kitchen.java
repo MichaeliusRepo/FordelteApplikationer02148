@@ -1,5 +1,6 @@
 package classes;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,17 +17,15 @@ import org.cmg.resp.topology.Self;
 public class Kitchen {
 	protected String kitchenName;
 	protected static Node kitchenSpace;
-	protected List<Day> days;
 	protected PointToPoint p = new PointToPoint("Server", Server.vp.getAddress());
 
 	public Kitchen(String kitchenName) {
 		this.kitchenName = kitchenName;
-		days = new ArrayList<Day>();
 
 		kitchenSpace = new Node(kitchenName, new TupleSpace());
 		kitchenSpace.addPort(Server.vp);
 		// Agent kitchenAgent = new KitchenAgent(kitchenName);
-		Agent monitor = new KitchenMonitor("Monitor");
+		Agent monitor = new KitchenMonitor("kitchenMonitor");
 		kitchenSpace.addAgent(monitor);
 		kitchenSpace.start();
 
@@ -44,25 +43,19 @@ public class Kitchen {
 		@Override
 		protected void doRun() {
 
-			try {
+			while (true) {
 
-				while (true) {
+				try {
 
-					try {
-						
-						t = get(kitchenTemplate, Self.SELF);
-						Tuple data = t.getElementAt(Tuple.class, 1);
-						String cmd = t.getElementAt(String.class, 0);
-						
-						exec(new KitchenAgent(cmd, data));
-						
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
+					t = get(kitchenTemplate, Self.SELF);
+					Tuple data = t.getElementAt(Tuple.class, 1);
+					String cmd = t.getElementAt(String.class, 0);
+
+					exec(new KitchenAgent(cmd, data));
+
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
-
-			} catch (Exception e) {
-				e.printStackTrace();
 			}
 
 		}
@@ -128,7 +121,22 @@ public class Kitchen {
 				//TODO - Metode der bruges til at nulstille balance på alle brugere når der skal betales
 				break;
 			}	
+		}
+		
+		public void addDay(Tuple data){			
+			int day, month, year;
+			day = data.getElementAt(Integer.class, 2);
+			month = data.getElementAt(Integer.class, 3);
+			year = data.getElementAt(Integer.class, 4);
+			try {
 				
+				put(new Tuple(new Day(day, month, year)),Self.SELF);
+				get(new Template(new ActualTemplateField("dayCreated")),""+day+""+month+""+year);
+				put(new Tuple("addDay Feedback", data),"Server");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 //			int day = tupleData.getElementAt(Integer.class, 2);
 //			int month = tupleData.getElementAt(Integer.class, 3);
 //			int year = tupleData.getElementAt(Integer.class, 4);
@@ -179,5 +187,4 @@ public class Kitchen {
 
 		}
 		*/
-	}
 }
