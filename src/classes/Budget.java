@@ -15,16 +15,16 @@ public class Budget {
 	public Budget() {
 		budgetSpace = new Node("Budget", new TupleSpace());
 		budgetSpace.addPort(Server.vp);
-		budgetSpace.addAgent(new BudgetAgent("Budget Agent"));
+		budgetSpace.addAgent(new BudgetMonitor("Budget Agent"));
 		budgetSpace.start();
 
 	}
 
-	public static class BudgetAgent extends Agent {
+	public static class BudgetMonitor extends Agent {
 
 		Template cmdTemp = new Template(new FormalTemplateField(String.class), new FormalTemplateField(Tuple.class));
 
-		public BudgetAgent(String name) {
+		public BudgetMonitor(String name) {
 			super(name);
 
 		}
@@ -35,20 +35,19 @@ public class Budget {
 			while (true) {
 
 				try {
-
-					Tuple t = get(cmdTemp, Self.SELF);
-					Tuple data = t.getElementAt(Tuple.class, 1);
-					String cmd = t.getElementAt(String.class, 0);
-
 					while (true) {
+						Tuple t = get(cmdTemp, Self.SELF);
+						Tuple data = t.getElementAt(Tuple.class, 1);
+						String cmd = t.getElementAt(String.class, 0);
+
 						switch (cmd) {
 
 						case "getBalance":
-							exec(new BalanceAgent(data, cmd));
+							exec(new BudgetAgent(data, cmd));
 							break;
 
 						case "addBalance":
-							exec(new BalanceAgent(data, cmd));
+							exec(new BudgetAgent(data, cmd));
 							break;
 						}
 					}
@@ -61,13 +60,13 @@ public class Budget {
 
 	}
 
-	public static class BalanceAgent extends Agent {
+	public static class BudgetAgent extends Agent {
 
 		String cmd;
 		String name;
 		Tuple data;
 
-		public BalanceAgent(Tuple data, String cmd) {
+		public BudgetAgent(Tuple data, String cmd) {
 			super(data.getElementAt(String.class, 0));
 			this.data = data;
 			this.cmd = cmd;
