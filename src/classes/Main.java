@@ -37,11 +37,9 @@ Server dinnerClub = new Server();
 	    	break;
 	    	
 	    	case "Get my budget":
-	    		
 		    	break;
 		    	
 	    	case "something":
-	    		
 		    	break;
 	    }
 	    } else {

@@ -44,7 +44,7 @@ public class Server {
 		User user2 = new User("Mathias", "kitchen 6");
 		User user3 = new User("Emilie", "kitchen 6");
 		User user4 = new User("Jon", "kitchen 6");
-		User user5 = new User("Micheal", "kitchen 6");
+		User user5 = new User("Michael", "kitchen 6");
 		
 		users.add(user1);
 		users.add(user2);
