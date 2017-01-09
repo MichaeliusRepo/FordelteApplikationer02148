@@ -64,7 +64,7 @@ public class Kitchen {
 		protected PointToPoint p;
 		
 		Tuple data;
-		String user;
+		String user, kitchen;
 		String cmd;
 
 		public KitchenAgent(String cmd, Tuple data) {
@@ -72,6 +72,7 @@ public class Kitchen {
 			this.data = data;
 			this.cmd = cmd;
 			this.user = data.getElementAt(String.class,0);
+			this.kitchen = data.getElementAt(String.class, 1);
 		}
 
 		@Override
@@ -84,7 +85,7 @@ public class Kitchen {
 				break;
 			
 			case "removeDay":
-				//Todo - lav en remove day metode
+				removeDay(data);
 				break;
 			case "attendDay":
 				//TODO - lav en attend day metode
@@ -106,10 +107,8 @@ public class Kitchen {
 		}
 		
 		//Metode til at tilføje ny dag
-		public void addDay(Tuple data){			
-			String user = data.getElementAt(String.class ,0);
-			String kitchen = data.getElementAt(String.class, 1);
-			
+		private void addDay(Tuple data){			
+					
 			int day = data.getElementAt(Integer.class, 2);
 			int month = data.getElementAt(Integer.class, 3);
 			int year = data.getElementAt(Integer.class, 4);
@@ -138,54 +137,24 @@ public class Kitchen {
 				e.printStackTrace();
 			}	
 		}
-//			int day = tupleData.getElementAt(Integer.class, 2);
-//			int month = tupleData.getElementAt(Integer.class, 3);
-//			int year = tupleData.getElementAt(Integer.class, 4);
-//
-//			Template date = new Template(new ActualTemplateField(day), new ActualTemplateField(month),
-//					new ActualTemplateField(year));
-//
-//			try {
-//				String feedback;
-//
-//				// check if this date exists in this kitchen already
-//				if (null == queryp(date)) {
-//					// add date
-//					put(new Tuple(day, month, year), Self.SELF);
-//					days.add(new Day(day, month, year));
-//
-//					feedback = "Date " + day + "/" + month + "/" + year + " added successfully to " + kitchenName;
-//				} else {
-//					feedback = "Date " + day + "/" + month + "/" + year + " already exists in " + kitchenName;
-//				}
-//
-//				Tuple feedbackData = new Tuple(user, feedback, kitchenName);
-//				put(new Tuple("addDay Feedback", feedbackData), p);
-//
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//		}
-//
-//		void initialize(Tuple t) {
-//			tupleData = t;
-//		}
-	}
-
-	/*public class GetDaysAgent extends Agent {
-
-		public GetDaysAgent(String who) {
-			super(who);
-		}
-
-		@Override
-		protected void doRun() {
-			try {
-				put(new Tuple("getDays", days), p);
-			} catch (Exception e) {
+		
+		private void removeDay(Tuple data){
+			String date = ""+data.getElementAt(Integer.class,1)+ "" + data.getElementAt(Integer.class,2) + "" + data.getElementAt(Integer.class,3);
+			Template dayTemplate = new Template(new ActualTemplateField(date), new FormalTemplateField(Day.class));
+			Tuple feedback;
+			
+			try{
+				if(getp(dayTemplate)== null){
+					feedback = new Tuple(user, kitchen, "Den valgte dag " + date + " findes ikke");
+				}else{
+					feedback = new Tuple(user, kitchen, "Dagen " + date + "Er blevet slettet");
+				}
+				p = new PointToPoint("Server", Server.vp.getAddress());
+				put(new Tuple("addDay Feedback", feedback), p);
+			}catch(Exception e){
 				e.printStackTrace();
 			}
-
-		}
-		*/
+			
+		}		
+	}
 }
