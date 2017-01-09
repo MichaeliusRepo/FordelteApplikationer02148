@@ -31,37 +31,14 @@ public class Server {
 	public ArrayList<User> users = new ArrayList<User>();
 
 	public Server() {
-		initialize();
-	}
-
-	private void initialize() {
 		Node server = new Node("Server", new TupleSpace());
 		server.addPort(vp);
 		Agent monitor = new Monitor("Server Monitor");
 		server.addAgent(monitor);
 		server.start();
-
-		// MOCK CODE
-		String kitchenName = "Den Store Bagedyst";
-		//User NortiousMaximus = new User("Nortious Maximus", kitchenName);
-		//users.add(NortiousMaximus);
-		Kitchen kitchen = new Kitchen(kitchenName);
-		//NortiousMaximus.addDay(7, 1, 2017);
-
-		try {
-			Thread.sleep(5000);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		//NortiousMaximus.addDay(7, 1, 2017);
-		// END MOCK CODE
-
 	}
 
 	public class Monitor extends Agent {
-
-		AddDayAgent addDay = new AddDayAgent("AddDayAgent");
 
 		Tuple t;
 		Tuple tupleData;
@@ -77,12 +54,8 @@ public class Server {
 			while (true) {
 
 				try {
-					// t = query(what, Self.SELF);
-					// System.out.println(" " + name + " saw " +
-					// t.getElementAt(String.class, 1));
 
-					// This is an example of how to use getAll methods from
-					// jRESP
+					// example of how to use getAll methods from jRESP
 					// LinkedList<Tuple> list = new LinkedList<Tuple>();
 
 					// use this to copy all tuples
@@ -109,7 +82,7 @@ public class Server {
 						 * malicious
 						 */
 
-						addDay.initialize(t);
+						AddDayAgent addDay = new AddDayAgent("AddDayAgent",t);
 						exec(addDay);
 
 						break;
@@ -144,8 +117,9 @@ public class Server {
 
 		Tuple t;
 
-		public AddDayAgent(String who) {
+		public AddDayAgent(String who, Tuple t) {
 			super(who);
+			this.t = t;
 		}
 
 		@Override
@@ -161,32 +135,11 @@ public class Server {
 			}
 
 		}
-
-		void initialize(Tuple t) {
-			this.t = t;
-		}
 	}
 
-	// Copy-pasta this agent whenever you need to make a new one!
-	public class TemplatusMaximus extends Agent {
-
-		public TemplatusMaximus(String who) {
-			super(who);
-		}
-
-		@Override
-		protected void doRun() {
-			try {
-				// insert code here
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
 	public User getUser(String userName) {
-		for(int i = 0; i<users.size();i++){
-			if(userName.equals(users.get(i).userName)){
+		for (int i = 0; i < users.size(); i++) {
+			if (userName.equals(users.get(i).userName)) {
 				return users.get(i);
 			}
 		}
