@@ -53,15 +53,15 @@ public class Budget {
 
 	public static class BudgetAgent extends Agent {
 
-		String cmd;
-		String user;
+		String cmd, userName, kitchenName;
 		Tuple data;
 
 		public BudgetAgent(Tuple data, String cmd) {
 			super(data.getElementAt(String.class, 0));
 			this.data = data;
 			this.cmd = cmd;
-			this.user = data.getElementAt(String.class, 0);
+			this.kitchenName = data.getElementAt(String.class, 1);
+			this.userName = data.getElementAt(String.class, 0);
 
 		}
 
@@ -76,7 +76,7 @@ public class Budget {
 					break;
 
 				case "addBalance":
-					addBalance(data.getElementAt(Integer.class, 1));
+					addBalance(data.getElementAt(Integer.class, 2));
 					break;
 
 				}
@@ -87,11 +87,11 @@ public class Budget {
 		}
 
 		public void addBalance(int balance) {
-			Template temp = new Template(new ActualTemplateField(user), new FormalTemplateField(Integer.class));
+			Template temp = new Template(new ActualTemplateField(userName), new FormalTemplateField(Integer.class));
 
 			try {
 				Tuple t = get(temp, Self.SELF);
-				put(new Tuple(user, (t.getElementAt(Integer.class, 1) + balance)), Self.SELF);
+				put(new Tuple(userName, (t.getElementAt(Integer.class, 1) + balance)), Self.SELF);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -99,15 +99,15 @@ public class Budget {
 
 		public void getBalance() {
 			String feedback = "getBalance";
-			Template temp = new Template(new ActualTemplateField(user), new FormalTemplateField(Integer.class));
+			Template temp = new Template(new ActualTemplateField(userName), new FormalTemplateField(Integer.class));
 			int balance;
 			try {
 				if (queryp(temp) != null) {
 					Tuple t = query(temp, Self.SELF);
 					balance = t.getElementAt(Integer.class, 1);
-					feedback(feedback, true, "Balance for user: " + user);
+					feedback(feedback, true, "Balance for user: " + userName);
 				} else {
-					feedback(feedback, false, user + " could not be found.");
+					feedback(feedback, false, userName + " could not be found.");
 				}
 			} catch (Exception e) {
 
@@ -116,7 +116,7 @@ public class Budget {
 		
 		private void feedback(String feedback, boolean result, String message) {
 			try {
-				put(new Tuple(feedback, user, result, message), Self.SELF);
+				put(new Tuple(feedback, new Tuple(userName, result, message)), Self.SELF);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

@@ -73,7 +73,7 @@ public class User {
 
 						dataTuple = t.getElementAt(Tuple.class, 1);
 
-						System.out.println(dataTuple.getElementAt(String.class, 2));
+						System.out.println(dataTuple.getElementAt(String.class, 3));
 						System.out.println(userName + " got SOME feedback.");
 						System.out.println("VICTORY \\o/");
 					} catch (Exception e) {
