@@ -93,7 +93,7 @@ public class Budget {
 				Tuple t = get(temp, Self.SELF);
 				put(new Tuple(user, (t.getElementAt(Integer.class, 1) + balance)), Self.SELF);
 			} catch (Exception e) {
-
+				e.printStackTrace();
 			}
 		}
 

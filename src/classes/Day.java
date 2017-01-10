@@ -83,7 +83,8 @@ public class Day {
 
 					case "unattendDay":
 						unattendDay(user);
-
+						break;
+						
 					case "lockDay":
 						lockDay();
 						break;
@@ -194,7 +195,7 @@ public class Day {
 
 		private void feedback(String feedback, boolean result, String message) {
 			try {
-				put(new Tuple(feedback, user, result, message), Self.SELF);
+				put(new Tuple(feedback, new Tuple(user, result, message)), Self.SELF);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
