@@ -57,7 +57,7 @@ public class Main {
 
 				case "Attend Day":
 					System.out.print("Please enter how many guest you want to bring: (e.g. 0) ");
-					double guest = Double.parseDouble(in.nextLine());
+					int guest = Integer.parseInt(in.nextLine());
 					user.command("attendDay",day, month, year, guest);
 					break;
 
@@ -75,7 +75,7 @@ public class Main {
 
 				case "Set Price":
 					System.out.print("Please enter the total price: (e.g. 200) ");
-					double price = Double.parseDouble(in.nextLine());
+					int price = Integer.parseInt(in.nextLine());
 					user.command("setPrice",day, month, year, price);
 					break;
 

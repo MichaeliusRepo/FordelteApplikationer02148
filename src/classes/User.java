@@ -21,8 +21,7 @@ public class User {
 	protected String kitchenName;
 	protected PointToPoint p = new PointToPoint("Server", Server.vp.getAddress());
 	protected String command;
-	private double price;
-	private int guest;
+	private int extra;
 
 	public User(String userName, String kitchenName) {
 		this.userName = userName;
@@ -32,19 +31,16 @@ public class User {
 		userSpace.start();
 	}
 
-	public void command(String command, int day, int month, int year, double extra) {
+	public void command(String command, int day, int month, int year, int extra) {
 		this.command = command;
+		this.extra = extra;
 		dayFormat(day, month, year);
-		if(command.equals("setPrice")){
-			price = extra;
-		} else if(command.equals("attendDay")){
-			guest = Integer.parseInt(""+extra);
 			
-		}
+		
 	}
 
 	public void dayFormat(int day, int month, int year) {
-		Tuple t = new Tuple(command, new Tuple(userName, kitchenName, day, month, year));
+		Tuple t = new Tuple(command, new Tuple(userName, kitchenName, day, month, year, extra));
 		Agent addDay = new UserAgent(command, t);
 		userSpace.addAgent(addDay);
 	}
