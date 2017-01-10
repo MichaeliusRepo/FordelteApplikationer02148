@@ -1,9 +1,5 @@
 package classes;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.cmg.resp.behaviour.Agent;
 import org.cmg.resp.comp.Node;
 import org.cmg.resp.knowledge.ActualTemplateField;
@@ -27,7 +23,6 @@ public class Kitchen {
 		Agent monitor = new KitchenMonitor("kitchenMonitor");
 		kitchenSpace.addAgent(monitor);
 		kitchenSpace.start();
-
 	}
 
 	public class KitchenMonitor extends Agent {
@@ -44,20 +39,15 @@ public class Kitchen {
 		protected void doRun() {
 
 			while (true) {
-
 				try {
-
 					t = get(kitchenTemplate, Self.SELF);
 					Tuple data = t.getElementAt(Tuple.class, 1);
 					String cmd = t.getElementAt(String.class, 0);
-
 					exec(new KitchenAgent(cmd, data));
-
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
-
 		}
 	}
 
@@ -121,17 +111,15 @@ public class Kitchen {
 
 			try {
 
-				if (!checkDayExits(target)) {
+				if (!checkDayExists(target)) {
 
 					put(new Tuple("" + day + "" + month + "" + year, new Day(day, month, year)), Self.SELF);
 					p = new PointToPoint("" + day + "" + month + "" + year, Server.vp.getAddress());
-					
-					sendFeedback("addDay", recieveFeedback(target, "dayCreated"));
-					
 
-				} else {
+					sendFeedback("addDay", recieveFeedback(target, "dayCreated"));
+
+				} else
 					sendFeedback("addDay", new Tuple(user, kitchen, false, "Dagen findes allerede"));
-				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -142,7 +130,7 @@ public class Kitchen {
 					+ data.getElementAt(Integer.class, 3);
 
 			try {
-				if (!checkDayExits(target)) {
+				if (!checkDayExists(target)) {
 					sendFeedback("removeDay",new Tuple(user, kitchen, false, "Den valgte dag findes ikke"));
 				} else {
 					sendFeedback("removeDay",new Tuple(user, kitchen, true, "Dagen er blevet slettet"));
@@ -162,12 +150,12 @@ public class Kitchen {
 
 			try {
 
-				if (checkDayExits(target)) {
+				if (checkDayExists(target))
 					sendFeedback("attendDay", new Tuple(user, kitchen, "Den valgte dag findes ikke"));
-				} else {
-					p = new PointToPoint(target,Server.vp.getAddress());
-					put(new Tuple("attendDay", new Tuple(user,kitchen,attendees)),p);
-					sendFeedback("attendDay", recieveFeedback(target, "attendDayFeedback"));	
+				else {
+					p = new PointToPoint(target, Server.vp.getAddress());
+					put(new Tuple("attendDay", new Tuple(user, kitchen, attendees)), p);
+					sendFeedback("attendDay", recieveFeedback(target, "attendDayFeedback"));
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -195,15 +183,12 @@ public class Kitchen {
 				e.printStackTrace();
 			}
 		}
-		
-		private boolean checkDayExits(String target){
+
+		private boolean checkDayExists(String target) {
 			Template checkDayTemplate = new Template(new ActualTemplateField(target),
 					new FormalTemplateField(Day.class));
-			if(queryp(checkDayTemplate) == null){
-				return false;
-			}else{
-				return true;
-			}
+
+			return (queryp(checkDayTemplate) == null) ? false : true;
 		}
 
 	}

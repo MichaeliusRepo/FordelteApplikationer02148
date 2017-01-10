@@ -102,6 +102,7 @@ public class Server {
 						Agent agent = new ServerAgent(command, t);
 						exec(agent);
 					} else {
+						System.out.println("Server found feedback.");
 						tupleData = t.getElementAt(Tuple.class, 1);
 						String userName = tupleData.getElementAt(String.class, 0);
 						String kitchenName = tupleData.getElementAt(String.class, 1);
