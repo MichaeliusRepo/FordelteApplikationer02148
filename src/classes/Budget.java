@@ -1,5 +1,7 @@
 package classes;
 
+import java.util.ArrayList;
+
 import org.cmg.resp.behaviour.Agent;
 import org.cmg.resp.comp.Node;
 import org.cmg.resp.knowledge.ActualTemplateField;
@@ -76,9 +78,12 @@ public class Budget {
 					break;
 
 				case "addBalance":
-					addBalance(data.getElementAt(Integer.class, 2));
+					dayBudget(data);
 					break;
 
+				case "resetBalance":
+					resetBalance(userName);
+					break;
 				}
 
 			} catch (Exception e) {
@@ -86,26 +91,34 @@ public class Budget {
 			}
 		}
 
-		public void addBalance(int balance) {
-			Template temp = new Template(new ActualTemplateField(userName), new FormalTemplateField(Integer.class));
-
+		private void resetBalance(String userName) {
+			String feedback = "resetBalanceFeedback";
 			try {
-				Tuple t = get(temp, Self.SELF);
-				put(new Tuple(userName, (t.getElementAt(Integer.class, 1) + balance)), Self.SELF);
+				Template temp = new Template(new ActualTemplateField("user"), new ActualTemplateField(userName),
+						new FormalTemplateField(Integer.class));
+				Tuple t = getp(temp);
+				
+				if(t == null) {
+					feedback(feedback, false, userName + " has no balance set.");
+				} else {
+					put(new Tuple("user", userName, 0), Self.SELF);
+					feedback(feedback, true, userName + "'s balance has been reset.");
+				}
+				
 			} catch (Exception e) {
-				e.printStackTrace();
+
 			}
 		}
 
 		public void getBalance() {
-			String feedback = "getBalance";
+			String feedback = "getBalanceFeedback";
 			Template temp = new Template(new ActualTemplateField(userName), new FormalTemplateField(Integer.class));
 			int balance;
 			try {
 				if (queryp(temp) != null) {
 					Tuple t = query(temp, Self.SELF);
 					balance = t.getElementAt(Integer.class, 1);
-					feedback(feedback, true, "Balance for user: " + userName);
+					feedback(feedback, true, "Balance for user: " + userName + " - " + balance + "kr");
 				} else {
 					feedback(feedback, false, userName + " could not be found.");
 				}
@@ -113,12 +126,59 @@ public class Budget {
 
 			}
 		}
-		
+
 		private void feedback(String feedback, boolean result, String message) {
 			try {
 				put(new Tuple(feedback, new Tuple(userName, result, message)), Self.SELF);
 			} catch (Exception e) {
 				e.printStackTrace();
+			}
+		}
+
+		private void dayBudget(Tuple data) {
+			try {
+
+				Template temp = new Template(new ActualTemplateField(data.getElementAt(String.class, 0)),
+						new ActualTemplateField(data.getElementAt(String.class, 1)),
+						new FormalTemplateField(String.class), new FormalTemplateField(Integer.class),
+						new FormalTemplateField(ArrayList.class));
+				Tuple t = getp(temp);
+
+				if (t == null) {
+					put(data, Self.SELF);
+					int price = data.getElementAt(Integer.class, 3);
+					ArrayList<String> attendees = data.getElementAt(ArrayList.class, 4);
+
+					double perPrice = price / attendees.size();
+
+					for (String attendee : attendees) {
+						addBalance(attendee, perPrice);
+					}
+				} else {
+					int oldPrice = t.getElementAt(Integer.class, 3);
+
+				}
+
+			} catch (Exception e) {
+
+			}
+		}
+
+		private void addBalance(String attendee, double price) {
+
+			try {
+				Template temp = new Template(new ActualTemplateField("user"), new FormalTemplateField(String.class),
+						new FormalTemplateField(Double.class));
+				Tuple user = getp(temp);
+				if (user == null) {
+					put(new Tuple("user", attendee, price), Self.SELF);
+				} else {
+					double newPrice = price + user.getElementAt(Double.class, 2);
+					put(new Tuple("user", attendee, newPrice), Self.SELF);
+				}
+
+			} catch (Exception e) {
+
 			}
 		}
 
