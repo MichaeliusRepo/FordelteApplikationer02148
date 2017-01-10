@@ -204,7 +204,8 @@ public class Kitchen {
 				Tuple feedbackTuple = get(
 						new Template(new ActualTemplateField(feedbackCmd), new FormalTemplateField(Tuple.class)),
 						p);
-				return feedbackTuple;
+				Tuple feedbackReturnTuple  = feedbackTuple.getElementAt(Tuple.class,1);
+				return feedbackReturnTuple;
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
