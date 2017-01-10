@@ -86,10 +86,12 @@ public class Kitchen {
 				attendDay(data);
 				System.out.println("attendDay");
 				break;
+			case "unattend Day":
+				unattendDay(data);
+				break;
 			case "addChef":
 				addChef(data);
-				System.out.println("Adding chef...?");
-
+				System.out.println("addChef");
 				break;
 
 			case "setPrice":
@@ -109,7 +111,10 @@ public class Kitchen {
 			case "resetUserBalance":
 				resetUserBalance(data);
 				System.out.println("resetUserBalance");
-				
+				break;
+			case "lockDay":
+				lockDay(data);
+				break;
 //			case "changeChef":
 //				System.out.println("changeChef");
 			}
@@ -168,9 +173,27 @@ public class Kitchen {
 					p = new PointToPoint(target, Server.vp.getAddress());
 					put(new Tuple("attendDay", new Tuple(user, kitchenName, attendees)), p);
 					sendFeedback("attendDay", recieveFeedback(target, "attendDayFeedback"));
-					System.out.println("Jeg lagde det rigtigt");
 				}
 			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		private void unattendDay(Tuple data){
+			int day = data.getElementAt(Integer.class,2);
+			int month = data.getElementAt(Integer.class,3);
+			int year = data.getElementAt(Integer.class,4);
+			String target = "" + day + "" + month + "" + year;
+			
+			try{
+				if(checkDayExists(target)){
+					p = new PointToPoint(target, Server.vp.getAddress());
+					put(new Tuple("unattendDay", data),p);
+					sendFeedback("unattendDay", recieveFeedback(target, "unattendDayFeedback"));
+				}else{
+					sendFeedback("unattendDay", new Tuple(user, kitchenName, "Dagen findes ikke"));
+				}
+			}catch(Exception e){
 				e.printStackTrace();
 			}
 		}
@@ -241,6 +264,25 @@ public class Kitchen {
 				p = new PointToPoint("Budget"+kitchenName, Server.vp.getAddress());
 				put(new Tuple("resetUserBalance", data),p);
 				sendFeedback("resetUserBalance", recieveFeedback("Budget"+kitchenName, "resetUserFeedback"));
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		
+		private void lockDay(Tuple data){
+			int day = data.getElementAt(Integer.class,2);
+			int month = data.getElementAt(Integer.class,3);
+			int year = data.getElementAt(Integer.class,4);
+			String target = "" + day + "" + month + "" + year;
+			
+			try{
+				if(checkDayExists(target)){
+					p = new PointToPoint(target, Server.vp.getAddress());
+					put(new Tuple("lockDay",data),p);
+					sendFeedback("lockDay", recieveFeedback(target,"lockDayFeedback"));
+				}else{
+					sendFeedback("lockDay", new Tuple(user, kitchenName, false, "Dagen findes ikke"));
+				}
 			}catch(Exception e){
 				e.printStackTrace();
 			}
