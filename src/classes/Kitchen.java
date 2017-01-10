@@ -130,7 +130,7 @@ public class Kitchen {
 					
 
 				} else {
-					sendFeedback("addDay", false);
+					sendFeedback("addDay", new Tuple(user, kitchen, false, "Dagen findes allerede"));
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -143,9 +143,9 @@ public class Kitchen {
 
 			try {
 				if (!checkDayExits(target)) {
-					sendFeedback("removeDay",false);
+					sendFeedback("removeDay",new Tuple(user, kitchen, false, "Den valgte dag findes ikke"));
 				} else {
-					sendFeedback("removeDay",true);
+					sendFeedback("removeDay",new Tuple(user, kitchen, true, "Dagen er blevet slettet"));
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -163,7 +163,7 @@ public class Kitchen {
 			try {
 
 				if (checkDayExits(target)) {
-					sendFeedback("attendDay", false);
+					sendFeedback("attendDay", new Tuple(user, kitchen, "Den valgte dag findes ikke"));
 				} else {
 					p = new PointToPoint(target,Server.vp.getAddress());
 					put(new Tuple("attendDay", new Tuple(user,kitchen,attendees)),p);
@@ -174,24 +174,23 @@ public class Kitchen {
 			}
 		}
 		
-		private boolean recieveFeedback(String target, String feedback){
+		private Tuple recieveFeedback(String target, String feedbackCmd){
 			try {
 				p = new PointToPoint(target, Server.vp.getAddress());
-				Tuple feedbackTuple = get(new Template(new ActualTemplateField(feedback), new ActualTemplateField(user),
+				Tuple feedbackTuple = get(new Template(new ActualTemplateField(feedbackCmd), new ActualTemplateField(user),
 						new FormalTemplateField(Boolean.class), new FormalTemplateField(String.class)), p);
-				return feedbackTuple.getElementAt(Boolean.class,2);
+				return feedbackTuple;
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			
-			return false;
+			return null;
 		}
 		
-		private void sendFeedback(String cmd, boolean result){
+		private void sendFeedback(String cmd, Tuple result){
 			try{
 				p = new PointToPoint("Server", Server.vp.getAddress());
-				Tuple feedbackData = new Tuple(user, kitchen, result);
-				put(new Tuple(cmd + " Feedback", feedbackData), p);
+				put(new Tuple(cmd + " Feedback", result), p);
 			}catch(Exception e){
 				e.printStackTrace();
 			}
