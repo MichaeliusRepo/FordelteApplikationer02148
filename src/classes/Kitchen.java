@@ -15,11 +15,13 @@ import org.cmg.resp.topology.Self;
 public class Kitchen {
 	protected String kitchenName;
 	protected Node kitchenSpace;
+	protected Budget budget; 
 
 	public Kitchen(String kitchenName) {
 		this.kitchenName = kitchenName;
 
 		kitchenSpace = new Node(kitchenName, new TupleSpace());
+		budget =  new Budget(kitchenName);
 		kitchenSpace.addPort(Server.vp);
 		// Agent kitchenAgent = new KitchenAgent(kitchenName);
 		Agent monitor = new KitchenMonitor("kitchenMonitor");
