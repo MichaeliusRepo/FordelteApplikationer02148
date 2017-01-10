@@ -89,8 +89,7 @@ public class Kitchen {
 				break;
 
 			case "setPrice":
-				// TODO - lav metode til at fortælle hvor meget maden kostede på
-				// en dag
+				setPrice(data);
 				break;
 
 			case "addBalance":
@@ -160,6 +159,10 @@ public class Kitchen {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		}
+		
+		private void setPrice(Tuple data){
+			
 		}
 
 		private Tuple recieveFeedback(String target, String feedbackCmd) {
