@@ -45,11 +45,13 @@ public class Day {
 			try {
 				put(new Tuple("dayCreated"), Self.SELF);
 				while (true) {
-					Tuple t = get(cmdTemp, Self.SELF);
-					Tuple data = t.getElementAt(Tuple.class, 1);
-					String cmd = t.getElementAt(String.class, 0);
-
-					exec(new DayAgent(data, cmd));
+					Tuple t = getp(cmdTemp);
+					
+					if (t != null) {
+						Tuple data = t.getElementAt(Tuple.class, 1);
+						String cmd = t.getElementAt(String.class, 0);
+						exec(new DayAgent(data, cmd));
+					}
 				}
 
 			} catch (Exception e) {
@@ -101,7 +103,7 @@ public class Day {
 
 					}
 				} else {
-					feedback(cmd + "Feedback", false, "Day " + dayName + " is locked.");
+				
 				}
 
 				if (queryp(new Template(new ActualTemplateField("locked"))) != null) {
@@ -112,7 +114,7 @@ public class Day {
 						break;
 					}
 				} else {
-					feedback(cmd + "Feedback", false, "Day " + dayName + " must be locked.");
+					
 				}
 
 			} catch (Exception e) {
