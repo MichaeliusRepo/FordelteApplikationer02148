@@ -98,16 +98,30 @@ public class Budget {
 		}
 
 		public void getBalance() {
+			String feedback = "getBalance";
 			Template temp = new Template(new ActualTemplateField(user), new FormalTemplateField(Integer.class));
 			int balance;
 			try {
-				Tuple t = query(temp, Self.SELF);
-				balance = t.getElementAt(Integer.class, 1);
+				if (queryp(temp) != null) {
+					Tuple t = query(temp, Self.SELF);
+					balance = t.getElementAt(Integer.class, 1);
+					feedback(feedback, true, "Balance for user: " + user);
+				} else {
+					feedback(feedback, false, user + " could not be found.");
+				}
 			} catch (Exception e) {
 
 			}
 		}
 		
+		private void feedback(String feedback, boolean result, String message) {
+			try {
+				put(new Tuple(feedback, user, result, message), Self.SELF);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
 
 }
