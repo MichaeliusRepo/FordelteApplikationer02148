@@ -73,13 +73,16 @@ public class Kitchen {
 
 			case "addDay":
 				addDay(data);
+				System.out.println("addDAy");
 				break;
 
 			case "removeDay":
 				removeDay(data);
+				System.out.println("removeDAy");
 				break;
 			case "attendDay":
 				attendDay(data);
+				System.out.println("attendDay");
 				break;
 			case "addChef":
 
@@ -89,15 +92,16 @@ public class Kitchen {
 
 			case "setPrice":
 				setPrice(data);
-
+				System.out.println("setPrice");
 				break;
 
 			case "addBalance":
-
+				addBalance(data);
+				System.out.println("addBalance");
 				break;
 
 			case "resetBalance":
-
+				System.out.println("resetBalance");
 				break;
 			}
 		}
@@ -114,7 +118,9 @@ public class Kitchen {
 
 					put(new Tuple("" + day + "" + month + "" + year, new Day(day, month, year)), Self.SELF);
 					p = new PointToPoint("" + day + "" + month + "" + year, Server.vp.getAddress());
-					sendFeedback("addDay", recieveFeedback(target, "dayCreated"));
+					get(new Template(new ActualTemplateField("dayCreated")),p);
+					
+					sendFeedback("addDay", new Tuple(user, kitchen, true, "Dagen blev lavet"));
 					
 				} else
 					sendFeedback("addDay", new Tuple(user, kitchen, false, "Dagen findes allerede"));
@@ -179,7 +185,11 @@ public class Kitchen {
 			}
 			
 		}
-
+		
+		private void addBalance(Tuple data){
+			
+		}
+		
 		private Tuple recieveFeedback(String target, String feedbackCmd) {
 			try {
 				p = new PointToPoint(target, Server.vp.getAddress());
@@ -199,6 +209,7 @@ public class Kitchen {
 			try {
 				p = new PointToPoint("Server", Server.vp.getAddress());
 				put(new Tuple(cmd + " Feedback", result), p);
+				System.out.println("Kitchen sent feedback");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
