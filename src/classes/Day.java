@@ -101,7 +101,7 @@ public class Day {
 
 					}
 				} else {
-
+					feedback(cmd + "Feedback", false, "Day " + dayName + " is locked.");
 				}
 
 				if (queryp(new Template(new ActualTemplateField("locked"))) != null) {
@@ -112,7 +112,7 @@ public class Day {
 						break;
 					}
 				} else {
-
+					feedback(cmd + "Feedback", false, "Day " + dayName + " must be locked.");
 				}
 
 			} catch (Exception e) {
@@ -186,8 +186,10 @@ public class Day {
 		}
 
 		private void lockDay() {
+			String feedback = "lockDayFeedback";
 			try {
 				put(new Tuple("locked"), Self.SELF);
+				feedback(feedback, true, dayName + " was locked.");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
