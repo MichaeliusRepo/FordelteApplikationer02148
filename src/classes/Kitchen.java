@@ -23,7 +23,6 @@ public class Kitchen {
 		kitchenSpace = new Node(kitchenName, new TupleSpace());
 		budget =  new Budget(kitchenName);
 		kitchenSpace.addPort(Server.vp);
-		// Agent kitchenAgent = new KitchenAgent(kitchenName);
 		Agent monitor = new KitchenMonitor("kitchenMonitor");
 		kitchenSpace.addAgent(monitor);
 		kitchenSpace.start();
@@ -88,7 +87,7 @@ public class Kitchen {
 				System.out.println("attendDay");
 				break;
 			case "addChef":
-
+				addChef(data);
 				System.out.println("Adding chef...?");
 
 				break;
@@ -110,6 +109,9 @@ public class Kitchen {
 			case "resetUserBalance":
 				resetUserBalance(data);
 				System.out.println("resetUserBalance");
+				
+//			case "changeChef":
+//				System.out.println("changeChef");
 			}
 		}
 
@@ -169,6 +171,25 @@ public class Kitchen {
 					System.out.println("Jeg lagde det rigtigt");
 				}
 			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		private void addChef(Tuple data){
+			int day = data.getElementAt(Integer.class,2);
+			int month = data.getElementAt(Integer.class,3);
+			int year = data.getElementAt(Integer.class,4);
+			String target = "" + day + "" + month + "" + year;
+			
+			try{
+				if(checkDayExists(target)){
+					p = new PointToPoint(target, Server.vp.getAddress());
+					put(new Tuple("addChef", data),p);
+					sendFeedback("addChef", recieveFeedback(target, "addChefFeedback"));
+				}else{
+					sendFeedback("addChef", new Tuple(user,kitchenName, false, "Dagen findes ikke"));
+				}
+			}catch(Exception e){
 				e.printStackTrace();
 			}
 		}
