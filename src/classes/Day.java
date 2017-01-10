@@ -58,7 +58,7 @@ public class Day {
 
 	public class DayAgent extends Agent {
 
-		String cmd, user, chef;
+		String cmd, userName, chef, kitchenName;
 		int attendees, price;
 		Tuple data;
 
@@ -66,7 +66,8 @@ public class Day {
 			super(data.getElementAt(String.class, 0));
 			this.data = data;
 			this.cmd = cmd;
-			this.user = data.getElementAt(String.class, 0);
+			this.kitchenName = data.getElementAt(String.class, 1);
+			this.userName = data.getElementAt(String.class, 0);
 
 		}
 
@@ -78,11 +79,11 @@ public class Day {
 
 					case "attendDay":
 						this.attendees = data.getElementAt(Integer.class, 2);
-						attendDay(user, attendees);
+						attendDay(userName, attendees);
 						break;
 
 					case "unattendDay":
-						unattendDay(user);
+						unattendDay(userName);
 						break;
 						
 					case "lockDay":
@@ -90,7 +91,7 @@ public class Day {
 						break;
 
 					case "addChef":
-						addChef(user);
+						addChef(userName);
 						break;
 
 					}
@@ -114,13 +115,13 @@ public class Day {
 			}
 		}
 
-		private void unattendDay(String user) {
+		private void unattendDay(String userName) {
 			String feedback = "unattendFeedback";
 			try {
-				if (getp(new Template(new ActualTemplateField(user), new FormalTemplateField(Integer.class))) == null) {
-					feedback(feedback, false, user + " isn't set to attend that day.");
+				if (getp(new Template(new ActualTemplateField(userName), new FormalTemplateField(Integer.class))) == null) {
+					feedback(feedback, false, userName + " isn't set to attend that day.");
 				} else {
-					feedback(feedback, true, user + " is no longer attending on: " + day + "/" + month + "/" + year);
+					feedback(feedback, true, userName + " is no longer attending on: " + day + "/" + month + "/" + year);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -148,7 +149,7 @@ public class Day {
 
 		}
 
-		private void addChef(String user) {
+		private void addChef(String userName) {
 			try {
 				String feedback = "addChefFeedback";
 				LinkedList<Tuple> chefs = queryAll(
@@ -156,13 +157,13 @@ public class Day {
 
 				if (chefs.size() < 2) {
 
-					if (queryp(new Template(new ActualTemplateField("chef"), new ActualTemplateField(user))) == null) {
+					if (queryp(new Template(new ActualTemplateField("chef"), new ActualTemplateField(userName))) == null) {
 
-						put(new Tuple("chef", user), Self.SELF);
-						feedback(feedback, true, user + " was added as a chef.");
+						put(new Tuple("chef", userName), Self.SELF);
+						feedback(feedback, true, userName + " was added as a chef.");
 
 					} else {
-						feedback(feedback, false, user + " is already a chef.");
+						feedback(feedback, false, userName + " is already a chef.");
 					}
 
 				} else {
@@ -181,12 +182,12 @@ public class Day {
 			}
 		}
 
-		private void attendDay(String user, int attendees) {
+		private void attendDay(String userName, int attendees) {
 			String feedback = "attendDayFeedback";
 			try {
-				getp(new Template(new ActualTemplateField(user), new FormalTemplateField(Integer.class)));
-				put(new Tuple(user, attendees), Self.SELF);
-				feedback(feedback, true, "User added.");
+				getp(new Template(new ActualTemplateField(userName), new FormalTemplateField(Integer.class)));
+				put(new Tuple(userName, attendees), Self.SELF);
+				feedback(feedback, true, userName + " added with " + attendees + " attendees.");
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -195,7 +196,7 @@ public class Day {
 
 		private void feedback(String feedback, boolean result, String message) {
 			try {
-				put(new Tuple(feedback, new Tuple(user, result, message)), Self.SELF);
+				put(new Tuple(feedback, new Tuple(userName, kitchenName, result, message)), Self.SELF);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
