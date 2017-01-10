@@ -21,6 +21,8 @@ public class User {
 	protected String kitchenName;
 	protected PointToPoint p = new PointToPoint("Server", Server.vp.getAddress());
 	protected String command;
+	private double price;
+	private int guest;
 
 	public User(String userName, String kitchenName) {
 		this.userName = userName;
@@ -30,9 +32,15 @@ public class User {
 		userSpace.start();
 	}
 
-	public void command(String command, int day, int month, int year) {
+	public void command(String command, int day, int month, int year, double extra) {
 		this.command = command;
 		dayFormat(day, month, year);
+		if(command.equals("setPrice")){
+			price = extra;
+		} else if(command.equals("attendDay")){
+			guest = Integer.parseInt(""+extra);
+			
+		}
 	}
 
 	public void dayFormat(int day, int month, int year) {

@@ -89,7 +89,12 @@ public class Kitchen {
 				break;
 
 			case "setPrice":
+<<<<<<< HEAD
 				setPrice(data);
+=======
+				// TODO - lav metode til at fortï¿½lle hvor meget maden kostede pï¿½
+				// en dag
+>>>>>>> 49d5bb3fb4556429cdd768dcc9fd4d98adfac105
 				break;
 
 			case "addBalance":
@@ -103,7 +108,7 @@ public class Kitchen {
 			}
 		}
 
-		// Metode til at tilføje ny dag
+		// Metode til at tilfï¿½je ny dag
 		private void addDay(Tuple data) {
 			int day = data.getElementAt(Integer.class, 2);
 			int month = data.getElementAt(Integer.class, 3);
