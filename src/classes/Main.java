@@ -48,39 +48,42 @@ public class Main {
 				
 				switch (dayCmd) {
 				case "Add Day":
-					System.out.println("adding day");
-					user.command("addDay",day, month, year);
+					user.command("addDay",day, month, year, 0);
 					break;
 
 				case "Add Chef":
-					user.command("addChef",day, month, year);
+					user.command("addChef",day, month, year, 0);
 					break;
 
 				case "Attend Day":
-					user.command("attendDay",day, month, year);
+					System.out.print("Please enter how many guest you want to bring: (e.g. 0) ");
+					double guest = Double.parseDouble(in.nextLine());
+					user.command("attendDay",day, month, year, guest);
 					break;
 
 				case "Unattend Day":
-					user.command("unattendDay",day, month, year);
+					user.command("unattendDay",day, month, year, 0);
 					break;
 
 				case "Lock Day":
-					user.command("lockDay",day, month, year);
+					user.command("lockDay",day, month, year, 0);
 					break;
 
 				case "Get Chef":
-					user.command("getChef",day, month, year);
+					user.command("getChef",day, month, year, 0);
 					break;
 
 				case "Set Price":
-					user.command("setPrice",day, month, year);
+					System.out.print("Please enter the total price: (e.g. 200) ");
+					double price = Double.parseDouble(in.nextLine());
+					user.command("setPrice",day, month, year, price);
 					break;
 
 				case "Get Price":
-					user.command("getPrice",day, month, year);
+					user.command("getPrice",day, month, year, 0);
 					break;
 				case "Get Attendees":
-					user.command("getAttendees",day, month, year);
+					user.command("getAttendees",day, month, year, 0);
 					break;
 				}
 				break;
