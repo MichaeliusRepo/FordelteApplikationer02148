@@ -44,6 +44,7 @@ public class Main {
 						+ "'Add Day', 'Add Chef', 'Attend Day', 'Unattend Day', 'Lock Day', 'Get Chef', 'Set Price', 'Get Price', 'Get Attendees': ");
 				String dayCmd = in.nextLine();
 				System.out.println("you entered: " + dayCmd);
+				
 				switch (dayCmd) {
 				case "Add Day":
 					System.out.println("adding day");
