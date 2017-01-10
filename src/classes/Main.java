@@ -42,7 +42,7 @@ public class Main {
 				System.out.print("Enter year: (e.g. 2017) ");
 				year = Integer.parseInt(in.nextLine());
 				System.out.println("Please enter either \n "
-						+ "'Add Day', 'Add Chef', 'Attend Day', 'Unattend Day', 'Lock Day', 'Get Chef', 'Set Price', 'Get Price', 'Get Attendees': ");
+						+ "'Add Day', 'Add Chef', 'Attend Day', 'Unattend Day', 'Remove Day', 'Lock Day', 'Get Chef', 'Set Price', 'Get Price', 'Get Attendees': ");
 				String dayCmd = in.nextLine();
 				System.out.println("you entered: " + dayCmd);
 				
@@ -67,6 +67,10 @@ public class Main {
 
 				case "Lock Day":
 					user.command("lockDay",day, month, year, 0);
+					break;
+					
+				case "Remove Day":
+					user.command("removeDay",day, month, year, 0);
 					break;
 
 				case "Get Chef":
