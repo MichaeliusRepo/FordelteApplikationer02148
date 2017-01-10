@@ -93,6 +93,8 @@ public class Day {
 						break;
 
 					}
+				} else {
+					
 				}
 
 				if (queryp(new Template(new ActualTemplateField("locked"))) != null) {
@@ -102,7 +104,10 @@ public class Day {
 						setPrice(price);
 						break;
 					}
+				} else {
+					
 				}
+				
 			} catch (Exception e) {
 
 			}
