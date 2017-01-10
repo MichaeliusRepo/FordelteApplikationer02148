@@ -208,9 +208,9 @@ public class Day {
 					put(new Tuple("attendee", userName, attendees), Self.SELF);
 				} else {
 					put(new Tuple("attendee", userName, attendees), Self.SELF);
-					totalAttendees = -t.getElementAt(Integer.class, 2);
+					totalAttendees -= t.getElementAt(Integer.class, 2);
 				}
-				totalAttendees = +attendees;
+				totalAttendees += attendees;
 				feedback(feedback, true, userName + " added with " + attendees + " attendees.");
 
 			} catch (Exception e) {
