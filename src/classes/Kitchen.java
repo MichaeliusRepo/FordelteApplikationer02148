@@ -101,7 +101,8 @@ public class Kitchen {
 				System.out.println("addBalance");
 				break;
 
-			case "resetBalance":
+			case "getBalance":
+				getBalance(data);
 				System.out.println("resetBalance");
 				break;
 			}
@@ -189,11 +190,22 @@ public class Kitchen {
 		}
 		
 		private void addBalance(Tuple data){
-			p = new PointToPoint("Budget"+kitchenName, Server.vp.getAddress());
+			
 			try {
+				p = new PointToPoint("Budget"+kitchenName, Server.vp.getAddress());
 				put(new Tuple("addBalance", data),p);
-				sendFeedback("addBalance", recieveFeedback("Budget"+kitchenName,"addBalanceFeedback"));
 			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		private void getBalance(Tuple data){
+			
+			try{
+				p = new PointToPoint("Budget"+kitchenName, Server.vp.getAddress());
+				put(new Tuple("getBalance",data),p);
+				sendFeedback("getBalance", recieveFeedback("Budget"+kitchenName,"getBalanceFeedback"));
+			}catch(Exception e){
 				e.printStackTrace();
 			}
 		}
