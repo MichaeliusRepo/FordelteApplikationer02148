@@ -24,6 +24,7 @@ public class Main {
 				String kitchenName = in.nextLine();
 				dinnerClub.newUser(userName, kitchenName);
 			}
+			
 			user = dinnerClub.getUser(userName);
 		}
 

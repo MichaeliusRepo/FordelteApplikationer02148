@@ -14,6 +14,7 @@ import org.cmg.resp.knowledge.FormalTemplateField;
 import org.cmg.resp.knowledge.Template;
 
 @SuppressWarnings("unused")
+
 public class User {
 	protected String userName;
 	protected Node userSpace;
