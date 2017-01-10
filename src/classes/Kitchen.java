@@ -102,7 +102,6 @@ public class Kitchen {
 			}
 		}
 
-		// Metode til at tilf�je ny dag
 		private void addDay(Tuple data) {
 			int day = data.getElementAt(Integer.class, 2);
 			int month = data.getElementAt(Integer.class, 3);
@@ -148,7 +147,7 @@ public class Kitchen {
 			String target = "" + day + "" + month + "" + year;
 
 			try {
-				if (checkDayExists(target))
+				if (!checkDayExists(target))
 					sendFeedback("attendDay", new Tuple(user, kitchen, "Den valgte dag findes ikke"));
 				else {
 					p = new PointToPoint(target, Server.vp.getAddress());
@@ -161,6 +160,23 @@ public class Kitchen {
 		}
 		
 		private void setPrice(Tuple data){
+			int day = data.getElementAt(Integer.class,2);
+			int month = data.getElementAt(Integer.class,3);
+			int year = data.getElementAt(Integer.class,4);
+			int price = data.getElementAt(Integer.class, 5);
+			String target = "" + day + "" + month + "" + year;
+			
+			try{
+				if(checkDayExists(target)){
+					p = new PointToPoint(target, Server.vp.getAddress());
+					put(new Tuple("setPrice", new Tuple(user, kitchen, price)),p);
+					sendFeedback("setPrice", recieveFeedback(target, "setPriceFeedback"));
+				}else{
+					sendFeedback("setPrice", new Tuple(user, kitchen, false, "Dagen findes ikke"));
+				}
+			}catch(Exception e){
+				e.printStackTrace();
+			}
 			
 		}
 
