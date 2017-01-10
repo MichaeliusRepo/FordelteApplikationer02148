@@ -1,6 +1,8 @@
 package classes;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.ListIterator;
 
 import org.cmg.resp.behaviour.Agent;
 import org.cmg.resp.comp.Node;
@@ -12,14 +14,16 @@ import org.cmg.resp.knowledge.ts.TupleSpace;
 import org.cmg.resp.topology.Self;
 
 public class Day {
-	
+
 	int day, month, year;
+	String dayName;
 
 	public Day(int day, int month, int year) {
 		this.day = day;
 		this.month = month;
 		this.year = year;
-		Node daySpace = new Node("" + day + "" + month + "" + year, new TupleSpace());
+		this.dayName = "" + day + "" + month + "" + year;
+		Node daySpace = new Node(dayName, new TupleSpace());
 		Agent dayAgent = new DayMonitor("day");
 		daySpace.addPort(Server.vp);
 		daySpace.addAgent(dayAgent);
@@ -58,9 +62,10 @@ public class Day {
 
 	public class DayAgent extends Agent {
 
-		String cmd, userName, chef, kitchenName;
-		int attendees, price;
+		String cmd, userName, chef, buyer, kitchenName;
+		int attendees, price, totalAttendees;
 		Tuple data;
+		ArrayList<String> attendeesList;
 
 		public DayAgent(Tuple data, String cmd) {
 			super(data.getElementAt(String.class, 0));
@@ -85,7 +90,7 @@ public class Day {
 					case "unattendDay":
 						unattendDay(userName);
 						break;
-						
+
 					case "lockDay":
 						lockDay();
 						break;
@@ -96,7 +101,7 @@ public class Day {
 
 					}
 				} else {
-					
+
 				}
 
 				if (queryp(new Template(new ActualTemplateField("locked"))) != null) {
@@ -107,9 +112,9 @@ public class Day {
 						break;
 					}
 				} else {
-					
+
 				}
-				
+
 			} catch (Exception e) {
 
 			}
@@ -118,10 +123,12 @@ public class Day {
 		private void unattendDay(String userName) {
 			String feedback = "unattendFeedback";
 			try {
-				if (getp(new Template(new ActualTemplateField(userName), new FormalTemplateField(Integer.class))) == null) {
+				if (getp(new Template(new ActualTemplateField(userName),
+						new FormalTemplateField(Integer.class))) == null) {
 					feedback(feedback, false, userName + " isn't set to attend that day.");
 				} else {
-					feedback(feedback, true, userName + " is no longer attending on: " + day + "/" + month + "/" + year);
+					feedback(feedback, true,
+							userName + " is no longer attending on: " + day + "/" + month + "/" + year);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -136,12 +143,15 @@ public class Day {
 
 				if (t == null) {
 					put(new Tuple("price", price), Self.SELF);
+					this.buyer = userName;
 					feedback(feedback, true, "The price was set to " + price);
 				} else {
 					put(new Tuple("price", price), Self.SELF);
+					this.buyer = userName;
 					feedback(feedback, false, "The price was already set to " + t.getElementAt(Integer.class, 2)
 							+ ", but has been replaced.");
 				}
+				addBalance();
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -157,7 +167,8 @@ public class Day {
 
 				if (chefs.size() < 2) {
 
-					if (queryp(new Template(new ActualTemplateField("chef"), new ActualTemplateField(userName))) == null) {
+					if (queryp(
+							new Template(new ActualTemplateField("chef"), new ActualTemplateField(userName))) == null) {
 
 						put(new Tuple("chef", userName), Self.SELF);
 						feedback(feedback, true, userName + " was added as a chef.");
@@ -185,8 +196,17 @@ public class Day {
 		private void attendDay(String userName, int attendees) {
 			String feedback = "attendDayFeedback";
 			try {
-				getp(new Template(new ActualTemplateField(userName), new FormalTemplateField(Integer.class)));
-				put(new Tuple(userName, attendees), Self.SELF);
+				Template temp = new Template(new ActualTemplateField("attendee"), new ActualTemplateField(userName),
+						new FormalTemplateField(Integer.class));
+				Tuple t = getp(temp);
+
+				if (t == null) {
+					put(new Tuple("attendee", userName, attendees), Self.SELF);
+				} else {
+					put(new Tuple("attendee", userName, attendees), Self.SELF);
+					totalAttendees = -t.getElementAt(Integer.class, 2);
+				}
+				totalAttendees = +attendees;
 				feedback(feedback, true, userName + " added with " + attendees + " attendees.");
 
 			} catch (Exception e) {
@@ -200,6 +220,32 @@ public class Day {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		}
+
+		private void addBalance() {
+			try {
+
+				attendeesList = setAttendees();
+				put(new Tuple(("addBalance"), new Tuple(dayName, kitchenName, buyer, price, attendeesList)), Self.SELF);
+
+			} catch (Exception e) {
+
+			}
+		}
+
+		private ArrayList<String> setAttendees() {
+			LinkedList<Tuple> attendeesTupleList = queryAll(new Template(new ActualTemplateField("attendee"),
+					new FormalTemplateField(String.class), new FormalTemplateField(Integer.class)));
+			ArrayList<String> list = new ArrayList<>();
+
+			ListIterator<Tuple> iterator = attendeesTupleList.listIterator();
+			while (attendeesTupleList.listIterator().hasNext()) {
+				Tuple t = iterator.next();
+				for (int j = 0; j <= t.getElementAt(Integer.class, 2); j++) {
+					list.add(t.getElementAt(String.class, 1));
+				}
+			}
+			return list;
 		}
 	}
 }

@@ -6,6 +6,9 @@ public class Main {
 
 	public static void main(String[] args) {
 
+		System.out.println("" + 2 + 3 + 4);
+		System.out.println("" + 2 + "" + 3 + "" + 4);
+		
 		Server dinnerClub = new Server();
 		User user = null;
 		Scanner in = new Scanner(System.in);
