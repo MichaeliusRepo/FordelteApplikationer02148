@@ -220,7 +220,7 @@ public class Day {
 
 		private void feedback(String feedback, boolean result, String message) {
 			try {
-				put(new Tuple(feedback, new Tuple(userName, kitchenName, result, message)), Self.SELF);
+				put(new Tuple(new Tuple(userName, kitchenName, result, message), feedback), Self.SELF);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
