@@ -293,7 +293,7 @@ public class Kitchen {
 			try {
 				dayPointer = new PointToPoint(target, Server.vp.getAddress());
 				Tuple feedbackTuple = get(
-						new Template(new FormalTemplateField(Tuple.class), new ActualTemplateField(Tuple.class)),
+						new Template(new FormalTemplateField(Tuple.class), new ActualTemplateField(feedbackCmd)),
 						dayPointer);
 				Tuple feedbackReturnTuple  = feedbackTuple.getElementAt(Tuple.class,0);
 				return feedbackReturnTuple;
