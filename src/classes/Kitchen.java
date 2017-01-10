@@ -84,26 +84,20 @@ public class Kitchen {
 			case "addChef":
 
 				System.out.println("Adding chef...?");
-				// TODO - lav en metode til at tilf�je en chef(kan evt virke
-				// som change chef)
+
 				break;
 
 			case "setPrice":
-<<<<<<< HEAD
 				setPrice(data);
-=======
-				// TODO - lav metode til at fort�lle hvor meget maden kostede p�
-				// en dag
->>>>>>> 49d5bb3fb4556429cdd768dcc9fd4d98adfac105
+
 				break;
 
 			case "addBalance":
-				// TODO - tager prisen for maden og l�gger det over i budget
+
 				break;
 
 			case "resetBalance":
-				// TODO - Metode der bruges til at nulstille balance p� alle
-				// brugere n�r der skal betales
+
 				break;
 			}
 		}
