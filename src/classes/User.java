@@ -39,12 +39,26 @@ public class User {
 		
 	}
 
+	public void command(String command, String targetUser){
+		this.command = command;
+		Tuple t = new Tuple(command, new Tuple(userName, kitchenName, targetUser));
+		Agent userAgent = new UserAgent(command, t);
+		userSpace.addAgent(userAgent);
+	}
+	
+	public void command(String command){
+		this.command = command;
+		Tuple t = new Tuple(command, new Tuple(userName, kitchenName));
+		Agent userAgent = new UserAgent(command, t);
+		userSpace.addAgent(userAgent);
+	}
+	
 	public void dayFormat(int day, int month, int year) {
 		Tuple t = new Tuple(command, new Tuple(userName, kitchenName, day, month, year, extra));
-		Agent addDay = new UserAgent(command, t);
-		userSpace.addAgent(addDay);
+		Agent userAgent = new UserAgent(command, t);
+		userSpace.addAgent(userAgent);
 	}
-
+	
 	public class UserAgent extends Agent {
 
 		Tuple t;
