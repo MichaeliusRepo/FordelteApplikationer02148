@@ -9,13 +9,13 @@ public class Main {
 		Server dinnerClub = new Server();
 		User user = null;
 		Scanner in = new Scanner(System.in);
-		int day,month,year;
+		int day, month, year;
 
 		while (user == null) {
 			System.out.print("Please enter user name: (write 'new user' to create new user): ");
 			String userName = in.nextLine();
-
 			System.out.println("You entered: " + userName);
+
 			if (userName.equals("new user")) {
 				System.out.print("Please enter a new user name: ");
 				userName = in.nextLine();
@@ -27,8 +27,7 @@ public class Main {
 			user = dinnerClub.getUser(userName);
 		}
 
-		for (int i = 0; i < 10; i++)
-		{
+		for (int i = 0; i < 10; i++) {
 			System.out.println("Please enter 'day' if you want to add/edit a day: ");
 			String cmd = in.nextLine();
 
@@ -44,46 +43,46 @@ public class Main {
 				System.out.println("Please enter either \n "
 						+ "'Add Day', 'Add Chef', 'Attend Day', 'Unattend Day', 'Lock Day', 'Get Chef', 'Set Price', 'Get Price', 'Get Attendees': ");
 				String dayCmd = in.nextLine();
-				System.out.println("you entered: "+ dayCmd);
-				switch(dayCmd){
+				System.out.println("you entered: " + dayCmd);
+				switch (dayCmd) {
 				case "Add Day":
 					System.out.println("adding day");
-					user.addDay(day, month, year);
+					user.command("addDay",day, month, year);
 					break;
-					
+
 				case "Add Chef":
-					user.addChef(day, month, year);
+					user.command("addChef",day, month, year);
 					break;
 
 				case "Attend Day":
-					user.attendDay(day, month, year);
+					user.command("attendDay",day, month, year);
 					break;
-					
+
 				case "Unattend Day":
-					user.unattendDay(day, month, year);
+					user.command("unattendDay",day, month, year);
 					break;
-					
+
 				case "Lock Day":
-					user.lockDay(day, month, year);
-					break;	
-				
+					user.command("lockDay",day, month, year);
+					break;
+
 				case "Get Chef":
-					user.getChef(day, month, year);
+					user.command("getChef",day, month, year);
 					break;
-					
+
 				case "Set Price":
-					user.setPrice(day, month, year);
+					user.command("setPrice",day, month, year);
 					break;
-					
+
 				case "Get Price":
-					user.getPrice(day, month, year);
+					user.command("getPrice",day, month, year);
 					break;
 				case "Get Attendees":
-					user.getAttendees(day, month, year);
+					user.command("getAttendees",day, month, year);
 					break;
 				}
 				break;
-			
+
 			case "Get my budget":
 				break;
 

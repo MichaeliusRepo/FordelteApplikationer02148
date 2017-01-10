@@ -29,48 +29,8 @@ public class User {
 		userSpace.start();
 	}
 
-	public void addDay(int day, int month, int year) {
-		command = "addDay";
-		dayFormat(day, month, year);
-	}
-
-	public void addChef(int day, int month, int year) {
-		command = "addChef";
-		dayFormat(day, month, year);
-	}
-
-	public void attendDay(int day, int month, int year) {
-		command = "attendDay";
-		dayFormat(day, month, year);
-	}
-
-	public void unattendDay(int day, int month, int year) {
-		command = "unattendDay";
-		dayFormat(day, month, year);
-	}
-
-	public void lockDay(int day, int month, int year) {
-		command = "lockDay";
-		dayFormat(day, month, year);
-	}
-
-	public void getChef(int day, int month, int year) {
-		command = "getChef";
-		dayFormat(day, month, year);
-	}
-
-	public void setPrice(int day, int month, int year) {
-		command = "setPrice";
-		dayFormat(day, month, year);
-	}
-
-	public void getPrice(int day, int month, int year) {
-		command = "getPrice";
-		dayFormat(day, month, year);
-	}
-
-	public void getAttendees(int day, int month, int year) {
-		command = "getAttendees";
+	public void command(String command, int day, int month, int year) {
+		this.command = command;
 		dayFormat(day, month, year);
 	}
 
@@ -92,19 +52,7 @@ public class User {
 		@Override
 		protected void doRun() {
 			try {
-
-				switch (command) {
-				case "addDay":
-				case "addChef":
-				case "attendDay":
-				case "unattendDay":
-				case "lockDay": 
-				case "getChef":
-				case "setPrice":
-				case "getPrice":
-				case "getAttendees":
 				
-				{
 					Tuple dataTuple = t.getElementAt(Tuple.class, 1);
 					Template feedback = new Template(new ActualTemplateField(userName + " " + command + " Feedback"),
 							new FormalTemplateField(Tuple.class));
@@ -122,14 +70,7 @@ public class User {
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-					break;
-				}
-
-				case "doSomethingElse":
-					// do something else
-					break;
-
-				}
+	
 
 			} catch (Exception e) {
 				e.printStackTrace();
