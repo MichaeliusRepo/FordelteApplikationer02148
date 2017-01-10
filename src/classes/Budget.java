@@ -14,8 +14,8 @@ import org.cmg.resp.topology.Self;
 public class Budget {
 	protected static Node budgetSpace;
 
-	public Budget() {
-		budgetSpace = new Node("Budget", new TupleSpace());
+	public Budget(String kitchenName) {
+		budgetSpace = new Node("Budget" + kitchenName, new TupleSpace());
 		budgetSpace.addPort(Server.vp);
 		budgetSpace.addAgent(new BudgetMonitor("Budget Agent"));
 		budgetSpace.start();
