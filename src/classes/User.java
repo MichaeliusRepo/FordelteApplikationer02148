@@ -38,7 +38,7 @@ public class User {
 			
 		
 	}
-
+/*
 	public void command(String command, String targetUser){
 		this.command = command;
 		Tuple t = new Tuple(command, new Tuple(userName, kitchenName, targetUser));
@@ -52,7 +52,7 @@ public class User {
 		Agent userAgent = new UserAgent(command, t);
 		userSpace.addAgent(userAgent);
 	}
-	
+	*/
 	public void dayFormat(int day, int month, int year) {
 		Tuple t = new Tuple(command, new Tuple(userName, kitchenName, day, month, year, extra));
 		Agent userAgent = new UserAgent(command, t);

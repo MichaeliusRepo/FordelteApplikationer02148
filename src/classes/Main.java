@@ -5,10 +5,6 @@ import java.util.Scanner;
 public class Main {
 
 	public static void main(String[] args) {
-
-		System.out.println("" + 2 + 3 + 4);
-		System.out.println("" + 2 + "" + 3 + "" + 4);
-		
 		Server dinnerClub = new Server();
 		User user = null;
 		Scanner in = new Scanner(System.in);
@@ -32,7 +28,8 @@ public class Main {
 		}
 
 		for (int i = 0; i < 10; i++) {
-			System.out.println("Please enter 'day' if you want to add/edit a day: ");
+			System.out.println("Please enter 'day' if you want to add/edit a day\n"
+					+ "or 'Get Balance'/'Reset Balance': ");
 			String cmd = in.nextLine();
 
 			switch (cmd) {
@@ -91,10 +88,12 @@ public class Main {
 				}
 				break;
 
-			case "Get my budget":
+			case "Reset Balance":
+				user.command("resetUserBalance", 0, 0, 0, 0);
 				break;
 
-			case "something":
+			case "Get Balance":
+				user.command("getBalance", 0, 0, 0, 0);
 				break;
 			}
 
