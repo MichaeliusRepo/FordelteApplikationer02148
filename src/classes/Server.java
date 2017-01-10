@@ -86,19 +86,7 @@ public class Server {
 					tupleData = t.getElementAt(Tuple.class, 1);
 					String command = t.getElementAt(String.class, 0);
 
-					switch (command) {
-					case "addDay":
-					case "addChef":
-					case "attendDay":
-					case "unattendDay":
-					case "lockDay":
-					case "getCook":
-					case "setPrice":
-					case "getPrice":
-					case "getAttendees":
-					
-					{
-
+					if (!!!!!!!command.contains("Feedback")) {
 						System.out.println("Server Monitor was requested to " + t.getElementAt(String.class, 0) + ", "
 								+ tupleData.getElementAt(Integer.class, 2) + "/"
 								+ tupleData.getElementAt(Integer.class, 3) + "/"
@@ -113,33 +101,13 @@ public class Server {
 
 						Agent agent = new ServerAgent(command, t);
 						exec(agent);
-						break;
-					}
-
-					case "addDay Feedback":
-					case "addChef Feedback":
-					case "attendDay Feedback":
-					case "unattendDay Feedback":
-					case "lockDay Feedback":
-					case "getCook Feedback":
-					case "setPrice Feedback":
-					case "getPrice Feedback":
-					case "getAttendees Feedback":
-					{
-
+					} else {
 						tupleData = t.getElementAt(Tuple.class, 1);
 						String userName = tupleData.getElementAt(String.class, 0);
 						String kitchenName = tupleData.getElementAt(String.class, 1);
 						PointToPoint p = new PointToPoint(userName, vp.getAddress());
 						put(new Tuple(userName + " " + command, tupleData), p);
 						System.out.println("Server transfers feedback from " + kitchenName + " to " + userName);
-
-						break;
-					}
-
-					case "somethingElse":
-						System.out.println("Use this space for MROE code.");
-						break;
 					}
 
 				} catch (Exception e) {
@@ -150,7 +118,6 @@ public class Server {
 		}
 	}
 
-	//
 	public class ServerAgent extends Agent {
 
 		Tuple t;
