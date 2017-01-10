@@ -57,7 +57,6 @@ public class Kitchen {
 					e.printStackTrace();
 				}
 			}
-
 		}
 	}
 
@@ -98,7 +97,7 @@ public class Kitchen {
 				break;
 				
 			case "setPrice":
-				// TODO - lav metode til at fortælle hvor meget maden kostede på
+				// TODO - lav metode til at fortï¿½lle hvor meget maden kostede pï¿½
 				// en dag
 				break;
 				
@@ -112,7 +111,7 @@ public class Kitchen {
 			}
 		}
 
-		// Metode til at tilføje ny dag
+		// Metode til at tilfï¿½je ny dag
 		private void addDay(Tuple data) {
 			int day = data.getElementAt(Integer.class, 2);
 			int month = data.getElementAt(Integer.class, 3);
