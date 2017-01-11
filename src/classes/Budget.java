@@ -157,6 +157,7 @@ public class Budget {
 				 */
 				Tuple oldData = getp(temp);
 
+				String feedback = "dayBudgetFeedback";
 				if (oldData == null) {
 					put(data, Self.SELF);
 					int price = data.getElementAt(Integer.class, 3);
@@ -175,7 +176,7 @@ public class Budget {
 					for (String attendee : attendees) {
 						addBalance(attendee, perPrice);
 					}
-
+					feedback(feedback, true, "Budget has been update.");
 				} else {
 					int oldPrice = oldData.getElementAt(Integer.class, 3);
 					String oldBuyer = oldData.getElementAt(String.class, 2);
@@ -194,6 +195,7 @@ public class Budget {
 					 * to their value before the oldPrice was added.
 					 */
 					dayBudget(data);
+					feedback(feedback, true, "Budget had already been calculated. Has been updated");
 				}
 
 			} catch (Exception e) {
