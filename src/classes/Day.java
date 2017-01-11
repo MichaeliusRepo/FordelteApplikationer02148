@@ -121,7 +121,7 @@ public class Day {
 		private void unattendDay(String userName) {
 			String feedback = "unattendDayFeedback";
 			try {
-				if (getp(new Template(new ActualTemplateField(userName),
+				if (getp(new Template(new ActualTemplateField("attendee"), new ActualTemplateField(userName),
 						new FormalTemplateField(Integer.class))) == null) {
 					feedback(feedback, false, userName + " isn't set to attend that day.");
 				} else {
