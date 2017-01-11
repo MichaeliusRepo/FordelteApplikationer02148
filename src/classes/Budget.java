@@ -97,14 +97,14 @@ public class Budget {
 				Template temp = new Template(new ActualTemplateField("user"), new ActualTemplateField(userName),
 						new FormalTemplateField(Integer.class));
 				Tuple t = getp(temp);
-				
-				if(t == null) {
+
+				if (t == null) {
 					feedback(feedback, false, userName + " has no balance set.");
 				} else {
 					put(new Tuple("user", userName, 0), Self.SELF);
 					feedback(feedback, true, userName + "'s balance has been reset.");
 				}
-				
+
 			} catch (Exception e) {
 
 			}
@@ -138,6 +138,7 @@ public class Budget {
 		private void dayBudget(Tuple data) {
 			try {
 
+				// <day, kitchen, buyer, price, attendees>
 				Template temp = new Template(new ActualTemplateField(data.getElementAt(String.class, 0)),
 						new ActualTemplateField(data.getElementAt(String.class, 1)),
 						new FormalTemplateField(String.class), new FormalTemplateField(Integer.class),
@@ -158,10 +159,13 @@ public class Budget {
 					int oldPrice = t.getElementAt(Integer.class, 3);
 					ArrayList<String> oldAttendees = t.getElementAt(ArrayList.class, 4);
 					double oldPricePer = oldPrice / oldAttendees.size();
-					
-					for(String attendee : oldAttendees) {
+
+					for (String attendee : oldAttendees) {
 						addBalance(attendee, -oldPricePer);
 					}
+					// Recursion can now be called since the old tuple has now been
+					// removed and the prices have been reset to their value
+					// before the oldPrice was added.
 					dayBudget(data);
 				}
 
