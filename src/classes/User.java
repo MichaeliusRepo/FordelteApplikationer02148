@@ -18,7 +18,7 @@ import org.cmg.jresp.knowledge.Template;
 public class User {
 	protected String userName;
 	protected Node userSpace;
-	protected String kitchenName;
+	public String kitchenName;
 	protected PointToPoint p = new PointToPoint("Server", Server.vp.getAddress());
 	protected String command;
 	private int extra;
