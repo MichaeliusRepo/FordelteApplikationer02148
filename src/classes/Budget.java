@@ -140,10 +140,9 @@ public class Budget {
 
 				String dayName = data.getElementAt(String.class, 0);
 				String kitchenName = data.getElementAt(String.class, 1);
-				
+
 				// <day, kitchen, buyer, price, attendees>
-				Template temp = new Template(new ActualTemplateField(dayName),
-						new ActualTemplateField(kitchenName),
+				Template temp = new Template(new ActualTemplateField(dayName), new ActualTemplateField(kitchenName),
 						new FormalTemplateField(String.class), new FormalTemplateField(Integer.class),
 						new FormalTemplateField(ArrayList.class));
 
@@ -164,18 +163,20 @@ public class Budget {
 					// should be subtracted from the buyers balance. The buyer
 					// must however still pay for himself.
 					addBalance(buyer, -price);
-					
+
 					for (String attendee : attendees) {
 						addBalance(attendee, perPrice);
 					}
 
 				} else {
-					
 					int oldPrice = oldData.getElementAt(Integer.class, 3);
 					String oldBuyer = oldData.getElementAt(String.class, 2);
 					ArrayList<String> oldAttendees = oldData.getElementAt(ArrayList.class, 4);
-					
-					dayBudget(new Tuple(dayName, kitchenName, oldBuyer, -oldPrice, oldAttendees));					
+
+					// The following calls a recursion using a negative price,
+					// to reset all attendees' balance to the value they were at
+					// before the old price had been set.
+					dayBudget(new Tuple(dayName, kitchenName, oldBuyer, -oldPrice, oldAttendees));
 
 					// Recursion can now be called with the new Tuple since the
 					// old tuple has been removed and the prices have been reset
