@@ -138,9 +138,12 @@ public class Budget {
 		private void dayBudget(Tuple data) {
 			try {
 
+				String dayName = data.getElementAt(String.class, 0);
+				String kitchenName = data.getElementAt(String.class, 1);
+				
 				// <day, kitchen, buyer, price, attendees>
-				Template temp = new Template(new ActualTemplateField(data.getElementAt(String.class, 0)),
-						new ActualTemplateField(data.getElementAt(String.class, 1)),
+				Template temp = new Template(new ActualTemplateField(dayName),
+						new ActualTemplateField(kitchenName),
 						new FormalTemplateField(String.class), new FormalTemplateField(Integer.class),
 						new FormalTemplateField(ArrayList.class));
 
@@ -167,7 +170,12 @@ public class Budget {
 					}
 
 				} else {
-					removeDayBudget(oldData);
+					
+					int oldPrice = oldData.getElementAt(Integer.class, 3);
+					String oldBuyer = oldData.getElementAt(String.class, 2);
+					ArrayList<String> oldAttendees = oldData.getElementAt(ArrayList.class, 4);
+					
+					dayBudget(new Tuple(dayName, kitchenName, oldBuyer, -oldPrice, oldAttendees));					
 
 					// Recursion can now be called with the new Tuple since the
 					// old tuple has been removed and the prices have been reset
@@ -177,19 +185,6 @@ public class Budget {
 
 			} catch (Exception e) {
 
-			}
-		}
-
-		private void removeDayBudget(Tuple data) {
-			int oldPrice = data.getElementAt(Integer.class, 3);
-			ArrayList<String> oldAttendees = data.getElementAt(ArrayList.class, 4);
-			double oldPricePer = oldPrice / oldAttendees.size();
-			String buyer = data.getElementAt(String.class, 2);
-			
-			addBalance(buyer, oldPrice);
-			
-			for (String attendee : oldAttendees) {
-				addBalance(attendee, -oldPricePer);
 			}
 		}
 

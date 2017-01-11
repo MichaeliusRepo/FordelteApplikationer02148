@@ -89,7 +89,7 @@ public class Kitchen {
 				System.out.println("attendDay");
 				attendDay(data);
 				break;
-			case "unattend Day":
+			case "unattendDay":
 				unattendDay(data);
 				break;
 			case "addChef":
