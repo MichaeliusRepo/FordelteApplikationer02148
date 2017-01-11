@@ -146,9 +146,11 @@ public class Budget {
 						new FormalTemplateField(String.class), new FormalTemplateField(Integer.class),
 						new FormalTemplateField(ArrayList.class));
 
-				// A check must be made to ensure the price hasn't already been
-				// set for the given day. In that case the balance for each user
-				// needs to be reset.
+				/*
+				 * A check must be made to ensure the price hasn't already been
+				 * set for the given day. In that case the balance for each user
+				 * needs to be reset.
+				 */
 				Tuple oldData = getp(temp);
 
 				if (oldData == null) {
@@ -159,9 +161,11 @@ public class Budget {
 
 					double perPrice = price / attendees.size();
 
-					// Since the buyer has paid for the entire meal, the price
-					// should be subtracted from the buyers balance. The buyer
-					// must however still pay for himself.
+					/*
+					 * Since the buyer has paid for the entire meal, the price
+					 * should be subtracted from the buyers balance. The buyer
+					 * must however still pay for himself.
+					 */
 					addBalance(buyer, -price);
 
 					for (String attendee : attendees) {
@@ -173,14 +177,18 @@ public class Budget {
 					String oldBuyer = oldData.getElementAt(String.class, 2);
 					ArrayList<String> oldAttendees = oldData.getElementAt(ArrayList.class, 4);
 
-					// The following calls a recursion using a negative price,
-					// to reset all attendees' balance to the value they were at
-					// before the old price had been set.
+					/*
+					 * The following calls a recursion using a negative price,
+					 * to reset all attendees' balance to the value they were at
+					 * before the old price had been set.
+					 */
 					dayBudget(new Tuple(dayName, kitchenName, oldBuyer, -oldPrice, oldAttendees));
 
-					// Recursion can now be called with the new Tuple since the
-					// old tuple has been removed and the prices have been reset
-					// to their value before the oldPrice was added.
+					/*
+					 * Recursion can now be called with the new Tuple since the
+					 * old tuple has been removed and the prices have been reset
+					 * to their value before the oldPrice was added.
+					 */
 					dayBudget(data);
 				}
 
