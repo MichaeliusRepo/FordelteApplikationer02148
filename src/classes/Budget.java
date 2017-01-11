@@ -113,7 +113,7 @@ public class Budget {
 
 		public void getBalance() {
 			String feedback = "getBalanceFeedback";
-			Template temp = new Template(new ActualTemplateField(userName), new FormalTemplateField(Integer.class));
+			Template temp = new Template(new ActualTemplateField("user"), new ActualTemplateField(userName), new FormalTemplateField(Integer.class));
 			int balance;
 			try {
 				if (queryp(temp) != null) {
@@ -166,16 +166,18 @@ public class Budget {
 
 					double perPrice = price / attendees.size();
 
+					
+
+					for (String attendee : attendees) {
+						addBalance(attendee, perPrice);
+					}
+					
 					/*
 					 * Since the buyer has paid for the entire meal, the price
 					 * should be subtracted from the buyers balance. The buyer
 					 * must however still pay for himself.
 					 */
 					addBalance(buyer, -price);
-
-					for (String attendee : attendees) {
-						addBalance(attendee, perPrice);
-					}
 					feedback(feedback, true, "Budget has been update.");
 				} else {
 					int oldPrice = oldData.getElementAt(Integer.class, 3);
@@ -206,7 +208,7 @@ public class Budget {
 		private void addBalance(String attendee, double price) {
 
 			try {
-				Template temp = new Template(new ActualTemplateField("user"), new FormalTemplateField(String.class),
+				Template temp = new Template(new ActualTemplateField("user"), new ActualTemplateField(attendee),
 						new FormalTemplateField(Double.class));
 				Tuple user = getp(temp);
 				if (user == null) {
