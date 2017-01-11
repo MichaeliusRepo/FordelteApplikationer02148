@@ -46,7 +46,7 @@ public class Day {
 				put(new Tuple("dayCreated"), Self.SELF);
 				while (true) {
 					Tuple t = getp(cmdTemp);
-					
+
 					if (t != null) {
 						Tuple data = t.getElementAt(Tuple.class, 1);
 						String cmd = t.getElementAt(String.class, 0);
@@ -102,11 +102,7 @@ public class Day {
 						break;
 
 					}
-				} else {
-				
-				}
-
-				if (queryp(new Template(new ActualTemplateField("locked"))) != null) {
+				} else if (queryp(new Template(new ActualTemplateField("locked"))) != null) {
 					switch (cmd) {
 					case "setPrice":
 						this.price = data.getElementAt(Integer.class, 2);
@@ -114,7 +110,7 @@ public class Day {
 						break;
 					}
 				} else {
-					
+
 				}
 
 			} catch (Exception e) {
@@ -218,11 +214,11 @@ public class Day {
 			}
 		}
 
-		private void feedback(String feedback, boolean result, String message) {
+		private void getAttendees() {
 			try {
-				put(new Tuple(new Tuple(userName, kitchenName, result, message), feedback), Self.SELF);
-			} catch (Exception e) {
-				e.printStackTrace();
+				
+			} catch(Exception e) {
+				
 			}
 		}
 
@@ -250,6 +246,14 @@ public class Day {
 				}
 			}
 			return list;
+		}
+
+		private void feedback(String feedback, boolean result, String message) {
+			try {
+				put(new Tuple(new Tuple(userName, kitchenName, result, message), feedback), Self.SELF);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }
