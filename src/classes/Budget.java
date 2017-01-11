@@ -143,34 +143,53 @@ public class Budget {
 						new ActualTemplateField(data.getElementAt(String.class, 1)),
 						new FormalTemplateField(String.class), new FormalTemplateField(Integer.class),
 						new FormalTemplateField(ArrayList.class));
-				Tuple t = getp(temp);
 
-				if (t == null) {
+				// A check must be made to ensure the price hasn't already been
+				// set for the given day. In that case the balance for each user
+				// needs to be reset.
+				Tuple oldData = getp(temp);
+
+				if (oldData == null) {
 					put(data, Self.SELF);
 					int price = data.getElementAt(Integer.class, 3);
+					String buyer = data.getElementAt(String.class, 2);
 					ArrayList<String> attendees = data.getElementAt(ArrayList.class, 4);
 
 					double perPrice = price / attendees.size();
 
+					// Since the buyer has paid for the entire meal, the price
+					// should be subtracted from the buyers balance. The buyer
+					// must however still pay for himself.
+					addBalance(buyer, -price);
+					
 					for (String attendee : attendees) {
 						addBalance(attendee, perPrice);
 					}
-				} else {
-					int oldPrice = t.getElementAt(Integer.class, 3);
-					ArrayList<String> oldAttendees = t.getElementAt(ArrayList.class, 4);
-					double oldPricePer = oldPrice / oldAttendees.size();
 
-					for (String attendee : oldAttendees) {
-						addBalance(attendee, -oldPricePer);
-					}
-					// Recursion can now be called since the old tuple has now been
-					// removed and the prices have been reset to their value
-					// before the oldPrice was added.
+				} else {
+					removeDayBudget(oldData);
+
+					// Recursion can now be called with the new Tuple since the
+					// old tuple has been removed and the prices have been reset
+					// to their value before the oldPrice was added.
 					dayBudget(data);
 				}
 
 			} catch (Exception e) {
 
+			}
+		}
+
+		private void removeDayBudget(Tuple data) {
+			int oldPrice = data.getElementAt(Integer.class, 3);
+			ArrayList<String> oldAttendees = data.getElementAt(ArrayList.class, 4);
+			double oldPricePer = oldPrice / oldAttendees.size();
+			String buyer = data.getElementAt(String.class, 2);
+			
+			addBalance(buyer, oldPrice);
+			
+			for (String attendee : oldAttendees) {
+				addBalance(attendee, -oldPricePer);
 			}
 		}
 
