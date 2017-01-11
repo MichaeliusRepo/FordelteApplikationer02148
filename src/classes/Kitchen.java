@@ -56,7 +56,7 @@ public class Kitchen {
 	}
 
 	public class KitchenAgent extends Agent {
-		protected PointToPoint dayPointer, serverPointer, budgetPointer;
+		protected PointToPoint pointer, serverPointer, budgetPointer;
 
 		Tuple data;
 		String user;
@@ -68,7 +68,7 @@ public class Kitchen {
 			this.cmd = cmd;
 			this.user = data.getElementAt(String.class, 0);
 			serverPointer = new PointToPoint("Server", Server.vp.getAddress());
-			budgetPointer = new PointToPoint("budget" + kitchenName, Server.vp.getAddress());
+			budgetPointer = new PointToPoint("Budget"+kitchenName, Server.vp.getAddress());
 		}
 
 		@Override
@@ -135,8 +135,8 @@ public class Kitchen {
 				if (!checkDayExists(target)) {
 
 					put(new Tuple("" + day + "" + month + "" + year, new Day(day, month, year)), Self.SELF);
-					dayPointer = new PointToPoint("" + day + "" + month + "" + year, Server.vp.getAddress());
-					get(new Template(new ActualTemplateField("dayCreated")), dayPointer);
+					pointer = new PointToPoint("" + day + "" + month + "" + year, Server.vp.getAddress());
+					get(new Template(new ActualTemplateField("dayCreated")), pointer);
 
 					sendFeedback("addDay", new Tuple(user, kitchenName, true, "Dagen blev lavet"));
 
@@ -148,8 +148,8 @@ public class Kitchen {
 		}
 
 		private void removeDay(Tuple data) {
-			String target = "" + data.getElementAt(Integer.class, 1) + "" + data.getElementAt(Integer.class, 2) + ""
-					+ data.getElementAt(Integer.class, 3);
+			String target = "" + data.getElementAt(Integer.class, 2) + "" + data.getElementAt(Integer.class, 3) + ""
+					+ data.getElementAt(Integer.class, 4);
 
 			try {
 				if (!checkDayExists(target))
@@ -174,7 +174,7 @@ public class Kitchen {
 				if (!checkDayExists(target))
 					sendFeedback("attendDay", new Tuple(user, kitchenName, "Den valgte dag findes ikke"));
 				else {
-					dayPointer = new PointToPoint(target, Server.vp.getAddress());
+					pointer = new PointToPoint(target, Server.vp.getAddress());
 					put(new Tuple("attendDay", new Tuple(user, kitchenName, attendees)),
 							new PointToPoint(target, Server.vp.getAddress()));
 					sendFeedback("attendDay", recieveFeedback(target, "attendDayFeedback"));
@@ -192,8 +192,8 @@ public class Kitchen {
 
 			try {
 				if (checkDayExists(target)) {
-					dayPointer = new PointToPoint(target, Server.vp.getAddress());
-					put(new Tuple("unattendDay", data), dayPointer);
+					pointer = new PointToPoint(target, Server.vp.getAddress());
+					put(new Tuple("unattendDay", data), pointer);
 					sendFeedback("unattendDay", recieveFeedback(target, "unattendDayFeedback"));
 				} else {
 					sendFeedback("unattendDay", new Tuple(user, kitchenName, "Dagen findes ikke"));
@@ -211,8 +211,8 @@ public class Kitchen {
 
 			try {
 				if (checkDayExists(target)) {
-					dayPointer = new PointToPoint(target, Server.vp.getAddress());
-					put(new Tuple("addChef", data), dayPointer);
+					pointer = new PointToPoint(target, Server.vp.getAddress());
+					put(new Tuple("addChef", data), pointer);
 					sendFeedback("addChef", recieveFeedback(target, "addChefFeedback"));
 				} else {
 					sendFeedback("addChef", new Tuple(user, kitchenName, false, "Dagen findes ikke"));
@@ -231,8 +231,8 @@ public class Kitchen {
 
 			try {
 				if (checkDayExists(target)) {
-					dayPointer = new PointToPoint(target, Server.vp.getAddress());
-					put(new Tuple("setPrice", new Tuple(user, kitchenName, price)), dayPointer);
+					pointer = new PointToPoint(target, Server.vp.getAddress());
+					put(new Tuple("setPrice", new Tuple(user, kitchenName, price)), pointer);
 					sendFeedback("setPrice", recieveFeedback(target, "setPriceFeedback"));
 				} else {
 					sendFeedback("setPrice", new Tuple(user, kitchenName, false, "Dagen findes ikke"));
@@ -279,8 +279,8 @@ public class Kitchen {
 
 			try {
 				if (checkDayExists(target)) {
-					dayPointer = new PointToPoint(target, Server.vp.getAddress());
-					put(new Tuple("lockDay", data), dayPointer);
+					pointer = new PointToPoint(target, Server.vp.getAddress());
+					put(new Tuple("lockDay", data), pointer);
 					sendFeedback("lockDay", recieveFeedback(target, "lockDayFeedback"));
 				} else {
 					sendFeedback("lockDay", new Tuple(user, kitchenName, false, "Dagen findes ikke"));
@@ -290,13 +290,12 @@ public class Kitchen {
 			}
 		}
 
-		// SHOULD ONLY RECIEVE FROM DAYS
 		private Tuple recieveFeedback(String target, String feedbackCmd) {
 			try {
-				dayPointer = new PointToPoint(target, Server.vp.getAddress());
+				pointer = new PointToPoint(target, Server.vp.getAddress());
 				Tuple feedbackTuple = get(
 						new Template(new FormalTemplateField(Tuple.class), new ActualTemplateField(feedbackCmd)),
-						dayPointer);
+						pointer);
 				Tuple feedbackReturnTuple = feedbackTuple.getElementAt(Tuple.class, 0);
 				return feedbackReturnTuple;
 			} catch (Exception e) {
