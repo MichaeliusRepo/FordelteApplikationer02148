@@ -43,6 +43,9 @@ public class Server {
 		User user1 = new User("Alexander", "kitchen 6");
 		User user2 = new User("Mathias", "kitchen 6");
 		User user3 = new User("Emilie", "kitchen 6");
+		user3.addKitchen("Den Seje");
+		user3.addKitchen("Den dumme");
+		user3.addKitchen("Den mærkelige");
 		User user4 = new User("Jon", "kitchen 6");
 		User user5 = new User("Michael", "kitchen 6");
 
@@ -144,22 +147,27 @@ public class Server {
 	public User getUser(String userName) {
 		for (int i = 0; i < users.size(); i++) {
 			if (userName.equals(users.get(i).userName)) {
-				System.out.println("Welcome back, " + userName + "!");
 				return users.get(i);
 			}
 		}
-		System.out.println("sorry.. who are you?? " + userName);
 		return null;
 	}
 
 	public void newUser(String userName, String kitchenName) {
-		int j = -1;
+
 		User user = new User(userName, kitchenName);
 		users.add(user);
 
+		addKitchen(kitchenName);
+	}
+
+	public boolean addKitchen(String kitchenName) {
+		int j = -1;
+		boolean newKitchen = true;
 		for (int i = 0; i < kitchens.size(); i++) {
 			if (kitchens.get(i).kitchenName.equals(kitchenName)) {
 				j = i;
+				newKitchen = false;
 			}
 		}
 
@@ -168,6 +176,7 @@ public class Server {
 			Kitchen kitchen = new Kitchen(kitchenName);
 			kitchens.add(kitchen);
 		}
+		return newKitchen;
 	}
 }
 

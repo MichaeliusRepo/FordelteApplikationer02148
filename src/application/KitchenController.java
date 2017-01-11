@@ -2,6 +2,7 @@ package application;
 
 import java.io.IOException;
 
+import classes.Server;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,6 +16,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 
 public class KitchenController {
+	Server dinnerClub;
 	
     @FXML
     private Button newKitchen;
@@ -23,7 +25,7 @@ public class KitchenController {
     private RadioButton kitchen1;
 
     @FXML
-    private ToggleGroup dinnerClub;
+    private ToggleGroup toggleGroup;
 
     @FXML
     private RadioButton kitchen2;
@@ -58,7 +60,8 @@ public class KitchenController {
 
     @FXML
     void selectDinnerClub(ActionEvent event) {
-
+    	System.out.println(((RadioButton)toggleGroup.getSelectedToggle()).getText());
+    	dinnerClub.getUser(user).setKitchen(((RadioButton)toggleGroup.getSelectedToggle()).getText());
     }
     
     ////////////////////////
@@ -72,11 +75,24 @@ public class KitchenController {
 
     @FXML
     void newClubButtonClicked(ActionEvent event) {
-
+    	if(newKitchenName.getText() != null){
+    		System.out.println(newKitchenName.getText());
+        	if(dinnerClub.addKitchen(newKitchenName.getText())){
+        		System.out.println("A new kitchen has been created: "+newKitchenName.getText());
+        	} else {
+        		System.out.println("This kitchen already exist: "+newKitchenName.getText());
+        	}
+        	dinnerClub.getUser(user).addKitchen(newKitchenName.getText());
+        	findUsersKitchens(user);
+    	} else {
+    		System.out.println("not valid: Remember to write a name");
+    	}
     }
     
     @FXML
     private Button backButton;
+
+	private String user;
 
     @FXML
     void backToKitchenFrame(ActionEvent event) {
@@ -95,6 +111,32 @@ public class KitchenController {
 			e.printStackTrace();
 		}
 
+    }
+    
+    
+    
+    
+    // Getting Server to call methods
+    public void setServer(Server dinnerClub){
+    	this.dinnerClub = dinnerClub;
+    }
+    
+    public void findUsersKitchens(String userName){
+    	this.user = userName;
+    	setRadioButtons(userName,kitchen1, 0);
+    	setRadioButtons(userName,kitchen2, 1);
+    	setRadioButtons(userName,kitchen3, 2);
+    	setRadioButtons(userName,kitchen4, 3);
+    }
+    
+    
+    private void setRadioButtons(String userName, RadioButton kitchen, int i){
+    	if(dinnerClub.getUser(userName).getKitchenName(i) != null){
+    		kitchen.setText(dinnerClub.getUser(userName).getKitchenName(i));
+    		kitchen.setVisible(true);
+    	} else {
+    		kitchen.setVisible(false);
+    	}
     }
 
 

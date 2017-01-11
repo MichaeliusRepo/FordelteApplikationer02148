@@ -17,7 +17,7 @@ import java.io.IOException;
 import classes.Server;
 
 public class LoginController {
-	Server DinnerClub = new Server();
+	private Server DinnerClub = new Server();
 
     @FXML
     private Button newUser;
@@ -47,7 +47,12 @@ public class LoginController {
     		// new window
     		try {
     			((Node) event.getSource()).getScene().getWindow().hide();
-				Parent root = FXMLLoader.load(getClass().getResource("/application/KitchenFrame.fxml"));
+    			FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/KitchenFrame.fxml"));
+    			Parent root = loader.load();
+				KitchenController controller = loader.getController();
+				controller.setServer(DinnerClub);
+				controller.findUsersKitchens(user);
+				
 				Scene scene = new Scene(root,400,400);
 				scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 				Stage stage = new Stage();

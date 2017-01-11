@@ -17,11 +17,11 @@
       <Button fx:id="newKitchen" layoutX="26.0" layoutY="248.0" mnemonicParsing="false" onAction="#newKitchen" prefWidth="170.0" text="Create Dinner Club" />
       <RadioButton fx:id="kitchen1" layoutX="141.0" layoutY="94.0" mnemonicParsing="false" text="   DinnerClub1">
          <toggleGroup>
-            <ToggleGroup fx:id="dinnerClub" />
+            <ToggleGroup fx:id="toggleGroup" />
          </toggleGroup></RadioButton>
-      <RadioButton fx:id="kitchen2" layoutX="140.0" layoutY="123.0" mnemonicParsing="false" text="   DinnerClub2" toggleGroup="$dinnerClub" />
-      <RadioButton fx:id="kitchen3" layoutX="141.0" layoutY="158.0" mnemonicParsing="false" toggleGroup="$dinnerClub" />
-      <RadioButton fx:id="kitchen4" disable="true" layoutX="141.0" layoutY="195.0" mnemonicParsing="false" toggleGroup="$dinnerClub" />
+      <RadioButton fx:id="kitchen2" layoutX="140.0" layoutY="123.0" mnemonicParsing="false" text="   DinnerClub2" toggleGroup="$toggleGroup" />
+      <RadioButton fx:id="kitchen3" layoutX="141.0" layoutY="158.0" mnemonicParsing="false" toggleGroup="$toggleGroup" />
+      <RadioButton fx:id="kitchen4" disable="true" layoutX="141.0" layoutY="195.0" mnemonicParsing="false" toggleGroup="$toggleGroup" />
       <Button fx:id="select" layoutX="200.0" layoutY="248.0" mnemonicParsing="false" onAction="#selectDinnerClub" prefWidth="170.0" text="Select Dinner Club" />
    </children>
 </AnchorPane>

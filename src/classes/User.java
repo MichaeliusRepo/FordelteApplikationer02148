@@ -1,6 +1,7 @@
 package classes;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.cmg.jresp.behaviour.Agent;
 import org.cmg.jresp.comp.Node;
@@ -23,10 +24,12 @@ public class User {
 	protected String command;
 	private int extra;
 	private String feedbackMsg;
+	private ArrayList<String> kitchens = new ArrayList<String>();
 
 	public User(String userName, String kitchenName) {
 		this.userName = userName;
 		this.kitchenName = kitchenName;
+		kitchens.add(kitchenName);
 		userSpace = new Node(userName, new TupleSpace());
 		userSpace.addPort(Server.vp);
 		userSpace.start();
@@ -95,6 +98,22 @@ public class User {
 			}
 		}
 
+	}
+
+	public String getKitchenName(int i) {
+		if(kitchens.size()>i){
+			return kitchens.get(i);
+		}
+		
+		return null;
+	}
+	
+	public void addKitchen(String newKitchenName){
+		kitchens.add(newKitchenName);
+	}
+	
+	public void setKitchen(String selectedKitchenName){
+		this.kitchenName = selectedKitchenName;
 	}
 
 }
