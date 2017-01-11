@@ -20,6 +20,7 @@
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -37,5 +38,6 @@
          </children>
       </GridPane>
       <Label layoutX="100.0" layoutY="97.0" text="Please enter a dinner club's name: " />
+      <Button fx:id="backButton" layoutX="23.0" layoutY="253.0" mnemonicParsing="false" onAction="#backToKitchenFrame" text="Back" />
    </children>
 </AnchorPane>

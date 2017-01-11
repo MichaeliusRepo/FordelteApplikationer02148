@@ -74,6 +74,28 @@ public class KitchenController {
     void newClubButtonClicked(ActionEvent event) {
 
     }
+    
+    @FXML
+    private Button backButton;
+
+    @FXML
+    void backToKitchenFrame(ActionEvent event) {
+		try {
+			((Node) event.getSource()).getScene().getWindow().hide();
+			Parent root = FXMLLoader.load(getClass().getResource("/application/KitchenFrame.fxml"));
+			Scene scene = new Scene(root,400,400);
+			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			Stage stage = new Stage();
+			stage.setScene(scene);
+			stage.setTitle("Dinner Club");
+			stage.show();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+    }
 
 
 	
