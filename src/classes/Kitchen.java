@@ -157,9 +157,9 @@ public class Kitchen {
 
 			try {
 				if (!checkDayExists(target)) {
-					get(new Template(new ActualTemplateField(target), new FormalTemplateField(Day.class)), Self.SELF);
 					sendFeedback("removeDay", new Tuple(user, kitchenName, false, "Den valgte dag findes ikke"));
 				} else {
+					get(new Template(new ActualTemplateField(target), new FormalTemplateField(Day.class)), Self.SELF);
 					sendFeedback("removeDay", new Tuple(user, kitchenName, true, "Dagen er blevet slettet"));
 				}
 			} catch (Exception e) {
