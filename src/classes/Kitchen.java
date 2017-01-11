@@ -257,7 +257,11 @@ public class Kitchen {
 					pointer = new PointToPoint(target, Server.vp.getAddress());
 					put(new Tuple("setPrice", new Tuple(user, kitchenName, price)), pointer);
 					sendFeedback("setPrice", recieveFeedback(target, "setPriceFeedback"));
-					addBalance(get(new Template(new ActualTemplateField("addBalance"), new FormalTemplateField(Tuple.class)), pointer));
+					System.out.println("Inden addBalance");
+					//Template testtemp = new Template(new FormalTemplateField(Tuple.class), new ActualTemplateField("addBalance"), new ActualTemplateField("test"));
+					Tuple testt = recieveFeedback(target, "addBalance");
+					addBalance(testt);
+					System.out.println("addBalance");
 				} else {
 					sendFeedback("setPrice", new Tuple(user, kitchenName, false, "Dagen findes ikke"));
 				}
@@ -270,7 +274,7 @@ public class Kitchen {
 		private void addBalance(Tuple data) {
 
 			try {
-				put(new Tuple("addBalance", data.getElementAt(Tuple.class, 1)), budgetPointer);
+				put(new Tuple("addBalance", data), budgetPointer);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

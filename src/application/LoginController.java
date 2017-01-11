@@ -15,6 +15,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+import java.io.IOException;
+
 import classes.Server;
 
 public class LoginController {
@@ -40,13 +42,11 @@ public class LoginController {
     }
 
     @FXML
-    void login(ActionEvent event) {
+    void login(ActionEvent event) throws IOException {
     	String user = username.getText();
     	
     	if(DinnerClub.getUser(user) != null){
     		wrongUsername.setText("");
-    		
-    		
     		// new window
     		try {
     			((Node) event.getSource()).getScene().getWindow().hide();
