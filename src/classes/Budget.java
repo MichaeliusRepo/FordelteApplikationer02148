@@ -1,6 +1,7 @@
 package classes;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import org.cmg.jresp.behaviour.Agent;
 import org.cmg.jresp.comp.Node;
@@ -130,6 +131,9 @@ public class Budget {
 		private void feedback(String feedback, boolean result, String message) {
 			try {
 				put(new Tuple(new Tuple(userName, kitchenName, result, message), feedback), Self.SELF);
+				Template what = new Template(new FormalTemplateField(Tuple.class),
+						new ActualTemplateField(feedback));
+				System.out.println(queryEmpty(what));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -214,7 +218,13 @@ public class Budget {
 
 			}
 		}
-
+		
+		private boolean queryEmpty(Template t) {
+			LinkedList<Tuple> getAll = queryAll(t);
+			
+			
+			return (getAll.isEmpty()) ? true : false;
+		}
 	}
 
 }

@@ -68,7 +68,7 @@ public class Kitchen {
 			this.cmd = cmd;
 			this.user = data.getElementAt(String.class, 0);
 			serverPointer = new PointToPoint("Server", Server.vp.getAddress());
-			budgetPointer = new PointToPoint("Budget"+kitchenName, Server.vp.getAddress());
+			budgetPointer = new PointToPoint("Budget" + kitchenName, Server.vp.getAddress());
 		}
 
 		@Override
@@ -154,12 +154,12 @@ public class Kitchen {
 		private void removeDay(Tuple data) {
 			String target = "" + data.getElementAt(Integer.class, 2) + "" + data.getElementAt(Integer.class, 3) + ""
 					+ data.getElementAt(Integer.class, 4);
-			
+
 			try {
-				if (!checkDayExists(target)){
-					get(new Template(new ActualTemplateField(target),new FormalTemplateField(Day.class)),Self.SELF);
+				if (!checkDayExists(target)) {
+					get(new Template(new ActualTemplateField(target), new FormalTemplateField(Day.class)), Self.SELF);
 					sendFeedback("removeDay", new Tuple(user, kitchenName, false, "Den valgte dag findes ikke"));
-				}else{
+				} else {
 					sendFeedback("removeDay", new Tuple(user, kitchenName, true, "Dagen er blevet slettet"));
 				}
 			} catch (Exception e) {
@@ -177,10 +177,10 @@ public class Kitchen {
 
 			try {
 				if (!checkDayExists(target))
-					sendFeedback("attendDay", new Tuple(user, kitchenName,false, "Den valgte dag findes ikke"));
+					sendFeedback("attendDay", new Tuple(user, kitchenName, false, "Den valgte dag findes ikke"));
 				else {
 					pointer = new PointToPoint(target, Server.vp.getAddress());
-					put(new Tuple("attendDay", new Tuple(user, kitchenName, attendees)),pointer);
+					put(new Tuple("attendDay", new Tuple(user, kitchenName, attendees)), pointer);
 					sendFeedback("attendDay", recieveFeedback(target, "attendDayFeedback"));
 				}
 			} catch (Exception e) {
@@ -197,7 +197,7 @@ public class Kitchen {
 			try {
 				if (checkDayExists(target)) {
 					pointer = new PointToPoint(target, Server.vp.getAddress());
-					put(new Tuple("unattendDay", new Tuple(user,kitchenName)), pointer);
+					put(new Tuple("unattendDay", new Tuple(user, kitchenName)), pointer);
 					sendFeedback("unattendDay", recieveFeedback(target, "unattendDayFeedback"));
 				} else {
 					sendFeedback("unattendDay", new Tuple(user, kitchenName, false, "Dagen findes ikke"));
@@ -207,25 +207,25 @@ public class Kitchen {
 			}
 		}
 
-		private void getAttendees(Tuple data){
+		private void getAttendees(Tuple data) {
 			int day = data.getElementAt(Integer.class, 2);
 			int month = data.getElementAt(Integer.class, 3);
 			int year = data.getElementAt(Integer.class, 4);
 			String target = "" + day + "" + month + "" + year;
-			
-			try{
-				if(checkDayExists(target)){
+
+			try {
+				if (checkDayExists(target)) {
 					pointer = new PointToPoint(target, Server.vp.getAddress());
-					put(new Tuple("getAttendees", new Tuple(user,kitchenName)),pointer);
+					put(new Tuple("getAttendees", new Tuple(user, kitchenName)), pointer);
 					sendFeedback("getAttendees", recieveFeedback(target, "getAttendeesFeedback"));
-				}else{
+				} else {
 					sendFeedback("getAttendees", new Tuple(user, kitchenName, false, "Dagen findes ikke"));
 				}
-			}catch (Exception e){
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-		
+
 		private void addChef(Tuple data) {
 			int day = data.getElementAt(Integer.class, 2);
 			int month = data.getElementAt(Integer.class, 3);
@@ -235,7 +235,7 @@ public class Kitchen {
 			try {
 				if (checkDayExists(target)) {
 					pointer = new PointToPoint(target, Server.vp.getAddress());
-					put(new Tuple("addChef", new Tuple(user,kitchenName)), pointer);
+					put(new Tuple("addChef", new Tuple(user, kitchenName)), pointer);
 					sendFeedback("addChef", recieveFeedback(target, "addChefFeedback"));
 				} else {
 					sendFeedback("addChef", new Tuple(user, kitchenName, false, "Dagen findes ikke"));
@@ -316,9 +316,11 @@ public class Kitchen {
 		private Tuple recieveFeedback(String target, String feedbackCmd) {
 			try {
 				pointer = new PointToPoint(target, Server.vp.getAddress());
-				Tuple feedbackTuple = get(
-						new Template(new FormalTemplateField(Tuple.class), new ActualTemplateField(feedbackCmd)),
-						pointer);
+				Template what = new Template(new FormalTemplateField(Tuple.class),
+						new ActualTemplateField(feedbackCmd));
+				//System.out.println(queryEmpty(what));
+				
+				Tuple feedbackTuple = get(what, pointer);
 				Tuple feedbackReturnTuple = feedbackTuple.getElementAt(Tuple.class, 0);
 				return feedbackReturnTuple;
 			} catch (Exception e) {
@@ -342,7 +344,7 @@ public class Kitchen {
 					new FormalTemplateField(Day.class));
 			return (queryp(checkDayTemplate) == null) ? false : true;
 		}
-		
+
 		// Use for debugging :-)))))
 		private boolean queryEmpty(Template t) {
 			LinkedList<Tuple> getAll = queryAll(t);
