@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
-import org.cmg.resp.behaviour.Agent;
-import org.cmg.resp.comp.Node;
-import org.cmg.resp.knowledge.ActualTemplateField;
-import org.cmg.resp.knowledge.FormalTemplateField;
-import org.cmg.resp.knowledge.Template;
-import org.cmg.resp.knowledge.Tuple;
-import org.cmg.resp.knowledge.ts.TupleSpace;
-import org.cmg.resp.topology.Self;
+import org.cmg.jresp.behaviour.Agent;
+import org.cmg.jresp.comp.Node;
+import org.cmg.jresp.knowledge.ActualTemplateField;
+import org.cmg.jresp.knowledge.FormalTemplateField;
+import org.cmg.jresp.knowledge.Template;
+import org.cmg.jresp.knowledge.Tuple;
+import org.cmg.jresp.knowledge.ts.TupleSpace;
+import org.cmg.jresp.topology.Self;
 
 public class Day {
 
