@@ -156,7 +156,13 @@ public class Budget {
 					}
 				} else {
 					int oldPrice = t.getElementAt(Integer.class, 3);
-
+					ArrayList<String> oldAttendees = t.getElementAt(ArrayList.class, 4);
+					double oldPricePer = oldPrice / oldAttendees.size();
+					
+					for(String attendee : oldAttendees) {
+						addBalance(attendee, -oldPricePer);
+					}
+					dayBudget(data);
 				}
 
 			} catch (Exception e) {
