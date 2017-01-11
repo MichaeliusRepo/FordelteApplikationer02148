@@ -123,7 +123,7 @@ public class Day {
 		}
 
 		private void unattendDay(String userName) {
-			String feedback = "unattendFeedback";
+			String feedback = "unattendDayFeedback";
 			try {
 				if (getp(new Template(new ActualTemplateField(userName),
 						new FormalTemplateField(Integer.class))) == null) {
