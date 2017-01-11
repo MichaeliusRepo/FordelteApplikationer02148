@@ -113,12 +113,13 @@ public class Budget {
 
 		public void getBalance() {
 			String feedback = "getBalanceFeedback";
-			Template temp = new Template(new ActualTemplateField("user"), new ActualTemplateField(userName), new FormalTemplateField(Integer.class));
-			int balance;
+			Template temp = new Template(new ActualTemplateField("user"), new ActualTemplateField(userName),
+					new FormalTemplateField(Double.class));
+			double balance;
 			try {
 				if (queryp(temp) != null) {
 					Tuple t = query(temp, Self.SELF);
-					balance = t.getElementAt(Integer.class, 1);
+					balance = t.getElementAt(Double.class, 1);
 					feedback(feedback, true, "Balance for user: " + userName + " - " + balance + "kr");
 				} else {
 					feedback(feedback, false, userName + " could not be found.");
@@ -131,8 +132,7 @@ public class Budget {
 		private void feedback(String feedback, boolean result, String message) {
 			try {
 				put(new Tuple(new Tuple(userName, kitchenName, result, message), feedback), Self.SELF);
-				Template what = new Template(new FormalTemplateField(Tuple.class),
-						new ActualTemplateField(feedback));
+				Template what = new Template(new FormalTemplateField(Tuple.class), new ActualTemplateField(feedback));
 				System.out.println(queryEmpty(what));
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -166,30 +166,30 @@ public class Budget {
 
 					double perPrice = price / attendees.size();
 
-					
-
 					for (String attendee : attendees) {
 						addBalance(attendee, perPrice);
+						System.out.println(attendee + " was added to Budget");
 					}
-					
+
 					/*
 					 * Since the buyer has paid for the entire meal, the price
 					 * should be subtracted from the buyers balance. The buyer
 					 * must however still pay for himself.
 					 */
 					addBalance(buyer, -price);
+
 					feedback(feedback, true, "Budget has been update.");
+
 				} else {
 					int oldPrice = oldData.getElementAt(Integer.class, 3);
 					String oldBuyer = oldData.getElementAt(String.class, 2);
 					ArrayList<String> oldAttendees = oldData.getElementAt(ArrayList.class, 4);
 
-					/*
-					 * The following calls a recursion using a negative price,
-					 * to reset all attendees' balance to the value they were at
-					 * before the old price had been set.
-					 */
-					dayBudget(new Tuple(dayName, kitchenName, oldBuyer, -oldPrice, oldAttendees));
+					double oldPerPrice = oldPrice / oldAttendees.size();
+
+					for (String attendee : oldAttendees) {
+						addBalance(attendee, -oldPerPrice);
+					}
 
 					/*
 					 * Recursion can now be called with the new Tuple since the
@@ -222,11 +222,10 @@ public class Budget {
 
 			}
 		}
-		
+
 		private boolean queryEmpty(Template t) {
 			LinkedList<Tuple> getAll = queryAll(t);
-			
-			
+
 			return (getAll.isEmpty()) ? true : false;
 		}
 	}
