@@ -256,6 +256,7 @@ public class Kitchen {
 				if (checkDayExists(target)) {
 					pointer = new PointToPoint(target, Server.vp.getAddress());
 					put(new Tuple("setPrice", new Tuple(user, kitchenName, price)), pointer);
+					addBalance(recieveFeedback(target, "addBalance"));
 					sendFeedback("setPrice", recieveFeedback(target, "setPriceFeedback"));
 				} else {
 					sendFeedback("setPrice", new Tuple(user, kitchenName, false, "Dagen findes ikke"));
