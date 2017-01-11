@@ -149,7 +149,9 @@ public class Day {
 					feedback(feedback, false, "The price was already set to " + t.getElementAt(Integer.class, 2)
 							+ ", but has been replaced.");
 				}
+				System.out.println("DayAddBalanceBefore");
 				addBalance();
+				System.out.println("DayAddBalanceAfter");
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -237,12 +239,15 @@ public class Day {
 			LinkedList<Tuple> attendeesTupleList = queryAll(new Template(new ActualTemplateField("attendee"),
 					new FormalTemplateField(String.class), new FormalTemplateField(Integer.class)));
 			ArrayList<String> list = new ArrayList<>();
-
+			
 			ListIterator<Tuple> iterator = attendeesTupleList.listIterator();
-			while (attendeesTupleList.listIterator().hasNext()) {
+			while (iterator.hasNext()) {
 				Tuple t = iterator.next();
+				System.out.println("ER I PARATE BØRN!");
 				for (int j = 0; j <= t.getElementAt(Integer.class, 2); j++) {
+					System.out.println("HVEM BOR I EN ANNANAS DYBT I DET BLÅ???");
 					list.add(t.getElementAt(String.class, 1));
+					System.out.println("SVAMPEBOB FIRKANT!");
 				}
 			}
 			return list;
