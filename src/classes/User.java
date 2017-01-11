@@ -22,6 +22,7 @@ public class User {
 	protected PointToPoint p = new PointToPoint("Server", Server.vp.getAddress());
 	protected String command;
 	private int extra;
+	private String feedbackMsg;
 
 	public User(String userName, String kitchenName) {
 		this.userName = userName;
@@ -82,8 +83,8 @@ public class User {
 						t = get(feedback, Self.SELF);
 
 						dataTuple = t.getElementAt(Tuple.class, 1);
-
-						System.out.println(dataTuple.getElementAt(String.class, 3));
+						feedbackMsg = dataTuple.getElementAt(String.class, 3);
+						System.out.println(feedbackMsg);
 						System.out.println(userName + " got SOME feedback.");
 						System.out.println("VICTORY \\o/");
 					} catch (Exception e) {
