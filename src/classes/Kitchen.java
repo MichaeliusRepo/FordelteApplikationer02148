@@ -121,6 +121,10 @@ public class Kitchen {
 				break;
 			// case "changeChef":
 			// System.out.println("changeChef");
+			// break;
+			case "getAttendees":
+				getAttendees(data);
+				System.out.println("getAttendees");
 			}
 		}
 
@@ -196,13 +200,32 @@ public class Kitchen {
 					put(new Tuple("unattendDay", data), pointer);
 					sendFeedback("unattendDay", recieveFeedback(target, "unattendDayFeedback"));
 				} else {
-					sendFeedback("unattendDay", new Tuple(user, kitchenName, "Dagen findes ikke"));
+					sendFeedback("unattendDay", new Tuple(user, kitchenName, false, "Dagen findes ikke"));
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 
+		private void getAttendees(Tuple data){
+			int day = data.getElementAt(Integer.class, 2);
+			int month = data.getElementAt(Integer.class, 3);
+			int year = data.getElementAt(Integer.class, 4);
+			String target = "" + day + "" + month + "" + year;
+			
+			try{
+				if(checkDayExists(target)){
+					pointer = new PointToPoint(target, Server.vp.getAddress());
+					put(new Tuple("getAttendees", data),pointer);
+					sendFeedback("getAttendees", recieveFeedback(target, "getAttendeesFeedback"));
+				}else{
+					sendFeedback("getAttendees", new Tuple(user, kitchenName, false, "Dagen findes ikke"));
+				}
+			}catch (Exception e){
+				e.printStackTrace();
+			}
+		}
+		
 		private void addChef(Tuple data) {
 			int day = data.getElementAt(Integer.class, 2);
 			int month = data.getElementAt(Integer.class, 3);
