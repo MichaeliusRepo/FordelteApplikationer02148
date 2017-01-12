@@ -52,11 +52,7 @@ public class Day {
 					Tuple t = getp(cmdTemp);
 
 					if (t != null) {
-						Tuple data = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
-						String cmd = t.getElementAt(String.class, ECommand.COMMAND.getValue());
-						String userName = t.getElementAt(String.class, ECommand.USERNAME.getValue());
-						String kitchenName = t.getElementAt(String.class, ECommand.KITCHEN.getValue());
-						exec(new DayAgent(cmd, userName, kitchenName, data));
+						exec(new DayAgent(t));
 					}
 				}
 
@@ -75,12 +71,12 @@ public class Day {
 		Tuple data;
 		ArrayList<String> attendeesList;
 
-		public DayAgent(String cmd, String userName, String kitchenName, Tuple data) {
-			super(data.getElementAt(String.class, 0));
-			this.data = data;
-			this.cmd = cmd;
-			this.kitchenName = data.getElementAt(String.class, 1);
-			this.userName = data.getElementAt(String.class, 0);
+		public DayAgent(Tuple data) {
+			super(data.getElementAt(String.class, ECommand.USERNAME.getValue()));
+			this.data = data.getElementAt(Tuple.class, ECommand.DATA.getValue());
+			this.cmd = data.getElementAt(String.class, ECommand.COMMAND.getValue());
+			this.kitchenName = data.getElementAt(String.class, ECommand.KITCHEN.getValue());
+			this.userName = data.getElementAt(String.class, ECommand.USERNAME.getValue());
 
 		}
 
