@@ -22,7 +22,7 @@ public class User {
 	private String kitchenName;
 	private PointToPoint p = new PointToPoint("Server", Server.vp.getAddress());
 	private String command;
-	private String feedbackMsg = null;
+	private String feedbackMsg;
 	private final ArrayList<String> kitchens = new ArrayList<String>();
 
 	public User(String userName, String kitchenName) {
@@ -61,7 +61,7 @@ public class User {
 				put(t, p); // AddDay sent to server
 
 				t = get(feedback, Self.SELF);
-				dataTuple = t.getElementAt(Tuple.class, 1);
+				dataTuple = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
 				feedbackMsg = dataTuple.getElementAt(String.class, 3);
 				System.out.println(userName + " got feedback: " + feedbackMsg);
 

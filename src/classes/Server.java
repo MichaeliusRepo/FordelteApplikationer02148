@@ -63,7 +63,11 @@ public class Server {
 
 		private Tuple t;
 		private Tuple tupleData;
-		private Template what = new Template(new FormalTemplateField(String.class),
+		private Template what = new Template(
+				new FormalTemplateField(String.class),
+				new FormalTemplateField(String.class),
+				new FormalTemplateField(String.class),
+				new FormalTemplateField(Boolean.class),
 				new FormalTemplateField(Tuple.class));
 
 		private Monitor(String who) {
@@ -78,8 +82,8 @@ public class Server {
 					// list = queryAll(what);
 					// list = getAll(what);
 					t = get(what, Self.SELF);
-					tupleData = t.getElementAt(Tuple.class, 1);
-					String command = t.getElementAt(String.class, 0);
+					String command = t.getElementAt(String.class, ECommand.COMMAND.getValue());
+					tupleData = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
 
 					if (!command.contains("Feedback")) {
 						System.out.println(
@@ -88,13 +92,11 @@ public class Server {
 										+ tupleData.getElementAt(Integer.class, EDayData.MONTH.getValue()) + "/"
 										+ tupleData.getElementAt(Integer.class, EDayData.YEAR.getValue()) + " to "
 										+ t.getElementAt(String.class, ECommand.KITCHEN.getValue()));
-
 						/*
 						 * Since the tuple went in here, this is a great time to
 						 * check that the user is a valid source and not
 						 * malicious
 						 */
-
 						Agent agent = new ServerAgent(command, t);
 						exec(agent);
 					} else {
@@ -127,9 +129,8 @@ public class Server {
 		@Override
 		protected void doRun() {
 			try {
-				Tuple tupleData = t.getElementAt(Tuple.class, 1);
-				String kitchenName = tupleData.getElementAt(String.class, 1);
-				PointToPoint p = new PointToPoint(kitchenName, vp.getAddress());
+				Tuple tupleData = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
+				PointToPoint p = new PointToPoint(t.getElementAt(String.class, ECommand.KITCHEN.getValue()), vp.getAddress());
 				put(t, p);
 			} catch (Exception e) {
 				e.printStackTrace();
