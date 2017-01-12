@@ -3,7 +3,9 @@ package application;
 import java.io.IOException;
 
 import classes.Server;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -14,9 +16,15 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class KitchenController {
-	Server dinnerClub;
+	private Server dinnerClub;
+	private String user;
+	
+	
+    ////////////////////////
+    // Select kitchen
 	
     @FXML
     private Button newKitchen;
@@ -51,32 +59,6 @@ public class KitchenController {
 
     }
 
-	private void newScene(ActionEvent event, String path, String user) throws IOException {
-		((Node) event.getSource()).getScene().getWindow().hide();
-		FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
-		Parent root = loader.load();
-		
-		if(path.equals("/application/Login.fxml")){
-			LoginController controller = loader.getController();
-			controller.setServer(dinnerClub);
-		} else if(path.equals("/application/KitchenFrame.fxml") ){
-			KitchenController controller = loader.getController();
-			controller.setServer(dinnerClub);
-			controller.findUsersKitchens(user);
-		} else if(path.equals("/application/CreateDinnerClub.fxml")){
-			KitchenController controller = loader.getController();
-			controller.setServer(dinnerClub);
-			controller.setUser(user);
-		}
-		
-		Scene scene = new Scene(root,400,400);
-		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-		Stage stage = new Stage();
-		stage.setScene(scene);
-		stage.setTitle("Dinner Club");
-		stage.show();
-	}
-
     @FXML
     void selectDinnerClub(ActionEvent event) {
     	System.out.println(((RadioButton)toggleGroup.getSelectedToggle()).getText());
@@ -95,7 +77,6 @@ public class KitchenController {
     @FXML
     void newClubButtonClicked(ActionEvent event) {
     	if(!newKitchenName.getText().equals("")){
-    		
     		System.out.println("new Kicthen creating: "+dinnerClub);
         	if(dinnerClub.addKitchen(newKitchenName.getText())){
         		System.out.println("A new kitchen has been created: "+newKitchenName.getText());
@@ -109,8 +90,6 @@ public class KitchenController {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-        	
-        	
     	} else {
     		System.out.println("not valid: Remember to write a name");
     	}
@@ -118,8 +97,6 @@ public class KitchenController {
     
     @FXML
     private Button backButton;
-
-	private String user;
 
     @FXML
     void backToKitchenFrame(ActionEvent event) {
@@ -162,6 +139,39 @@ public class KitchenController {
     		kitchen.setVisible(false);
     	}
     }
+    
+	private void newScene(ActionEvent event, String path, String user) throws IOException {
+		((Node) event.getSource()).getScene().getWindow().hide();
+		FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
+		Parent root = loader.load();
+		
+		if(path.equals("/application/Login.fxml")){
+			LoginController controller = loader.getController();
+			controller.setServer(dinnerClub);
+		} else if(path.equals("/application/KitchenFrame.fxml") ){
+			KitchenController controller = loader.getController();
+			controller.setServer(dinnerClub);
+			controller.findUsersKitchens(user);
+		} else if(path.equals("/application/CreateDinnerClub.fxml")){
+			KitchenController controller = loader.getController();
+			controller.setServer(dinnerClub);
+			controller.setUser(user);
+		}
+		
+		Scene scene = new Scene(root,400,400);
+		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+		Stage stage = new Stage();
+		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            
+            public void handle(WindowEvent t) {
+                Platform.exit();
+                System.exit(0);
+            }
+});
+		stage.setScene(scene);
+		stage.setTitle("Dinner Club");
+		stage.show();
+	}
 
 
 	

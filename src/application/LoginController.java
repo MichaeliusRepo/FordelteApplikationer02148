@@ -1,6 +1,8 @@
 package application;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -10,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 
@@ -131,11 +134,17 @@ public class LoginController {
 			controller.findUsersKitchens(username.getText());
 		}
 		
-		
-		
 		Scene scene = new Scene(root,400,400);
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		Stage stage = new Stage();
+		
+		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            public void handle(WindowEvent t) {
+                Platform.exit();
+                System.exit(0);
+            }
+		});
+		
 		stage.setScene(scene);
 		stage.setTitle("Dinner Club");
 		stage.show();
