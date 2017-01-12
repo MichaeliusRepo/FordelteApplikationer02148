@@ -120,7 +120,6 @@ public class KitchenController {
     	setRadioButtons(userName,kitchen4, 3);
     }
     
-    
     private void setRadioButtons(String userName, RadioButton kitchen, int i){
     	if(dinnerClub.getUser(userName).getKitchenName(i) != null){
     		kitchen.setText(dinnerClub.getUser(userName).getKitchenName(i));

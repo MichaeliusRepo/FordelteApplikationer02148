@@ -88,6 +88,7 @@ public class LoginController {
 		newScene(event, "/application/Login.fxml");
 	}
 
+	
 	//////////////////////////////
 	// controller methods
 
