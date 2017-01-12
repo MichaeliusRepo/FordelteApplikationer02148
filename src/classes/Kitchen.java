@@ -346,19 +346,14 @@ public class Kitchen {
 		// }
 
 		private void setPrice(Tuple data) {
-			int day = data.getElementAt(Integer.class, EDayData.DAY.getValue());
-			int month = data.getElementAt(Integer.class, EDayData.MONTH.getValue());
-			int year = data.getElementAt(Integer.class, EDayData.YEAR.getValue());
-			int price = data.getElementAt(Integer.class, EDayData.EXTRA.getValue());
-			String target = "" + day + month + year;
+			int price = data.getElementAt(Integer.class, 0);
 
 			try {
-				if (checkDayExists(target)) {
-					pointer = new PointToPoint(target, Server.vp.getAddress());
+				if (checkDayExists(dayTarget)) {
 					put(new Tuple("setPrice", userName, kitchenName, false, new Tuple(price)), pointer);
-					sendFeedback("setPriceFeedback", recieveFeedback(target, "setPriceFeedback"));
+					sendFeedback("setPriceFeedback", recieveFeedback(dayTarget, "setPriceFeedback"));
 					System.out.println("Before addBalance");
-					Tuple test = recieveFeedback(target, "addBalance");
+					Tuple test = recieveFeedback(dayTarget, "addBalance");
 					addBalance(test);
 					System.out.println("addBalance");
 				} else {
