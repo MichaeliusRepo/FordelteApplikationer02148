@@ -23,6 +23,7 @@ public class BaseMethodTest {
 	private final int day = 29;
 	private final int month = 2;
 	private final int year = 2016;
+	private final int milliseconds = 200;
 
 	@Before
 	public void setup() throws Exception {
@@ -30,26 +31,26 @@ public class BaseMethodTest {
 		user = dinnerClub.getUser(userName);
 
 		user.command("addDay", day, month, year, 0);
-		Thread.sleep(100);
+		Thread.sleep(milliseconds);
 	}
 
 	@Test
 	public void addDay() throws Exception {
-		assertEquals(user.getFeedbackMsg(), "Dagen blev lavet");
+		assertEquals(user.getFeedbackMsg(), "Day created.");
 
 		user.command("addDay", day, month, year, 0);
-		Thread.sleep(100);
-		assertEquals(user.getFeedbackMsg(), "Dagen findes allerede");
+		Thread.sleep(milliseconds);
+		assertEquals(user.getFeedbackMsg(), "Day already exists");
 	}
 
 	@Test
 	public void addChef() throws Exception {
 		user.command("addChef", day, month, year, 0);
-		Thread.sleep(100);
+		Thread.sleep(milliseconds);
 		assertEquals(user.getFeedbackMsg(), userName + " was added as a chef.");
 
 		user.command("addChef", day, month, year, 0);
-		Thread.sleep(100);
+		Thread.sleep(milliseconds);
 		assertEquals(user.getFeedbackMsg(), userName + " is already a chef.");
 
 		String str = "Mathias";
@@ -59,7 +60,7 @@ public class BaseMethodTest {
 		String user2Feedback = null;
 		
 		user2.command("addChef", day, month, year, 0);
-		Thread.sleep(100);
+		Thread.sleep(milliseconds);
 		user2Feedback = user.getFeedbackMsg();
 		assertNotEquals(user2Feedback, null);
 		assertNotEquals(user2Feedback, "Den valgte dag findes ikke");
@@ -69,33 +70,33 @@ public class BaseMethodTest {
 		dinnerClub.newUser(str2, kitchenName);
 		User user3 = dinnerClub.getUser(str2);
 		user3.command("addChef", day, month, year, 0);
-		Thread.sleep(100);
+		Thread.sleep(milliseconds);
 		assertEquals(user3.getFeedbackMsg(), "There are already two chefs.");
 	}
 
 	@Test
 	public void attendDay() throws Exception {
 		user.command("attendDay", day, month, year, 0);
-		Thread.sleep(100);
+		Thread.sleep(milliseconds);
 		assertEquals(user.getFeedbackMsg(), userName + " added with 0 attendees.");
 
 		user.command("attendDay", day, month, year, 5);
-		Thread.sleep(100);
+		Thread.sleep(milliseconds);
 		assertEquals(user.getFeedbackMsg(), userName + " added with 5 attendees.");
 	}
 
 	@Test
 	public void unattendDay() throws Exception {
 		user.command("attendDay", day, month, year, 0);
-		Thread.sleep(100);
+		Thread.sleep(milliseconds);
 		assertEquals(user.getFeedbackMsg(), userName + " added with 0 attendees.");
 
 		user.command("unattendDay", day, month, year, 0);
-		Thread.sleep(100);
+		Thread.sleep(milliseconds);
 		assertEquals(user.getFeedbackMsg(), userName + " is no longer attending on: " + day + "/" + month + "/" + year);
 
 		user.command("unattendDay", day, month, year, 0);
-		Thread.sleep(100);
+		Thread.sleep(milliseconds);
 		assertEquals(user.getFeedbackMsg(), userName + " isn't set to attend that day.");
 	}
 
@@ -103,13 +104,13 @@ public class BaseMethodTest {
 	public void lockDay() throws Exception {
 		String feedback = null;
 		user.command("lockDay", day, month, year, 0);
-		Thread.sleep(100);
+		Thread.sleep(milliseconds);
 		feedback = user.getFeedbackMsg();
 		assertNotEquals(feedback, null);
 
 		feedback = null;
 		user.command("lockDay", day, month, year, 0);
-		Thread.sleep(100);
+		Thread.sleep(milliseconds);
 		feedback = user.getFeedbackMsg();
 		assertNotEquals(feedback, null);
 	}
@@ -117,66 +118,56 @@ public class BaseMethodTest {
 	@Test
 	public void removeDay() throws Exception {
 		user.command("removeDay", day, month, year, 0);
-		Thread.sleep(100);
-		assertEquals(user.getFeedbackMsg(), "Dagen er blevet slettet");
+		Thread.sleep(milliseconds);
+		assertEquals(user.getFeedbackMsg(), "Day was deleted.");
 
 		user.command("removeDay", day, month, year, 0);
-		Thread.sleep(100);
-		assertEquals(user.getFeedbackMsg(), "Den valgte dag findes ikke");
+		Thread.sleep(milliseconds);
+		assertEquals(user.getFeedbackMsg(), "The chosen day doesn't exist.");
 	}
 
+	
+	// TODO This methods are yet to be fully implemented, it seems.
 	@Test
 	public void getChef() throws Exception {		
-		String feedback = null;
 		user.command("getChef", day, month, year, 0);
-		Thread.sleep(100);
-		feedback = user.getFeedbackMsg();
-		assertNotEquals(feedback, null);
+		Thread.sleep(milliseconds);
+		assertNotEquals(user.getFeedbackMsg(),"Day created.");
 	}
 
 	@Test
 	public void setPrice() throws Exception {
-		String feedback = null;
 		user.command("setPrice", day, month, year, 200);
-		Thread.sleep(100);
-		feedback = user.getFeedbackMsg();
-		assertNotEquals(feedback, null);
+		Thread.sleep(milliseconds);
+		assertNotEquals(user.getFeedbackMsg(),"Day created.");
 	}
 
 	@Test
 	public void getPrice() throws Exception {
-		String feedback = null;
 		user.command("getPrice", day, month, year, 0);
-		Thread.sleep(100);
-		feedback = user.getFeedbackMsg();
-		assertNotEquals(feedback, null);
+		Thread.sleep(milliseconds);
+		assertNotEquals(user.getFeedbackMsg(),"Day created.");
 	}
 
 	@Test
 	public void getAttendees() throws Exception {
-		String feedback = null;
 		user.command("getAttendees", day, month, year, 0);
-		Thread.sleep(100);
-		feedback = user.getFeedbackMsg();
-		assertNotEquals(feedback, null);
+		Thread.sleep(milliseconds);
+		assertNotEquals(user.getFeedbackMsg(),"Day created.");
 	}
 
 	@Test
 	public void resetBalance() throws Exception {
-		String feedback = null;
 		user.command("resetUserBalance", day, month, year, 0);
-		Thread.sleep(100);
-		feedback = user.getFeedbackMsg();
-		assertNotEquals(feedback, null);
+		Thread.sleep(milliseconds);
+		assertNotEquals(user.getFeedbackMsg(),"Day created.");
 	}
 
 	@Test
 	public void getBalance() throws Exception {
-		String feedback = null;
 		user.command("getBalance", day, month, year, 0);
-		Thread.sleep(100);
-		feedback = user.getFeedbackMsg();
-		assertNotEquals(feedback, null);
+		Thread.sleep(milliseconds);
+		assertNotEquals(user.getFeedbackMsg(),"Day created.");
 	}
 
 }
