@@ -142,10 +142,10 @@ public class Kitchen {
 					pointer = new PointToPoint(target, Server.vp.getAddress());
 					get(new Template(new ActualTemplateField("dayCreated")), pointer);
 
-					sendFeedback("addDay", new Tuple(user, kitchenName, true, "Dagen blev lavet"));
+					sendFeedback("addDay", new Tuple(user, kitchenName, true, "Day created."));
 
 				} else
-					sendFeedback("addDay", new Tuple(user, kitchenName, false, "Dagen findes allerede"));
+					sendFeedback("addDay", new Tuple(user, kitchenName, false, "Day already exists"));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -157,10 +157,10 @@ public class Kitchen {
 
 			try {
 				if (!checkDayExists(target)) {
-					sendFeedback("removeDay", new Tuple(user, kitchenName, false, "Den valgte dag findes ikke"));
+					sendFeedback("removeDay", new Tuple(user, kitchenName, false, "The chosen day doesn't exist."));
 				} else {
 					get(new Template(new ActualTemplateField(target), new FormalTemplateField(Day.class)), Self.SELF);
-					sendFeedback("removeDay", new Tuple(user, kitchenName, true, "Dagen er blevet slettet"));
+					sendFeedback("removeDay", new Tuple(user, kitchenName, true, "Day was deleted."));
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -177,7 +177,7 @@ public class Kitchen {
 
 			try {
 				if (!checkDayExists(target))
-					sendFeedback("attendDay", new Tuple(user, kitchenName, false, "Den valgte dag findes ikke"));
+					sendFeedback("attendDay", new Tuple(user, kitchenName, false, "The chosen day doesn't exist."));
 				else {
 					pointer = new PointToPoint(target, Server.vp.getAddress());
 					put(new Tuple("attendDay", new Tuple(user, kitchenName, attendees)), pointer);
@@ -200,7 +200,7 @@ public class Kitchen {
 					put(new Tuple("unattendDay", new Tuple(user, kitchenName)), pointer);
 					sendFeedback("unattendDay", recieveFeedback(target, "unattendDayFeedback"));
 				} else {
-					sendFeedback("unattendDay", new Tuple(user, kitchenName, false, "Dagen findes ikke"));
+					sendFeedback("unattendDay", new Tuple(user, kitchenName, false, "Day doesn't exist"));
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -219,7 +219,7 @@ public class Kitchen {
 					put(new Tuple("getAttendees", new Tuple(user, kitchenName)), pointer);
 					sendFeedback("getAttendees", recieveFeedback(target, "getAttendeesFeedback"));
 				} else {
-					sendFeedback("getAttendees", new Tuple(user, kitchenName, false, "Dagen findes ikke"));
+					sendFeedback("getAttendees", new Tuple(user, kitchenName, false, "Day doesn't exist"));
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -238,7 +238,7 @@ public class Kitchen {
 					put(new Tuple("addChef", new Tuple(user, kitchenName)), pointer);
 					sendFeedback("addChef", recieveFeedback(target, "addChefFeedback"));
 				} else {
-					sendFeedback("addChef", new Tuple(user, kitchenName, false, "Dagen findes ikke"));
+					sendFeedback("addChef", new Tuple(user, kitchenName, false, "Day doesn't exist"));
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -257,13 +257,13 @@ public class Kitchen {
 					pointer = new PointToPoint(target, Server.vp.getAddress());
 					put(new Tuple("setPrice", new Tuple(user, kitchenName, price)), pointer);
 					sendFeedback("setPrice", recieveFeedback(target, "setPriceFeedback"));
-					System.out.println("Inden addBalance");
+					System.out.println("Before addBalance");
 					//Template testtemp = new Template(new FormalTemplateField(Tuple.class), new ActualTemplateField("addBalance"), new ActualTemplateField("test"));
 					Tuple testt = recieveFeedback(target, "addBalance");
 					addBalance(testt);
 					System.out.println("addBalance");
 				} else {
-					sendFeedback("setPrice", new Tuple(user, kitchenName, false, "Dagen findes ikke"));
+					sendFeedback("setPrice", new Tuple(user, kitchenName, false, "Day doesn't exist"));
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -311,7 +311,7 @@ public class Kitchen {
 					put(new Tuple("lockDay", data), pointer);
 					sendFeedback("lockDay", recieveFeedback(target, "lockDayFeedback"));
 				} else {
-					sendFeedback("lockDay", new Tuple(user, kitchenName, false, "Dagen findes ikke"));
+					sendFeedback("lockDay", new Tuple(user, kitchenName, false, "Day doesn't exist"));
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

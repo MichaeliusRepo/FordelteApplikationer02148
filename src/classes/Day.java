@@ -100,6 +100,10 @@ public class Day {
 					case "addChef":
 						addChef(userName);
 						break;
+						
+					case "getAttendees":
+						getAttendees();
+						break;
 
 					}
 				} else if (queryp(new Template(new ActualTemplateField("locked"))) != null) {
@@ -107,6 +111,10 @@ public class Day {
 					case "setPrice":
 						this.price = data.getElementAt(Integer.class, 2);
 						setPrice(price);
+						break;
+						
+					case "getAttendees":
+						getAttendees();
 						break;
 					}
 				} else {
