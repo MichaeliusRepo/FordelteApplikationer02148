@@ -12,7 +12,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.LoginController">
    <children>
-      <Label contentDisplay="CENTER" layoutX="103.0" layoutY="84.0" rotate="6.3" text="Dinner Club">
+      <Label contentDisplay="CENTER" layoutX="103.0" layoutY="84.0" text="Dinner Club">
          <font>
             <Font size="35.0" />
          </font>
@@ -30,12 +30,12 @@
             <RowConstraints maxHeight="69.0" minHeight="10.0" prefHeight="69.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="newUserButton" mnemonicParsing="false" onAction="#newUserButtonClicked" prefHeight="27.0" prefWidth="134.0" rotate="-21.3" text="New user" GridPane.rowIndex="4" />
-            <Button fx:id="loginButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#loginButtonClicked" prefHeight="27.0" prefWidth="185.0" rotate="21.8" text="Login" GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <Button fx:id="newUserButton" mnemonicParsing="false" onAction="#newUserButtonClicked" prefHeight="27.0" prefWidth="134.0" text="New user" GridPane.rowIndex="4" />
+            <Button fx:id="loginButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#loginButtonClicked" prefHeight="27.0" prefWidth="185.0" text="Login" GridPane.columnIndex="1" GridPane.rowIndex="4">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin></Button>
-            <TextField fx:id="usernameTextField" prefHeight="50.0" prefWidth="200.0" promptText="Username" rotate="179.1" GridPane.columnSpan="2" GridPane.rowSpan="2">
+            <TextField fx:id="usernameTextField" onKeyTyped="#loginEnterTyped" prefHeight="50.0" prefWidth="200.0" promptText="Username" GridPane.columnSpan="2" GridPane.rowSpan="2">
                <font>
                   <Font size="18.0" />
                </font>
