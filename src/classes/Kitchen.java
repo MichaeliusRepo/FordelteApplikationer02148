@@ -32,7 +32,8 @@ public class Kitchen {
 	public class KitchenMonitor extends Agent {
 
 		Tuple t;
-		Template kitchenTemplate = new Template(new FormalTemplateField(String.class),
+		// <String command, String user, String kitchenName, Boolean feedback, Tuple data>
+		Template kitchenTemplate = new Template(new FormalTemplateField(String.class),new FormalTemplateField(String.class),new FormalTemplateField(String.class),new ActualTemplateField(false),
 				new FormalTemplateField(Tuple.class));
 
 		public KitchenMonitor(String who) {
@@ -52,8 +53,8 @@ public class Kitchen {
 					}
 					while(true){
 					t = get(kitchenTemplate, Self.SELF);
-					Tuple data = t.getElementAt(Tuple.class, 1);
-					String cmd = t.getElementAt(String.class, 0);
+					Tuple data = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
+					String cmd = t.getElementAt(String.class, ECommand.COMMAND.getValue());
 					exec(new KitchenAgent(cmd, data));
 					}
 				} catch (Exception e) {
@@ -69,7 +70,7 @@ public class Kitchen {
 		Tuple data;
 		String user;
 		String cmd;
-
+		
 		public KitchenAgent(String cmd, Tuple data) {
 			super(cmd);
 			this.data = data;
@@ -137,10 +138,10 @@ public class Kitchen {
 		}
 
 		private void addDay(Tuple data) {
-			int day = data.getElementAt(Integer.class, 2);
-			int month = data.getElementAt(Integer.class, 3);
-			int year = data.getElementAt(Integer.class, 4);
-			String target = "" + day + "" + month + "" + year;
+			int day = data.getElementAt(Integer.class, EDayData.DAY.getValue());
+			int month = data.getElementAt(Integer.class, EDayData.MONTH.getValue());
+			int year = data.getElementAt(Integer.class, EDayData.YEAR.getValue());
+			String target = "" + day + month + year;
 
 			try {
 
@@ -148,7 +149,7 @@ public class Kitchen {
 
 					put(new Tuple(target, new Day(day, month, year)), Self.SELF);
 					pointer = new PointToPoint(target, Server.vp.getAddress());
-					get(new Template(new ActualTemplateField("dayCreated")), pointer);
+					get(feedbackTemplate("addDay"), pointer);
 
 					sendFeedback("addDay", new Tuple(user, kitchenName, true, "Day created."));
 
@@ -160,7 +161,7 @@ public class Kitchen {
 		}
 
 		private void removeDay(Tuple data) {
-			String target = "" + data.getElementAt(Integer.class, 2) + "" + data.getElementAt(Integer.class, 3) + ""
+			String target = "" + data.getElementAt(Integer.class, 2) + data.getElementAt(Integer.class, 3)
 					+ data.getElementAt(Integer.class, 4);
 
 			try {
@@ -328,14 +329,9 @@ public class Kitchen {
 
 		private Tuple recieveFeedback(String target, String feedbackCmd) {
 			try {
-				pointer = new PointToPoint(target, Server.vp.getAddress());
-				Template what = new Template(new FormalTemplateField(Tuple.class),
-						new ActualTemplateField(feedbackCmd));
-				//System.out.println(queryEmpty(what));
-				
-				Tuple feedbackTuple = get(what, pointer);
-				Tuple feedbackReturnTuple = feedbackTuple.getElementAt(Tuple.class, 0);
-				return feedbackReturnTuple;
+				pointer = new PointToPoint(target, Server.vp.getAddress());				
+				Tuple feedbackTuple = get(feedbackTemplate(feedbackCmd), pointer);
+				return feedbackTuple.getElementAt(Tuple.class, ECommand.DATA.getValue());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -357,7 +353,15 @@ public class Kitchen {
 					new FormalTemplateField(Day.class));
 			return (queryp(checkDayTemplate) == null) ? false : true;
 		}
-
+		
+		private Template feedbackTemplate(String command){
+			// <String command, String user, String kitchenName, Boolean feedback, Tuple data>
+			Template feedbackTemplate = new Template(new ActualTemplateField(command),
+					new FormalTemplateField(String.class), new FormalTemplateField(String.class),
+					new ActualTemplateField(true), new FormalTemplateField(Tuple.class));
+			return feedbackTemplate;
+		}
+		
 		// Use for debugging :-)))))
 		private boolean queryEmpty(Template t) {
 			LinkedList<Tuple> getAll = queryAll(t);
