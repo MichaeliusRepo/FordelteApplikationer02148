@@ -35,7 +35,8 @@ public class Day {
 		// The monitor searches for tuples with the info:
 		// <COMMAND, USERNAME, KITCHENNAME, FEEDBACK, DATA>
 		Template cmdTemp = new Template(new FormalTemplateField(String.class), new FormalTemplateField(String.class),
-				new FormalTemplateField(String.class), new ActualTemplateField(false), new FormalTemplateField(Tuple.class));
+				new FormalTemplateField(String.class), new ActualTemplateField(false),
+				new FormalTemplateField(Tuple.class));
 
 		public DayMonitor(String name) {
 			super(name);
@@ -241,7 +242,8 @@ public class Day {
 			try {
 
 				attendeesList = setAttendees();
-				put(new Tuple(new Tuple(dayName, kitchenName, buyer, price, attendeesList), "addBalance"), Self.SELF);
+				put(new Tuple("addBalance", userName, kitchenName, true,
+						(new Tuple(dayName, kitchenName, buyer, price, attendeesList)), "addBalance"), Self.SELF);
 
 			} catch (Exception e) {
 
