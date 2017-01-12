@@ -22,10 +22,6 @@
       <RadioButton fx:id="kitchen2" layoutX="141.0" layoutY="125.0" mnemonicParsing="false" toggleGroup="$toggleGroup" />
       <RadioButton fx:id="kitchen3" layoutX="141.0" layoutY="159.0" mnemonicParsing="false" toggleGroup="$toggleGroup" />
       <Button fx:id="select" layoutX="200.0" layoutY="248.0" mnemonicParsing="false" onAction="#selectDinnerClub" prefWidth="170.0" text="Select" />
-      <RadioButton fx:id="kitchen4" layoutX="140.0" layoutY="192.0" mnemonicParsing="false">
-         <toggleGroup>
-            <ToggleGroup fx:id="toggleGroup1" />
-         </toggleGroup>
-      </RadioButton>
+      <RadioButton fx:id="kitchen4" layoutX="140.0" layoutY="192.0" mnemonicParsing="false" toggleGroup="$toggleGroup" />
    </children>
 </AnchorPane>
