@@ -14,9 +14,9 @@ import org.cmg.jresp.topology.PointToPoint;
 import org.cmg.jresp.topology.Self;
 
 public class Kitchen {
-	protected String kitchenName;
-	protected Node kitchenSpace;
-	protected Budget budget;
+	private String kitchenName;
+	private Node kitchenSpace;
+	private Budget budget;
 
 	public Kitchen(String kitchenName) {
 		this.kitchenName = kitchenName;
@@ -28,17 +28,21 @@ public class Kitchen {
 		kitchenSpace.addAgent(monitor);
 		kitchenSpace.start();
 	}
+	
+	public String getKitchenName() {
+		return kitchenName;
+	}
 
-	public class KitchenMonitor extends Agent {
+	private class KitchenMonitor extends Agent {
 
-		Tuple t;
+		private Tuple t;
 		// <String command, String user, String kitchenName, Boolean feedback,
 		// Tuple data>
-		Template kitchenTemplate = new Template(new FormalTemplateField(String.class),
+		private Template kitchenTemplate = new Template(new FormalTemplateField(String.class),
 				new FormalTemplateField(String.class), new FormalTemplateField(String.class),
 				new ActualTemplateField(false), new FormalTemplateField(Tuple.class));
 
-		public KitchenMonitor(String who) {
+		private KitchenMonitor(String who) {
 			super(who);
 
 		}
@@ -47,11 +51,7 @@ public class Kitchen {
 		protected void doRun() {
 
 			try {
-				try {
-					put(new Tuple("Budget" + kitchenName, new Budget(kitchenName)), Self.SELF);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				put(new Tuple("Budget" + kitchenName, new Budget(kitchenName)), Self.SELF);
 				while (true) {
 					t = get(kitchenTemplate, Self.SELF);
 					Tuple data = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
@@ -65,31 +65,29 @@ public class Kitchen {
 		}
 	}
 
-	public class KitchenAgent extends Agent {
-		protected PointToPoint pointer, serverPointer, budgetPointer;
-
-		Tuple data;
-		String userName, cmd, dayTarget;
-		int day, month, year;
+	private class KitchenAgent extends Agent {
 		
+		private PointToPoint pointer, serverPointer, budgetPointer;
+		private Tuple data;
+		private String userName, cmd, dayTarget;
+		private int day, month, year;
 
-		public KitchenAgent(String cmd, Tuple data) {
+		private KitchenAgent(String cmd, Tuple data) {
 			super(cmd);
 			this.cmd = cmd;
-			this.userName = data.getElementAt(String.class, 0);
-			
+			// this.userName = data.getElementAt(String.class, 0);
+
 			this.day = data.getElementAt(Integer.class, EDayData.DAY.getValue());
 			this.month = data.getElementAt(Integer.class, EDayData.MONTH.getValue());
 			this.year = data.getElementAt(Integer.class, EDayData.YEAR.getValue());
-			
+
 			dayTarget = "" + day + month + year;
 			this.data = new Tuple(data.getElementAt(Integer.class, EDayData.EXTRA.getValue()));
-			
+
 			serverPointer = new PointToPoint("Server", Server.vp.getAddress());
 			budgetPointer = new PointToPoint("Budget" + kitchenName, Server.vp.getAddress());
 			pointer = new PointToPoint(dayTarget, Server.vp.getAddress());
-			
-			
+
 		}
 
 		@Override
@@ -200,126 +198,151 @@ public class Kitchen {
 			}
 		}
 
-//		private void addDay(Tuple data) {
-//			int day = data.getElementAt(Integer.class, EDayData.DAY.getValue());
-//			int month = data.getElementAt(Integer.class, EDayData.MONTH.getValue());
-//			int year = data.getElementAt(Integer.class, EDayData.YEAR.getValue());
-//			String target = "" + day + month + year;
-//
-//			try {
-//
-//				if (!checkDayExists(target)) {
-//
-//					put(new Tuple(target, new Day(day, month, year)), Self.SELF);
-//					pointer = new PointToPoint(target, Server.vp.getAddress());
-//					get(feedbackTemplate("addDay"), pointer);
-//
-//					sendFeedback("addDayFeedback", new Tuple(true, "Day created."));
-//
-//				} else
-//					sendFeedback("addDayFeedback", new Tuple(false, "Day already exists"));
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//		}
-//
-//		private void removeDay(Tuple data) {
-//			int day = data.getElementAt(Integer.class, EDayData.DAY.getValue());
-//			int month = data.getElementAt(Integer.class, EDayData.MONTH.getValue());
-//			int year = data.getElementAt(Integer.class, EDayData.YEAR.getValue());
-//			String target = "" + day + month + year;
-//
-//			try {
-//				if (!checkDayExists(target)) {
-//					sendFeedback("removeDay", new Tuple(false, "The chosen day doesn't exist."));
-//				} else {
-//					Template dayTemp = new Template(new ActualTemplateField(target),
-//							new FormalTemplateField(Day.class));
-//					get(dayTemp, Self.SELF);
-//					sendFeedback("removeDay", new Tuple(true, "Day was deleted."));
-//				}
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//
-//		}
-//
-//		private void attendDay(Tuple data) {
-//			int day = data.getElementAt(Integer.class, EDayData.DAY.getValue());
-//			int month = data.getElementAt(Integer.class, EDayData.MONTH.getValue());
-//			int year = data.getElementAt(Integer.class, EDayData.YEAR.getValue());
-//			int attendees = data.getElementAt(Integer.class, EDayData.EXTRA.getValue());
-//			String target = "" + day + month + year;
-//
-//			try {
-//				if (!checkDayExists(target))
-//					sendFeedback("attendDay", new Tuple(false, "The chosen day doesn't exist."));
-//				else {
-//					pointer = new PointToPoint(target, Server.vp.getAddress());
-//					put(new Tuple("attendDay", userName, kitchenName, new Tuple(attendees)), pointer);
-//					sendFeedback("attendDayFeedback", recieveFeedback(target, "attendDayFeedback"));
-//				}
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//		}
-//
-//		private void unattendDay(Tuple data) {
-//			int day = data.getElementAt(Integer.class, EDayData.DAY.getValue());
-//			int month = data.getElementAt(Integer.class, EDayData.MONTH.getValue());
-//			int year = data.getElementAt(Integer.class, EDayData.YEAR.getValue());
-//			String target = "" + day + month + year;
-//
-//			try {
-//				if (checkDayExists(target)) {
-//					pointer = new PointToPoint(target, Server.vp.getAddress());
-//					put(new Tuple("unattendDay", userName, kitchenName, false, new Tuple()), pointer);
-//					sendFeedback("unattendDayFeedback", recieveFeedback(target, "unattendDayFeedback"));
-//				} else {
-//					sendFeedback("unattendDay", new Tuple(false, "Day doesn't exist"));
-//				}
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//		}
-//
-//		private void getAttendees(Tuple data) {
-//			int day = data.getElementAt(Integer.class, EDayData.DAY.getValue());
-//			int month = data.getElementAt(Integer.class, EDayData.MONTH.getValue());
-//			int year = data.getElementAt(Integer.class, EDayData.YEAR.getValue());
-//			String target = "" + day + month + year;
-//
-//			try {
-//				if (checkDayExists(target)) {
-//					pointer = new PointToPoint(target, Server.vp.getAddress());
-//					put(new Tuple("getAttendees", userName, kitchenName, false, new Tuple()), pointer);
-//					sendFeedback("getAttendeesFeedback", recieveFeedback(target, "getAttendeesFeedback"));
-//				} else {
-//					sendFeedback("getAttendeesFeedback", new Tuple(false, "Day doesn't exist"));
-//				}
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//		}
-//
-//		private void addChef(Tuple data) {
-//			int day = data.getElementAt(Integer.class, EDayData.DAY.getValue());
-//			int month = data.getElementAt(Integer.class, EDayData.MONTH.getValue());
-//			int year = data.getElementAt(Integer.class, EDayData.YEAR.getValue());
-//			String target = "" + day + month + year;
-//
-//			try {
-//				if (checkDayExists(target)) {
-//					pointer = new PointToPoint(target, Server.vp.getAddress());
-//					put(new Tuple("addChef", userName, kitchenName, false, new Tuple()), pointer);
-//					sendFeedback("addChef", recieveFeedback(target, "addChefFeedback"));
-//				} else {
-//					sendFeedback("addChefFeedback", new Tuple(false, "Day doesn't exist"));
-//				}
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//		}
+		// private void addDay(Tuple data) {
+		// int day = data.getElementAt(Integer.class, EDayData.DAY.getValue());
+		// int month = data.getElementAt(Integer.class,
+		// EDayData.MONTH.getValue());
+		// int year = data.getElementAt(Integer.class,
+		// EDayData.YEAR.getValue());
+		// String target = "" + day + month + year;
+		//
+		// try {
+		//
+		// if (!checkDayExists(target)) {
+		//
+		// put(new Tuple(target, new Day(day, month, year)), Self.SELF);
+		// pointer = new PointToPoint(target, Server.vp.getAddress());
+		// get(feedbackTemplate("addDay"), pointer);
+		//
+		// sendFeedback("addDayFeedback", new Tuple(true, "Day created."));
+		//
+		// } else
+		// sendFeedback("addDayFeedback", new Tuple(false, "Day already
+		// exists"));
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
+		// }
+		//
+		// private void removeDay(Tuple data) {
+		// int day = data.getElementAt(Integer.class, EDayData.DAY.getValue());
+		// int month = data.getElementAt(Integer.class,
+		// EDayData.MONTH.getValue());
+		// int year = data.getElementAt(Integer.class,
+		// EDayData.YEAR.getValue());
+		// String target = "" + day + month + year;
+		//
+		// try {
+		// if (!checkDayExists(target)) {
+		// sendFeedback("removeDay", new Tuple(false, "The chosen day doesn't
+		// exist."));
+		// } else {
+		// Template dayTemp = new Template(new ActualTemplateField(target),
+		// new FormalTemplateField(Day.class));
+		// get(dayTemp, Self.SELF);
+		// sendFeedback("removeDay", new Tuple(true, "Day was deleted."));
+		// }
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
+		//
+		// }
+		//
+		// private void attendDay(Tuple data) {
+		// int day = data.getElementAt(Integer.class, EDayData.DAY.getValue());
+		// int month = data.getElementAt(Integer.class,
+		// EDayData.MONTH.getValue());
+		// int year = data.getElementAt(Integer.class,
+		// EDayData.YEAR.getValue());
+		// int attendees = data.getElementAt(Integer.class,
+		// EDayData.EXTRA.getValue());
+		// String target = "" + day + month + year;
+		//
+		// try {
+		// if (!checkDayExists(target))
+		// sendFeedback("attendDay", new Tuple(false, "The chosen day doesn't
+		// exist."));
+		// else {
+		// pointer = new PointToPoint(target, Server.vp.getAddress());
+		// put(new Tuple("attendDay", userName, kitchenName, new
+		// Tuple(attendees)), pointer);
+		// sendFeedback("attendDayFeedback", recieveFeedback(target,
+		// "attendDayFeedback"));
+		// }
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
+		// }
+		//
+		// private void unattendDay(Tuple data) {
+		// int day = data.getElementAt(Integer.class, EDayData.DAY.getValue());
+		// int month = data.getElementAt(Integer.class,
+		// EDayData.MONTH.getValue());
+		// int year = data.getElementAt(Integer.class,
+		// EDayData.YEAR.getValue());
+		// String target = "" + day + month + year;
+		//
+		// try {
+		// if (checkDayExists(target)) {
+		// pointer = new PointToPoint(target, Server.vp.getAddress());
+		// put(new Tuple("unattendDay", userName, kitchenName, false, new
+		// Tuple()), pointer);
+		// sendFeedback("unattendDayFeedback", recieveFeedback(target,
+		// "unattendDayFeedback"));
+		// } else {
+		// sendFeedback("unattendDay", new Tuple(false, "Day doesn't exist"));
+		// }
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
+		// }
+		//
+		// private void getAttendees(Tuple data) {
+		// int day = data.getElementAt(Integer.class, EDayData.DAY.getValue());
+		// int month = data.getElementAt(Integer.class,
+		// EDayData.MONTH.getValue());
+		// int year = data.getElementAt(Integer.class,
+		// EDayData.YEAR.getValue());
+		// String target = "" + day + month + year;
+		//
+		// try {
+		// if (checkDayExists(target)) {
+		// pointer = new PointToPoint(target, Server.vp.getAddress());
+		// put(new Tuple("getAttendees", userName, kitchenName, false, new
+		// Tuple()), pointer);
+		// sendFeedback("getAttendeesFeedback", recieveFeedback(target,
+		// "getAttendeesFeedback"));
+		// } else {
+		// sendFeedback("getAttendeesFeedback", new Tuple(false, "Day doesn't
+		// exist"));
+		// }
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
+		// }
+		//
+		// private void addChef(Tuple data) {
+		// int day = data.getElementAt(Integer.class, EDayData.DAY.getValue());
+		// int month = data.getElementAt(Integer.class,
+		// EDayData.MONTH.getValue());
+		// int year = data.getElementAt(Integer.class,
+		// EDayData.YEAR.getValue());
+		// String target = "" + day + month + year;
+		//
+		// try {
+		// if (checkDayExists(target)) {
+		// pointer = new PointToPoint(target, Server.vp.getAddress());
+		// put(new Tuple("addChef", userName, kitchenName, false, new Tuple()),
+		// pointer);
+		// sendFeedback("addChef", recieveFeedback(target, "addChefFeedback"));
+		// } else {
+		// sendFeedback("addChefFeedback", new Tuple(false, "Day doesn't
+		// exist"));
+		// }
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
+		// }
 
 		private void setPrice(Tuple data) {
 			int day = data.getElementAt(Integer.class, EDayData.DAY.getValue());
@@ -374,24 +397,28 @@ public class Kitchen {
 			}
 		}
 
-//		private void lockDay(Tuple data) {
-//			int day = data.getElementAt(Integer.class, EDayData.DAY.getValue());
-//			int month = data.getElementAt(Integer.class, EDayData.MONTH.getValue());
-//			int year = data.getElementAt(Integer.class, EDayData.YEAR.getValue());
-//			String target = "" + day + month + year;
-//
-//			try {
-//				if (checkDayExists(target)) {
-//					pointer = new PointToPoint(target, Server.vp.getAddress());
-//					put(new Tuple("lockDay", data), pointer);
-//					sendFeedback("lockDayFeedback", recieveFeedback(target, "lockDayFeedback"));
-//				} else {
-//					sendFeedback("lockDayFeedback", new Tuple(false, "Day doesn't exist"));
-//				}
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//		}
+		// private void lockDay(Tuple data) {
+		// int day = data.getElementAt(Integer.class, EDayData.DAY.getValue());
+		// int month = data.getElementAt(Integer.class,
+		// EDayData.MONTH.getValue());
+		// int year = data.getElementAt(Integer.class,
+		// EDayData.YEAR.getValue());
+		// String target = "" + day + month + year;
+		//
+		// try {
+		// if (checkDayExists(target)) {
+		// pointer = new PointToPoint(target, Server.vp.getAddress());
+		// put(new Tuple("lockDay", data), pointer);
+		// sendFeedback("lockDayFeedback", recieveFeedback(target,
+		// "lockDayFeedback"));
+		// } else {
+		// sendFeedback("lockDayFeedback", new Tuple(false, "Day doesn't
+		// exist"));
+		// }
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
+		// }
 
 		private Tuple recieveFeedback(String target, String feedbackCmd) {
 			try {

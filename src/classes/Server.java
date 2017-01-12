@@ -155,7 +155,7 @@ public class Server {
 		int j = -1;
 		boolean newKitchen = true;
 		for (int i = 0; i < kitchens.size(); i++)
-			if (kitchens.get(i).kitchenName.equals(kitchenName)) {
+			if (kitchens.get(i).getKitchenName().equals(kitchenName)) {
 				j = i;
 				newKitchen = false;
 			}
