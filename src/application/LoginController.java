@@ -48,7 +48,7 @@ public class LoginController {
 		if (dinnerClub.getUser(user) != null) {
 			wrongUsernameLabel.setText("");
 			// new window
-			newScene(event, "/application/KitchenFrame.fxml");
+			newScene(event, "/application/SelectKitchen.fxml");
 		} else {
 			wrongUsernameLabel.setText("  Unknown username");
 			System.out.println("wrong");
@@ -104,7 +104,7 @@ public class LoginController {
 		if (path.equals("/application/Login.fxml") || path.equals("/application/NewUser.fxml")) {
 			LoginController controller = loader.getController();
 			controller.setServer(dinnerClub);
-		} else if (path.equals("/application/KitchenFrame.fxml")) {
+		} else if (path.equals("/application/SelectKitchen.fxml")) {
 			KitchenController controller = loader.getController();
 			controller.setServer(dinnerClub);
 			controller.findUsersKitchens(usernameTextField.getText());
