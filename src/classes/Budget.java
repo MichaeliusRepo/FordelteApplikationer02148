@@ -25,7 +25,9 @@ public class Budget {
 
 	public static class BudgetMonitor extends Agent {
 
-		Template cmdTemp = new Template(new FormalTemplateField(String.class), new FormalTemplateField(Tuple.class));
+		Template cmdTemp = new Template(new FormalTemplateField(String.class), new FormalTemplateField(String.class),
+				new FormalTemplateField(String.class), new ActualTemplateField(false),
+				new FormalTemplateField(Tuple.class));
 
 		public BudgetMonitor(String name) {
 			super(name);
@@ -40,10 +42,8 @@ public class Budget {
 				try {
 					while (true) {
 						Tuple t = get(cmdTemp, Self.SELF);
-						Tuple data = t.getElementAt(Tuple.class, 1);
-						String cmd = t.getElementAt(String.class, 0);
 
-						exec(new BudgetAgent(data, cmd));
+						exec(new BudgetAgent(t));
 					}
 
 				} catch (Exception e) {
@@ -59,12 +59,12 @@ public class Budget {
 		String cmd, userName, kitchenName;
 		Tuple data;
 
-		public BudgetAgent(Tuple data, String cmd) {
-			super(data.getElementAt(String.class, 0));
-			this.data = data;
-			this.cmd = cmd;
-			this.kitchenName = data.getElementAt(String.class, 1);
-			this.userName = data.getElementAt(String.class, 0);
+		public BudgetAgent(Tuple data) {
+			super(data.getElementAt(String.class, ECommand.USERNAME.getValue()));
+			this.data = data.getElementAt(Tuple.class, ECommand.DATA.getValue());
+			this.cmd = data.getElementAt(String.class, ECommand.COMMAND.getValue());
+			this.kitchenName = data.getElementAt(String.class, ECommand.KITCHEN.getValue());
+			this.userName = data.getElementAt(String.class, ECommand.USERNAME.getValue());
 
 		}
 
@@ -158,7 +158,7 @@ public class Budget {
 				Tuple oldData = getp(temp);
 
 				String feedback = "dayBudgetFeedback";
-				
+
 				if (oldData == null) {
 					put(data, Self.SELF);
 					int price = data.getElementAt(Integer.class, 3);
