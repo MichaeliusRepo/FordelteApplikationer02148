@@ -91,7 +91,7 @@ public class Day {
 					switch (cmd) {
 
 					case "attendDay":
-						this.attendees = data.getElementAt(Integer.class, 2);
+						this.attendees = data.getElementAt(Integer.class, ECommand.DATA.getValue());
 						attendDay(userName, attendees);
 						break;
 
@@ -115,7 +115,7 @@ public class Day {
 				} else if (queryp(new Template(new ActualTemplateField("locked"))) != null) {
 					switch (cmd) {
 					case "setPrice":
-						this.price = data.getElementAt(Integer.class, 2);
+						this.price = data.getElementAt(Integer.class, ECommand.DATA.getValue());
 						setPrice(price);
 						break;
 
