@@ -22,9 +22,9 @@ public class Day {
 		this.day = day;
 		this.month = month;
 		this.year = year;
-		this.dayName = "" + day + "" + month + "" + year;
+		this.dayName = "" + day + month + year;
 		Node daySpace = new Node(dayName, new TupleSpace());
-		Agent dayAgent = new DayMonitor("day");
+		Agent dayAgent = new DayMonitor(dayName);
 		daySpace.addPort(Server.vp);
 		daySpace.addAgent(dayAgent);
 		daySpace.start();
@@ -46,18 +46,17 @@ public class Day {
 		@Override
 		protected void doRun() throws Exception {
 
-			try {
-				put(new Tuple("dayCreated"), Self.SELF);
-				while (true) {
+			put(new Tuple("dayCreated"), Self.SELF);
+			while (true) {
+				try {
 					Tuple t = getp(cmdTemp);
 
 					if (t != null) {
 						exec(new DayAgent(t));
 					}
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
-
-			} catch (Exception e) {
-				e.printStackTrace();
 			}
 
 		}
@@ -68,12 +67,12 @@ public class Day {
 
 		String cmd, userName, chef, buyer, kitchenName;
 		int attendees, price, totalAttendees;
-		Tuple data;
+		Tuple dataTuple;
 		ArrayList<String> attendeesList;
 
 		public DayAgent(Tuple data) {
 			super(data.getElementAt(String.class, ECommand.USERNAME.getValue()));
-			this.data = data.getElementAt(Tuple.class, ECommand.DATA.getValue());
+			this.dataTuple = data.getElementAt(Tuple.class, ECommand.DATA.getValue());
 			this.cmd = data.getElementAt(String.class, ECommand.COMMAND.getValue());
 			this.kitchenName = data.getElementAt(String.class, ECommand.KITCHEN.getValue());
 			this.userName = data.getElementAt(String.class, ECommand.USERNAME.getValue());
@@ -87,7 +86,7 @@ public class Day {
 					switch (cmd) {
 
 					case "attendDay":
-						this.attendees = data.getElementAt(Integer.class, ECommand.DATA.getValue());
+						this.attendees = dataTuple.getElementAt(Integer.class, 0);
 						attendDay(userName, attendees);
 						break;
 
@@ -111,7 +110,7 @@ public class Day {
 				} else if (queryp(new Template(new ActualTemplateField("locked"))) != null) {
 					switch (cmd) {
 					case "setPrice":
-						this.price = data.getElementAt(Integer.class, ECommand.DATA.getValue());
+						this.price = dataTuple.getElementAt(Integer.class, 0);
 						setPrice(price);
 						break;
 

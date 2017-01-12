@@ -53,9 +53,7 @@ public class Kitchen {
 				put(new Tuple("Budget" + kitchenName, new Budget(kitchenName)), Self.SELF);
 				while (true) {
 					t = get(kitchenTemplate, Self.SELF);
-//					Tuple data = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
-					String cmd = t.getElementAt(String.class, ECommand.COMMAND.getValue());
-					exec(new KitchenAgent(cmd, t));
+					exec(new KitchenAgent(t));
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -71,9 +69,9 @@ public class Kitchen {
 		private String userName, cmd, dayTarget;
 		private int day, month, year;
 
-		private KitchenAgent(String cmd, Tuple t) {
-			super(cmd);
-			this.cmd = cmd;
+		private KitchenAgent(Tuple t) {
+			super(t.getElementAt(String.class, ECommand.COMMAND.getValue()));
+			this.cmd = t.getElementAt(String.class, ECommand.COMMAND.getValue());
 			this.userName = t.getElementAt(String.class, ECommand.USERNAME.getValue());
 
 			Tuple data = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
@@ -189,7 +187,8 @@ public class Kitchen {
 
 			try {
 				if (checkDayExists(dayTarget)) {
-					put(new Tuple(cmd, userName, kitchenName, false, data), pointer);
+					Tuple t = new Tuple(cmd, userName, kitchenName, false, data);
+					put(t, pointer);
 					sendFeedback(cmd + "Feedback", recieveFeedback(dayTarget, cmd + "Feedback"));
 				} else {
 					sendFeedback(cmd + "Feedback", new Tuple(false, "The chosen day doesn't exist."));
@@ -418,8 +417,8 @@ public class Kitchen {
 
 		private Tuple recieveFeedback(String target, String feedbackCmd) {
 			try {
-				pointer = new PointToPoint(target, Server.vp.getAddress());
-				Tuple feedbackTuple = get(feedbackTemplate(feedbackCmd), pointer);
+				PointToPoint p = new PointToPoint(target, Server.vp.getAddress());
+				Tuple feedbackTuple = get(feedbackTemplate(feedbackCmd), p);
 				return feedbackTuple.getElementAt(Tuple.class, ECommand.DATA.getValue());
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -448,7 +447,7 @@ public class Kitchen {
 			// feedback,
 			// Tuple data>
 			Template feedbackTemplate = new Template(new ActualTemplateField(command),
-					new FormalTemplateField(String.class), new FormalTemplateField(String.class),
+					new ActualTemplateField(userName), new ActualTemplateField(kitchenName),
 					new ActualTemplateField(true), new FormalTemplateField(Tuple.class));
 			return feedbackTemplate;
 		}
