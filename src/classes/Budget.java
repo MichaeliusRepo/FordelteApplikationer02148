@@ -119,8 +119,8 @@ public class Budget {
 			try {
 				if (queryp(temp) != null) {
 					Tuple t = query(temp, Self.SELF);
-					balance = t.getElementAt(Double.class, 1);
-					feedback(feedback, true, "Balance for user: " + userName + " - " + balance + "kr");
+					balance = t.getElementAt(Double.class, 2);
+					feedback(feedback, true, "Balance for " + userName + ": " + balance + "kr");
 				} else {
 					feedback(feedback, false, userName + " could not be found.");
 				}
@@ -158,6 +158,7 @@ public class Budget {
 				Tuple oldData = getp(temp);
 
 				String feedback = "dayBudgetFeedback";
+				
 				if (oldData == null) {
 					put(data, Self.SELF);
 					int price = data.getElementAt(Integer.class, 3);
@@ -205,16 +206,16 @@ public class Budget {
 			}
 		}
 
-		private void addBalance(String attendee, double price) {
+		private void addBalance(String attendee, double perPrice) {
 
 			try {
 				Template temp = new Template(new ActualTemplateField("user"), new ActualTemplateField(attendee),
 						new FormalTemplateField(Double.class));
 				Tuple user = getp(temp);
 				if (user == null) {
-					put(new Tuple("user", attendee, price), Self.SELF);
+					put(new Tuple("user", attendee, perPrice), Self.SELF);
 				} else {
-					double newPrice = price + user.getElementAt(Double.class, 2);
+					double newPrice = perPrice + user.getElementAt(Double.class, 2);
 					put(new Tuple("user", attendee, newPrice), Self.SELF);
 				}
 

@@ -251,7 +251,7 @@ public class Day {
 			ListIterator<Tuple> iterator = attendeesTupleList.listIterator();
 			while (iterator.hasNext()) {
 				Tuple t = iterator.next();
-				for (int j = 0; j <= t.getElementAt(Integer.class, 2); j++) {
+				for (int j = 1; j <= t.getElementAt(Integer.class, 2); j++) {
 					list.add(t.getElementAt(String.class, 1));
 				}
 			}
