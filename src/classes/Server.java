@@ -146,7 +146,7 @@ public class Server {
 
 	public User getUser(String userName) {
 		for (int i = 0; i < users.size(); i++) {
-			if (userName.equals(users.get(i).userName)) {
+			if (userName.equals(users.get(i).getUserName())) {
 				return users.get(i);
 			}
 		}
