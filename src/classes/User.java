@@ -22,7 +22,7 @@ public class User {
 	private String kitchenName;
 	private PointToPoint p = new PointToPoint("Server", Server.vp.getAddress());
 	private String command;
-	private String feedbackMsg;
+	private String feedbackMsg = null;
 	private final ArrayList<String> kitchens = new ArrayList<String>();
 
 	public User(String userName, String kitchenName) {
