@@ -43,9 +43,9 @@ public class Server {
 		User user1 = new User("Alexander", "kitchen 6");
 		User user2 = new User("Mathias", "kitchen 6");
 		User user3 = new User("Emilie", "kitchen 6");
-		user3.addKitchen("Den Seje");
-		user3.addKitchen("Den dumme");
-		user3.addKitchen("Den mærkelige");
+		user3.addKitchen("The good");
+		user3.addKitchen("The bad");
+		user3.addKitchen("The ugly");
 		User user4 = new User("Jon", "kitchen 6");
 		User user5 = new User("Michael", "kitchen 6");
 
