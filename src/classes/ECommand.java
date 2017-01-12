@@ -1,7 +1,7 @@
 package classes;
 
 public enum ECommand {
-	COMMAND(0), USERNAME(1), KITCHEN(2), DATA(3);
+	COMMAND(0), USERNAME(1), KITCHEN(2), FEEDBACK(3), DATA(4);
 	//
 
 	private final int id;

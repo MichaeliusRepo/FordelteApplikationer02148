@@ -22,7 +22,7 @@ public class Kitchen {
 		this.kitchenName = kitchenName;
 
 		kitchenSpace = new Node(kitchenName, new TupleSpace());
-		budget = new Budget(kitchenName);
+		//budget = new Budget(kitchenName);
 		kitchenSpace.addPort(Server.vp);
 		Agent monitor = new KitchenMonitor("kitchenMonitor");
 		kitchenSpace.addAgent(monitor);
@@ -37,21 +37,29 @@ public class Kitchen {
 
 		public KitchenMonitor(String who) {
 			super(who);
+			
 		}
 
 		@Override
 		protected void doRun() {
 
-			while (true) {
+			
 				try {
+					try{
+						put(new Tuple("Budget"+kitchenName, new Budget(kitchenName)),Self.SELF);
+					}catch(Exception e){
+						e.printStackTrace();
+					}
+					while(true){
 					t = get(kitchenTemplate, Self.SELF);
 					Tuple data = t.getElementAt(Tuple.class, 1);
 					String cmd = t.getElementAt(String.class, 0);
 					exec(new KitchenAgent(cmd, data));
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-			}
+				
 		}
 	}
 

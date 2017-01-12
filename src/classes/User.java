@@ -17,14 +17,13 @@ import org.cmg.jresp.knowledge.Template;
 @SuppressWarnings("unused")
 
 public class User {
-	protected String userName;
-	protected Node userSpace;
-	public String kitchenName;
-	protected PointToPoint p = new PointToPoint("Server", Server.vp.getAddress());
-	protected String command;
-	private int extra;
+	private String userName;
+	private Node userSpace;
+	private String kitchenName;
+	private PointToPoint p = new PointToPoint("Server", Server.vp.getAddress());
+	private String command;
 	private String feedbackMsg;
-	private ArrayList<String> kitchens = new ArrayList<String>();
+	private final ArrayList<String> kitchens = new ArrayList<String>();
 
 	public User(String userName, String kitchenName) {
 		this.userName = userName;
@@ -37,26 +36,16 @@ public class User {
 
 	public void command(String command, int day, int month, int year, int extra) {
 		this.command = command;
-		this.extra = extra;
-		dayFormat(day, month, year);
-	}
-	
-	public String getFeedbackMsg() {
-		return userName;
-	}
-	
-	
-	public void dayFormat(int day, int month, int year) {
 		Tuple t = new Tuple(command, new Tuple(userName, kitchenName, day, month, year, extra));
 		Agent userAgent = new UserAgent(command, t);
 		userSpace.addAgent(userAgent);
 	}
-	
-	public class UserAgent extends Agent {
 
-		Tuple t;
+	private class UserAgent extends Agent {
 
-		public UserAgent(String who, Tuple t) {
+		private Tuple t;
+
+		private UserAgent(String who, Tuple t) {
 			super(who);
 			this.t = t;
 		}
@@ -64,44 +53,44 @@ public class User {
 		@Override
 		protected void doRun() {
 			try {
-				
-					Tuple dataTuple = t.getElementAt(Tuple.class, 1);
-					Template feedback = new Template(new ActualTemplateField(userName + " " + command + " Feedback"),
-							new FormalTemplateField(Tuple.class));
 
-					try {
-						put(t, p); // AddDay sent to server
+				Tuple dataTuple = t.getElementAt(Tuple.class, 1);
+				Template feedback = new Template(new ActualTemplateField(userName + " " + command + " Feedback"),
+						new FormalTemplateField(Tuple.class));
 
-						t = get(feedback, Self.SELF);
+				put(t, p); // AddDay sent to server
 
-						dataTuple = t.getElementAt(Tuple.class, 1);
-						feedbackMsg = dataTuple.getElementAt(String.class, 3);
-						System.out.println(feedbackMsg);
-						System.out.println(userName + " got SOME feedback.");
-						System.out.println("VICTORY \\o/");
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
+				t = get(feedback, Self.SELF);
+
+				dataTuple = t.getElementAt(Tuple.class, 1);
+				feedbackMsg = dataTuple.getElementAt(String.class, 3);
+				System.out.println(userName + " got feedback: " + feedbackMsg);
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-
 	}
 
+	public String getFeedbackMsg() {
+		return feedbackMsg;
+	}
+	
+	public String getUserName() {
+		return userName;
+	}
+	
 	public String getKitchenName(int i) {
-		if(kitchens.size()>i){
+		if (kitchens.size() > i) 
 			return kitchens.get(i);
-		}
-		
 		return null;
 	}
-	
-	public void addKitchen(String newKitchenName){
+
+	public void addKitchen(String newKitchenName) {
 		kitchens.add(newKitchenName);
 	}
-	
-	public void setKitchen(String selectedKitchenName){
+
+	public void setKitchen(String selectedKitchenName) {
 		this.kitchenName = selectedKitchenName;
 	}
 
