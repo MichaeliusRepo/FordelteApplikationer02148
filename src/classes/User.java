@@ -36,7 +36,7 @@ public class User {
 
 	public void command(String command, int day, int month, int year, int extra) {
 		this.command = command;
-		Tuple t = new Tuple(command, new Tuple(userName, kitchenName, day, month, year, extra));
+		Tuple t = new Tuple(command, userName, kitchenName, false, new Tuple(day, month, year, extra));
 		Agent userAgent = new UserAgent(command, t);
 		userSpace.addAgent(userAgent);
 	}
@@ -54,14 +54,13 @@ public class User {
 		protected void doRun() {
 			try {
 
-				Tuple dataTuple = t.getElementAt(Tuple.class, 1);
+				Tuple dataTuple = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
 				Template feedback = new Template(new ActualTemplateField(userName + " " + command + " Feedback"),
 						new FormalTemplateField(Tuple.class));
 
 				put(t, p); // AddDay sent to server
 
 				t = get(feedback, Self.SELF);
-
 				dataTuple = t.getElementAt(Tuple.class, 1);
 				feedbackMsg = dataTuple.getElementAt(String.class, 3);
 				System.out.println(userName + " got feedback: " + feedbackMsg);
@@ -75,13 +74,13 @@ public class User {
 	public String getFeedbackMsg() {
 		return feedbackMsg;
 	}
-	
+
 	public String getUserName() {
 		return userName;
 	}
-	
+
 	public String getKitchenName(int i) {
-		if (kitchens.size() > i) 
+		if (kitchens.size() > i)
 			return kitchens.get(i);
 		return null;
 	}

@@ -27,9 +27,9 @@ import org.cmg.jresp.topology.VirtualPort;
 
 public class Server {
 
-	public static VirtualPort vp = new VirtualPort(1337);
-	public ArrayList<User> users = new ArrayList<User>();
-	public ArrayList<Kitchen> kitchens = new ArrayList<Kitchen>();
+	public final static VirtualPort vp = new VirtualPort(1337);
+	public final ArrayList<User> users = new ArrayList<User>();
+	public final ArrayList<Kitchen> kitchens = new ArrayList<Kitchen>();
 
 	public Server() {
 		Node server = new Node("Server", new TupleSpace());
@@ -47,7 +47,7 @@ public class Server {
 		user3.addKitchen("The bad");
 		user3.addKitchen("The ugly");
 		User user4 = new User("Jon", "kitchen 6");
-		User user5 = new User("Michael", "kitchen 6");
+		User user5 = new User("Michaelius", "kitchen 6");
 
 		users.add(user1);
 		users.add(user2);
@@ -59,42 +59,35 @@ public class Server {
 		kitchens.add(kitchen);
 	}
 
-	public class Monitor extends Agent {
+	private class Monitor extends Agent {
 
-		Tuple t;
-		Tuple tupleData;
-		Template what = new Template(new FormalTemplateField(String.class), new FormalTemplateField(Tuple.class));
+		private Tuple t;
+		private Tuple tupleData;
+		private Template what = new Template(new FormalTemplateField(String.class),
+				new FormalTemplateField(Tuple.class));
 
-		public Monitor(String who) {
+		private Monitor(String who) {
 			super(who);
 		}
 
 		@Override
 		protected void doRun() {
-
 			while (true) {
-
 				try {
-
-					// example of how to use getAll methods from jRESP
 					// LinkedList<Tuple> list = new LinkedList<Tuple>();
-
-					// use this to copy all tuples
 					// list = queryAll(what);
-
-					// use this to obtain all tuples
 					// list = getAll(what);
-
 					t = get(what, Self.SELF);
 					tupleData = t.getElementAt(Tuple.class, 1);
 					String command = t.getElementAt(String.class, 0);
 
-					if (!!!!!!!command.contains("Feedback")) {
-						System.out.println("Server Monitor was requested to " + t.getElementAt(String.class, 0) + ", "
-								+ tupleData.getElementAt(Integer.class, 2) + "/"
-								+ tupleData.getElementAt(Integer.class, 3) + "/"
-								+ tupleData.getElementAt(Integer.class, 4) + " to "
-								+ tupleData.getElementAt(String.class, 1));
+					if (!command.contains("Feedback")) {
+						System.out.println(
+								"Server Monitor was requested to " + t.getElementAt(ECommand.COMMAND.getValue()) + ", "
+										+ tupleData.getElementAt(Integer.class, EDayData.DAY.getValue()) + "/"
+										+ tupleData.getElementAt(Integer.class, EDayData.MONTH.getValue()) + "/"
+										+ tupleData.getElementAt(Integer.class, EDayData.YEAR.getValue()) + " to "
+										+ t.getElementAt(String.class, ECommand.KITCHEN.getValue()));
 
 						/*
 						 * Since the tuple went in here, this is a great time to
@@ -106,12 +99,12 @@ public class Server {
 						exec(agent);
 					} else {
 						System.out.println("Server found feedback.");
-						tupleData = t.getElementAt(Tuple.class, 1);
-						String userName = tupleData.getElementAt(String.class, 0);
-						String kitchenName = tupleData.getElementAt(String.class, 1);
+						tupleData = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
+						String userName = t.getElementAt(String.class, ECommand.USERNAME.getValue());
 						PointToPoint p = new PointToPoint(userName, vp.getAddress());
 						put(new Tuple(userName + " " + command, tupleData), p);
-						System.out.println("Server transfers feedback from " + kitchenName + " to " + userName);
+						System.out.println("Server transfers feedback from "
+								+ t.getElementAt(String.class, ECommand.KITCHEN.getValue()) + " to " + userName);
 					}
 
 				} catch (Exception e) {
@@ -122,11 +115,11 @@ public class Server {
 		}
 	}
 
-	public class ServerAgent extends Agent {
+	private class ServerAgent extends Agent {
 
-		Tuple t;
+		private Tuple t;
 
-		public ServerAgent(String who, Tuple t) {
+		private ServerAgent(String who, Tuple t) {
 			super(who);
 			this.t = t;
 		}
@@ -145,31 +138,26 @@ public class Server {
 	}
 
 	public User getUser(String userName) {
-		for (int i = 0; i < users.size(); i++) {
-			if (userName.equals(users.get(i).getUserName())) {
+		for (int i = 0; i < users.size(); i++)
+			if (userName.equals(users.get(i).getUserName()))
 				return users.get(i);
-			}
-		}
 		return null;
 	}
 
 	public void newUser(String userName, String kitchenName) {
-
 		User user = new User(userName, kitchenName);
 		users.add(user);
-
 		addKitchen(kitchenName);
 	}
 
 	public boolean addKitchen(String kitchenName) {
 		int j = -1;
 		boolean newKitchen = true;
-		for (int i = 0; i < kitchens.size(); i++) {
+		for (int i = 0; i < kitchens.size(); i++)
 			if (kitchens.get(i).kitchenName.equals(kitchenName)) {
 				j = i;
 				newKitchen = false;
 			}
-		}
 
 		if (j == -1) {
 			System.out.println("Creating new kitchen: " + kitchenName);
