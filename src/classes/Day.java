@@ -32,7 +32,10 @@ public class Day {
 
 	public class DayMonitor extends Agent {
 
-		Template cmdTemp = new Template(new FormalTemplateField(String.class), new FormalTemplateField(Tuple.class));
+		// The monitor searches for tuples with the info:
+		// <COMMAND, USERNAME, KITCHENNAME, FEEDBACK, DATA>
+		Template cmdTemp = new Template(new FormalTemplateField(String.class), new FormalTemplateField(String.class),
+				new FormalTemplateField(String.class), new ActualTemplateField(false), new FormalTemplateField(Tuple.class));
 
 		public DayMonitor(String name) {
 			super(name);
@@ -48,9 +51,11 @@ public class Day {
 					Tuple t = getp(cmdTemp);
 
 					if (t != null) {
-						Tuple data = t.getElementAt(Tuple.class, 1);
-						String cmd = t.getElementAt(String.class, 0);
-						exec(new DayAgent(data, cmd));
+						Tuple data = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
+						String cmd = t.getElementAt(String.class, ECommand.COMMAND.getValue());
+						String userName = t.getElementAt(String.class, ECommand.USERNAME.getValue());
+						String kitchenName = t.getElementAt(String.class, ECommand.KITCHEN.getValue());
+						exec(new DayAgent(cmd, userName, kitchenName, data));
 					}
 				}
 
@@ -69,7 +74,7 @@ public class Day {
 		Tuple data;
 		ArrayList<String> attendeesList;
 
-		public DayAgent(Tuple data, String cmd) {
+		public DayAgent(String cmd, String userName, String kitchenName, Tuple data) {
 			super(data.getElementAt(String.class, 0));
 			this.data = data;
 			this.cmd = cmd;
@@ -100,7 +105,7 @@ public class Day {
 					case "addChef":
 						addChef(userName);
 						break;
-						
+
 					case "getAttendees":
 						getAttendees();
 						break;
@@ -112,7 +117,7 @@ public class Day {
 						this.price = data.getElementAt(Integer.class, 2);
 						setPrice(price);
 						break;
-						
+
 					case "getAttendees":
 						getAttendees();
 						break;
@@ -226,9 +231,9 @@ public class Day {
 
 		private void getAttendees() {
 			try {
-				
-			} catch(Exception e) {
-				
+
+			} catch (Exception e) {
+
 			}
 		}
 
@@ -247,7 +252,7 @@ public class Day {
 			LinkedList<Tuple> attendeesTupleList = queryAll(new Template(new ActualTemplateField("attendee"),
 					new FormalTemplateField(String.class), new FormalTemplateField(Integer.class)));
 			ArrayList<String> list = new ArrayList<>();
-			
+
 			ListIterator<Tuple> iterator = attendeesTupleList.listIterator();
 			while (iterator.hasNext()) {
 				Tuple t = iterator.next();
@@ -260,7 +265,7 @@ public class Day {
 
 		private void feedback(String feedback, boolean result, String message) {
 			try {
-				put(new Tuple(new Tuple(userName, kitchenName, result, message), feedback), Self.SELF);
+				put(new Tuple(feedback, userName, kitchenName, true, new Tuple(result, message)), Self.SELF);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
