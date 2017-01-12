@@ -9,14 +9,14 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.LoginController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.LoginController">
    <children>
-      <Label contentDisplay="CENTER" layoutX="94.0" layoutY="32.0" text="Create new user">
+      <Label contentDisplay="CENTER" layoutX="84.0" layoutY="84.0" text="Create new user">
          <font>
             <Font size="30.0" />
          </font>
       </Label>
-      <GridPane layoutX="48.0" layoutY="84.0" prefHeight="157.0" prefWidth="323.0">
+      <GridPane layoutX="39.0" layoutY="148.0" prefHeight="157.0" prefWidth="323.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -32,12 +32,12 @@
          <children>
             <Label text="Please enter a dinner club's name: " GridPane.columnSpan="2" GridPane.rowIndex="2" />
             <Label text="Please enter your name: " GridPane.columnSpan="2" />
-            <TextField fx:id="newUserName" promptText="Name" GridPane.columnSpan="2" GridPane.rowIndex="1">
+            <TextField fx:id="newUserNameTextField" promptText="Name" GridPane.columnSpan="2" GridPane.rowIndex="1">
                <font>
                   <Font size="15.0" />
                </font>
             </TextField>
-            <TextField fx:id="kitchenName" prefHeight="35.0" prefWidth="323.0" promptText="Name" GridPane.columnSpan="2" GridPane.rowIndex="3">
+            <TextField fx:id="kitchenNameTextField" prefHeight="35.0" prefWidth="323.0" promptText="Name" GridPane.columnSpan="2" GridPane.rowIndex="3">
                <font>
                   <Font size="15.0" />
                </font>

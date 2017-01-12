@@ -9,14 +9,14 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.LoginController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.LoginController">
    <children>
-      <Label contentDisplay="CENTER" layoutX="104.0" layoutY="42.0" text="Dinner Club">
+      <Label contentDisplay="CENTER" layoutX="103.0" layoutY="84.0" text="Dinner Club">
          <font>
             <Font size="35.0" />
          </font>
       </Label>
-      <GridPane layoutX="73.0" layoutY="103.0" prefHeight="150.0" prefWidth="255.0">
+      <GridPane layoutX="73.0" layoutY="156.0" prefHeight="150.0" prefWidth="255.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -30,13 +30,13 @@
         </rowConstraints>
          <children>
             <Button fx:id="newUserButton" mnemonicParsing="false" onAction="#newUserButtonClicked" prefWidth="120.0" text="New user" GridPane.rowIndex="4" />
-            <Button fx:id="login" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#loginButtonClicked" prefWidth="120.0" text="Login" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <TextField fx:id="username" prefHeight="50.0" prefWidth="200.0" promptText="Username" GridPane.columnSpan="2" GridPane.rowSpan="2">
+            <Button fx:id="loginButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#loginButtonClicked" prefWidth="120.0" text="Login" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextField fx:id="usernameTextField" prefHeight="50.0" prefWidth="200.0" promptText="Username" GridPane.columnSpan="2" GridPane.rowSpan="2">
                <font>
                   <Font size="18.0" />
                </font>
             </TextField>
-            <Label fx:id="wrongUsername" textFill="#bc0a0a" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+            <Label fx:id="wrongUsernameLabel" textFill="#bc0a0a" GridPane.columnSpan="2" GridPane.rowIndex="2" />
          </children>
       </GridPane>
    </children>
