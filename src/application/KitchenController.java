@@ -48,7 +48,7 @@ public class KitchenController {
     private Button newKitchenButton;
     
     @FXML
-    private Button LogOutButton;
+    private Button logOutButton;
 
     @FXML
     void newKitchenButtonClicked(ActionEvent event) throws IOException {
@@ -62,7 +62,7 @@ public class KitchenController {
     }
     
     @FXML
-    void LogOutButtonClicked(ActionEvent event) throws IOException {
+    void logOutButtonClicked(ActionEvent event) throws IOException {
 		newScene(event, "/application/Login.fxml", user);
     }
     
@@ -88,7 +88,7 @@ public class KitchenController {
         		System.out.println("This kitchen already exist: "+newKitchenTextField.getText());
         	}
         	dinnerClub.getUser(user).addKitchen(newKitchenTextField.getText());
-			newScene(event,"/application/KitchenFrame.fxml", user);
+			newScene(event,"/application/SelectKitchen.fxml", user);
 			
     	} else {
     		System.out.println("not valid: Remember to write a name");
@@ -97,7 +97,7 @@ public class KitchenController {
 
     @FXML
     void backButtonClicked(ActionEvent event) throws IOException {
-		newScene(event,"/application/KitchenFrame.fxml", user);
+		newScene(event,"/application/SelectKitchen.fxml", user);
 
     }
     
@@ -137,7 +137,7 @@ public class KitchenController {
 		if(path.equals("/application/Login.fxml")){
 			LoginController controller = loader.getController();
 			controller.setServer(dinnerClub);
-		} else if(path.equals("/application/KitchenFrame.fxml") ){
+		} else if(path.equals("/application/SelectKitchen.fxml") ){
 			KitchenController controller = loader.getController();
 			controller.setServer(dinnerClub);
 			controller.findUsersKitchens(user);
