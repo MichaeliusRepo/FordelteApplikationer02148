@@ -42,14 +42,7 @@ public class KitchenController {
     @FXML
     void newKitchen(ActionEvent event) {
     	try {
-			((Node) event.getSource()).getScene().getWindow().hide();
-			Parent root = FXMLLoader.load(getClass().getResource("/application/CreateDinnerClub.fxml"));
-			Scene scene = new Scene(root,400,400);
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-			Stage stage = new Stage();
-			stage.setScene(scene);
-			stage.setTitle("Dinner Club");
-			stage.show();
+			newScene(event, "/application/CreateDinnerClub.fxml", user);
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -57,6 +50,32 @@ public class KitchenController {
 		}
 
     }
+
+	private void newScene(ActionEvent event, String path, String user) throws IOException {
+		((Node) event.getSource()).getScene().getWindow().hide();
+		FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
+		Parent root = loader.load();
+		
+		if(path.equals("/application/Login.fxml")){
+			LoginController controller = loader.getController();
+			controller.setServer(dinnerClub);
+		} else if(path.equals("/application/KitchenFrame.fxml") ){
+			KitchenController controller = loader.getController();
+			controller.setServer(dinnerClub);
+			controller.findUsersKitchens(user);
+		} else if(path.equals("/application/CreateDinnerClub.fxml")){
+			KitchenController controller = loader.getController();
+			controller.setServer(dinnerClub);
+			controller.setUser(user);
+		}
+		
+		Scene scene = new Scene(root,400,400);
+		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+		Stage stage = new Stage();
+		stage.setScene(scene);
+		stage.setTitle("Dinner Club");
+		stage.show();
+	}
 
     @FXML
     void selectDinnerClub(ActionEvent event) {
@@ -75,15 +94,23 @@ public class KitchenController {
 
     @FXML
     void newClubButtonClicked(ActionEvent event) {
-    	if(newKitchenName.getText() != null){
-    		System.out.println(newKitchenName.getText());
+    	if(!newKitchenName.getText().equals("")){
+    		
+    		System.out.println("new Kicthen creating: "+dinnerClub);
         	if(dinnerClub.addKitchen(newKitchenName.getText())){
         		System.out.println("A new kitchen has been created: "+newKitchenName.getText());
         	} else {
         		System.out.println("This kitchen already exist: "+newKitchenName.getText());
         	}
-        	dinnerClub.getUser(user).addKitchen(newKitchenName.getText());
-        	findUsersKitchens(user);
+        	try {
+        		dinnerClub.getUser(user).addKitchen(newKitchenName.getText());
+				newScene(event,"/application/KitchenFrame.fxml", user);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	
+        	
     	} else {
     		System.out.println("not valid: Remember to write a name");
     	}
@@ -97,14 +124,7 @@ public class KitchenController {
     @FXML
     void backToKitchenFrame(ActionEvent event) {
 		try {
-			((Node) event.getSource()).getScene().getWindow().hide();
-			Parent root = FXMLLoader.load(getClass().getResource("/application/KitchenFrame.fxml"));
-			Scene scene = new Scene(root,400,400);
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-			Stage stage = new Stage();
-			stage.setScene(scene);
-			stage.setTitle("Dinner Club");
-			stage.show();
+			newScene(event,"/application/KitchenFrame.fxml", user);
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -121,8 +141,12 @@ public class KitchenController {
     	this.dinnerClub = dinnerClub;
     }
     
+    public void setUser(String user){
+    	this.user = user;
+    }
+    
     public void findUsersKitchens(String userName){
-    	this.user = userName;
+    	setUser(userName);
     	setRadioButtons(userName,kitchen1, 0);
     	setRadioButtons(userName,kitchen2, 1);
     	setRadioButtons(userName,kitchen3, 2);

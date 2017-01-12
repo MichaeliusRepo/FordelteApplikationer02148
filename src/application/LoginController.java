@@ -37,7 +37,7 @@ public class LoginController {
     @FXML
     void newUserButtonClicked(ActionEvent event) {
     	try {
-			newFrame(event,"/application/NewUser.fxml");
+			newScene(event,"/application/NewUser.fxml");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -52,7 +52,7 @@ public class LoginController {
     		wrongUsername.setText("");
     		// new window
     		try {
-    			newFrame(event,"/application/KitchenFrame.fxml");
+    			newScene(event,"/application/KitchenFrame.fxml");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -81,7 +81,7 @@ public class LoginController {
     @FXML
     void backButtonClicked(ActionEvent event) {
     	try {
-			newFrame(event, "/application/Login.fxml");
+			newScene(event, "/application/Login.fxml");
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -103,7 +103,7 @@ public class LoginController {
     	
     	
     	try {
-    		newFrame(event,"/application/Login.fxml" );
+    		newScene(event,"/application/Login.fxml" );
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -117,7 +117,7 @@ public class LoginController {
     	this.dinnerClub = dinnerClub;
     }
 
-	private void newFrame(ActionEvent event, String path) throws IOException {
+	private void newScene(ActionEvent event, String path) throws IOException {
 		((Node) event.getSource()).getScene().getWindow().hide();
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
 		Parent root = loader.load();
