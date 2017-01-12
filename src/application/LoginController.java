@@ -1,5 +1,8 @@
 package application;
 
+import java.io.IOException;
+
+import classes.Server;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -14,117 +17,109 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-import java.io.IOException;
-
-
-import classes.Server;
-
 public class LoginController {
 	private Server dinnerClub;
-	private Stage stage;
-	private Scene loginScene, newUserScene;
-
-	
-    ///////////////////////////////////
-    // Login Scene
-	
-    @FXML
-    private Button newUserButton;
-
-    @FXML
-    private Button login;
-
-    @FXML
-    private TextField username;
-    
-    @FXML
-    private Label wrongUsername;
 
 
-    @FXML
-    void newUserButtonClicked(ActionEvent event) throws IOException {
-		newScene(event,"/application/NewUser.fxml");
-    }
+	///////////////////////////////////
+	// Login Scene
 
-    @FXML
-    void loginButtonClicked(ActionEvent event) throws IOException {
-    	String user = username.getText();
-    	
-    	if(dinnerClub.getUser(user) != null){
-    		wrongUsername.setText("");
-    		// new window
-    		newScene(event,"/application/KitchenFrame.fxml");
-    	} else {
-    		wrongUsername.setText("  Unknown username");
-    		System.out.println("wrong");
-    	}
-    }
-    
-    ///////////////////////////////////
-    // new user
-    
-    @FXML
-    private TextField newUserName;
+	@FXML
+	private Button newUserButton;
 
-    @FXML
-    private TextField kitchenName;
+	@FXML
+	private Button loginButton;
 
-    @FXML
-    private Button createNewUserButton;
+	@FXML
+	private TextField usernameTextField;
 
-    @FXML
-    private Button backButton;
+	@FXML
+	private Label wrongUsernameLabel;
 
-    @FXML
-    void backButtonClicked(ActionEvent event) throws IOException {
-			newScene(event, "/application/Login.fxml");
-    }
+	@FXML
+	void newUserButtonClicked(ActionEvent event) throws IOException {
+		newScene(event, "/application/NewUser.fxml");
+	}
 
-    @FXML
-    void createNewUserButtonClicked(ActionEvent event) throws IOException {
-    	System.out.println(newUserName.getText()+" "+ kitchenName.getText());
-    	System.out.println(""+dinnerClub);
-    	if(!newUserName.getText().equals("") && !kitchenName.getText().equals("")){
-    		dinnerClub.newUser(newUserName.getText(), kitchenName.getText());
-    	} else {
-    		System.out.println("Remember to insert kitchenName and Username");
-    	}
-    	
-    	newScene(event,"/application/Login.fxml" );
-    }
-    
-    //////////////////////////////
-    // controller methods
-    
-    public void setServer(Server dinnerClub){
-    	this.dinnerClub = dinnerClub;
-    }
+	@FXML
+	void loginButtonClicked(ActionEvent event) throws IOException {
+		String user = usernameTextField.getText();
+
+		if (dinnerClub.getUser(user) != null) {
+			wrongUsernameLabel.setText("");
+			// new window
+			newScene(event, "/application/KitchenFrame.fxml");
+		} else {
+			wrongUsernameLabel.setText("  Unknown username");
+			System.out.println("wrong");
+		}
+	}
+
+	///////////////////////////////////
+	// new user
+
+	@FXML
+	private TextField newUserNameTextField;
+
+	@FXML
+	private TextField kitchenNameTextField;
+
+	@FXML
+	private Button createNewUserButton;
+
+	@FXML
+	private Button backButton;
+
+	@FXML
+	void backButtonClicked(ActionEvent event) throws IOException {
+		newScene(event, "/application/Login.fxml");
+	}
+
+	@FXML
+	void createNewUserButtonClicked(ActionEvent event) throws IOException {
+		System.out.println(newUserNameTextField.getText() + " " + kitchenNameTextField.getText());
+		System.out.println("" + dinnerClub);
+		if (!newUserNameTextField.getText().equals("") && !kitchenNameTextField.getText().equals("")) {
+			dinnerClub.newUser(newUserNameTextField.getText(), kitchenNameTextField.getText());
+		} else {
+			System.out.println("Remember to insert kitchenName and Username");
+		}
+
+		newScene(event, "/application/Login.fxml");
+	}
+
+	//////////////////////////////
+	// controller methods
+
+	public void setServer(Server dinnerClub) {
+		this.dinnerClub = dinnerClub;
+	}
 
 	private void newScene(ActionEvent event, String path) throws IOException {
 		((Node) event.getSource()).getScene().getWindow().hide();
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
 		Parent root = loader.load();
-		
-		if(path.equals("/application/Login.fxml") || path.equals("/application/NewUser.fxml")){
+
+		if (path.equals("/application/Login.fxml") || path.equals("/application/NewUser.fxml")) {
 			LoginController controller = loader.getController();
 			controller.setServer(dinnerClub);
-		} else if(path.equals("/application/KitchenFrame.fxml")){
+		} else if (path.equals("/application/KitchenFrame.fxml")) {
 			KitchenController controller = loader.getController();
 			controller.setServer(dinnerClub);
-			controller.findUsersKitchens(username.getText());
+			controller.findUsersKitchens(usernameTextField.getText());
 		}
-		
-		Scene scene = new Scene(root,400,400);
+
+		Scene scene = new Scene(root, 400, 400);
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		Stage stage = new Stage();
-		
+
 		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            public void handle(WindowEvent t) {
-                Platform.exit();
-                System.exit(0);
-            }
+			public void handle(WindowEvent t) {
+				Platform.exit();
+				System.exit(0);
+			}
 		});
-		
+
 		stage.setScene(scene);
 		stage.setTitle("Dinner Club");
 		stage.show();
