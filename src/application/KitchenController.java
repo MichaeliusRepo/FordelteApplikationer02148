@@ -66,6 +66,7 @@ public class KitchenController {
 		newScene(event, "/application/Login.fxml", user);
     }
     
+    
     ////////////////////////
     // Create new kitchen
     
@@ -80,9 +81,11 @@ public class KitchenController {
 
     @FXML
     void createKitchenButtonClicked(ActionEvent event) throws IOException {
+    	
     	if(!newKitchenTextField.getText().equals("")){
     		System.out.println("new Kicthen creating: "+dinnerClub);
-        	if(dinnerClub.addKitchen(newKitchenTextField.getText())){
+        	
+    		if(dinnerClub.addKitchen(newKitchenTextField.getText())){
         		System.out.println("A new kitchen has been created: "+newKitchenTextField.getText());
         	} else {
         		System.out.println("This kitchen already exist: "+newKitchenTextField.getText());

@@ -57,12 +57,29 @@ public class LoginController {
 		}
 	}
     
-	@FXML
-    void loginEnterTyped(KeyEvent event) {
-		System.out.println("key typed"+event.getCode());
-
+	
+	
+	@FXML // Type enter to activate this code
+    void loginEnterTyped(ActionEvent event){
+		usernameTextField.setOnKeyPressed(new EventHandler<KeyEvent>(){
+	        
+			@Override
+	        public void handle(KeyEvent ke){
+	        	
+	            if (ke.getCode().equals(KeyCode.ENTER)){
+	                
+	                try {
+						loginButtonClicked(event);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+	            }
+	        }
+	    });
 
     }
+	
+	
 
 	///////////////////////////////////
 	// new user
