@@ -48,14 +48,8 @@ public class KitchenController {
     private Button select;
 
     @FXML
-    void newKitchen(ActionEvent event) {
-    	try {
-			newScene(event, "/application/CreateDinnerClub.fxml", user);
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    void newKitchen(ActionEvent event) throws IOException {
+		newScene(event, "/application/CreateDinnerClub.fxml", user);
 
     }
 
@@ -75,7 +69,7 @@ public class KitchenController {
     private TextField newKitchenName;
 
     @FXML
-    void newClubButtonClicked(ActionEvent event) {
+    void newClubButtonClicked(ActionEvent event) throws IOException {
     	if(!newKitchenName.getText().equals("")){
     		System.out.println("new Kicthen creating: "+dinnerClub);
         	if(dinnerClub.addKitchen(newKitchenName.getText())){
@@ -83,13 +77,9 @@ public class KitchenController {
         	} else {
         		System.out.println("This kitchen already exist: "+newKitchenName.getText());
         	}
-        	try {
-        		dinnerClub.getUser(user).addKitchen(newKitchenName.getText());
-				newScene(event,"/application/KitchenFrame.fxml", user);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+        	dinnerClub.getUser(user).addKitchen(newKitchenName.getText());
+			newScene(event,"/application/KitchenFrame.fxml", user);
+			
     	} else {
     		System.out.println("not valid: Remember to write a name");
     	}
@@ -99,21 +89,14 @@ public class KitchenController {
     private Button backButton;
 
     @FXML
-    void backToKitchenFrame(ActionEvent event) {
-		try {
-			newScene(event,"/application/KitchenFrame.fxml", user);
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    void backToKitchenFrame(ActionEvent event) throws IOException {
+		newScene(event,"/application/KitchenFrame.fxml", user);
 
     }
     
+    //////////////////////////////
+    // controller methods
     
-    
-    
-    // Getting Server to call methods
     public void setServer(Server dinnerClub){
     	this.dinnerClub = dinnerClub;
     }

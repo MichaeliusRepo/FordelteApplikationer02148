@@ -24,6 +24,10 @@ public class LoginController {
 	private Stage stage;
 	private Scene loginScene, newUserScene;
 
+	
+    ///////////////////////////////////
+    // Login Scene
+	
     @FXML
     private Button newUserButton;
 
@@ -38,13 +42,8 @@ public class LoginController {
 
 
     @FXML
-    void newUserButtonClicked(ActionEvent event) {
-    	try {
-			newScene(event,"/application/NewUser.fxml");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    void newUserButtonClicked(ActionEvent event) throws IOException {
+		newScene(event,"/application/NewUser.fxml");
     }
 
     @FXML
@@ -54,12 +53,7 @@ public class LoginController {
     	if(dinnerClub.getUser(user) != null){
     		wrongUsername.setText("");
     		// new window
-    		try {
-    			newScene(event,"/application/KitchenFrame.fxml");
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+    		newScene(event,"/application/KitchenFrame.fxml");
     	} else {
     		wrongUsername.setText("  Unknown username");
     		System.out.println("wrong");
@@ -82,20 +76,12 @@ public class LoginController {
     private Button backButton;
 
     @FXML
-    void backButtonClicked(ActionEvent event) {
-    	try {
+    void backButtonClicked(ActionEvent event) throws IOException {
 			newScene(event, "/application/Login.fxml");
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
     }
 
-
-
     @FXML
-    void createNewUserButtonClicked(ActionEvent event) {
+    void createNewUserButtonClicked(ActionEvent event) throws IOException {
     	System.out.println(newUserName.getText()+" "+ kitchenName.getText());
     	System.out.println(""+dinnerClub);
     	if(!newUserName.getText().equals("") && !kitchenName.getText().equals("")){
@@ -104,18 +90,12 @@ public class LoginController {
     		System.out.println("Remember to insert kitchenName and Username");
     	}
     	
-    	
-    	try {
-    		newScene(event,"/application/Login.fxml" );
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+    	newScene(event,"/application/Login.fxml" );
     }
     
     //////////////////////////////
     // controller methods
+    
     public void setServer(Server dinnerClub){
     	this.dinnerClub = dinnerClub;
     }
