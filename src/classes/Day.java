@@ -251,11 +251,8 @@ public class Day {
 			ListIterator<Tuple> iterator = attendeesTupleList.listIterator();
 			while (iterator.hasNext()) {
 				Tuple t = iterator.next();
-				System.out.println("ER I PARATE BØRN!");
 				for (int j = 0; j <= t.getElementAt(Integer.class, 2); j++) {
-					System.out.println("HVEM BOR I EN ANNANAS DYBT I DET BLÅ???");
 					list.add(t.getElementAt(String.class, 1));
-					System.out.println("SVAMPEBOB FIRKANT!");
 				}
 			}
 			return list;
