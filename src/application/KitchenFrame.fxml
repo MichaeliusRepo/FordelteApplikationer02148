@@ -15,13 +15,17 @@
          </font>
       </Label>
       <Button fx:id="newKitchen" layoutX="26.0" layoutY="248.0" mnemonicParsing="false" onAction="#newKitchen" prefWidth="170.0" text="Create Dinner Club" />
-      <RadioButton fx:id="kitchen1" layoutX="141.0" layoutY="94.0" mnemonicParsing="false" text="   DinnerClub1">
+      <RadioButton fx:id="kitchen1" layoutX="141.0" layoutY="94.0" mnemonicParsing="false" selected="true">
          <toggleGroup>
             <ToggleGroup fx:id="toggleGroup" />
          </toggleGroup></RadioButton>
-      <RadioButton fx:id="kitchen2" layoutX="140.0" layoutY="123.0" mnemonicParsing="false" text="   DinnerClub2" toggleGroup="$toggleGroup" />
-      <RadioButton fx:id="kitchen3" layoutX="141.0" layoutY="158.0" mnemonicParsing="false" toggleGroup="$toggleGroup" />
-      <RadioButton fx:id="kitchen4" disable="true" layoutX="141.0" layoutY="195.0" mnemonicParsing="false" toggleGroup="$toggleGroup" />
-      <Button fx:id="select" layoutX="200.0" layoutY="248.0" mnemonicParsing="false" onAction="#selectDinnerClub" prefWidth="170.0" text="Select Dinner Club" />
+      <RadioButton fx:id="kitchen2" layoutX="141.0" layoutY="125.0" mnemonicParsing="false" toggleGroup="$toggleGroup" />
+      <RadioButton fx:id="kitchen3" layoutX="141.0" layoutY="159.0" mnemonicParsing="false" toggleGroup="$toggleGroup" />
+      <Button fx:id="select" layoutX="200.0" layoutY="248.0" mnemonicParsing="false" onAction="#selectDinnerClub" prefWidth="170.0" text="Select" />
+      <RadioButton fx:id="kitchen4" layoutX="140.0" layoutY="192.0" mnemonicParsing="false">
+         <toggleGroup>
+            <ToggleGroup fx:id="toggleGroup1" />
+         </toggleGroup>
+      </RadioButton>
    </children>
 </AnchorPane>

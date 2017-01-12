@@ -20,7 +20,7 @@ public class LoginController {
 	private Server DinnerClub = new Server();
 
     @FXML
-    private Button newUser;
+    private Button newUserButton;
 
     @FXML
     private Button login;
@@ -33,13 +33,27 @@ public class LoginController {
 
 
     @FXML
-    void newUser(ActionEvent event) {
-    	
-    	System.out.println("newUser");
+    void newUserButtonClicked(ActionEvent event) {
+    	try {
+			((Node) event.getSource()).getScene().getWindow().hide();
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/NewUser.fxml"));
+			Parent root = loader.load();
+			
+			Scene scene = new Scene(root,400,400);
+			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			Stage stage = new Stage();
+			stage.setScene(scene);
+			stage.setTitle("Dinner Club");
+			stage.show();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     @FXML
-    void login(ActionEvent event) throws IOException {
+    void loginButtonClicked(ActionEvent event) throws IOException {
     	String user = username.getText();
     	
     	if(DinnerClub.getUser(user) != null){
@@ -68,6 +82,64 @@ public class LoginController {
     		wrongUsername.setText("  Unknown username");
     		System.out.println("wrong");
     	}
+    }
+    
+    ///////////////////////////////////
+    // new user
+    
+    @FXML
+    private TextField newUserName;
+
+    @FXML
+    private TextField kitchenName;
+
+    @FXML
+    private Button createNewUserButton;
+
+    @FXML
+    private Button backButton;
+
+    @FXML
+    void backButtonClicked(ActionEvent event) {
+    	try {
+			((Node) event.getSource()).getScene().getWindow().hide();
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/Login.fxml"));
+			Parent root = loader.load();
+			
+			Scene scene = new Scene(root,400,400);
+			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			Stage stage = new Stage();
+			stage.setScene(scene);
+			stage.setTitle("Dinner Club");
+			stage.show();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+
+    @FXML
+    void createNewUserButtonClicked(ActionEvent event) {
+    	DinnerClub.newUser(newUserName.getText(), kitchenName.getText());
+    	
+    	try {
+			((Node) event.getSource()).getScene().getWindow().hide();
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/Login.fxml"));
+			Parent root = loader.load();
+			wrongUsername.setText("Insert your new username");
+			Scene scene = new Scene(root,400,400);
+			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			Stage stage = new Stage();
+			stage.setScene(scene);
+			stage.setTitle("Dinner Club");
+			stage.show();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
     }
     
 
