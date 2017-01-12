@@ -53,16 +53,18 @@ public class User {
 		@Override
 		protected void doRun() {
 			try {
-
-				Tuple dataTuple = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
-				Template feedback = new Template(new ActualTemplateField(userName + " " + command + " Feedback"),
+				Template feedback = new Template(
+						new FormalTemplateField(String.class),
+						new FormalTemplateField(String.class),
+						new FormalTemplateField(String.class),
+						new FormalTemplateField(Boolean.class),
 						new FormalTemplateField(Tuple.class));
 
 				put(t, p); // AddDay sent to server
 
 				t = get(feedback, Self.SELF);
-				dataTuple = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
-				feedbackMsg = dataTuple.getElementAt(String.class, 3);
+				Tuple dataTuple = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
+				feedbackMsg = dataTuple.getElementAt(String.class, 1);
 				System.out.println(userName + " got feedback: " + feedbackMsg);
 
 			} catch (Exception e) {

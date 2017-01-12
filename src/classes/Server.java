@@ -104,7 +104,7 @@ public class Server {
 						tupleData = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
 						String userName = t.getElementAt(String.class, ECommand.USERNAME.getValue());
 						PointToPoint p = new PointToPoint(userName, vp.getAddress());
-						put(new Tuple(userName + " " + command, tupleData), p);
+						put(t, p);
 						System.out.println("Server transfers feedback from "
 								+ t.getElementAt(String.class, ECommand.KITCHEN.getValue()) + " to " + userName);
 					}

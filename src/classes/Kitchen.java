@@ -44,7 +44,6 @@ public class Kitchen {
 
 		private KitchenMonitor(String who) {
 			super(who);
-
 		}
 
 		@Override
@@ -54,9 +53,9 @@ public class Kitchen {
 				put(new Tuple("Budget" + kitchenName, new Budget(kitchenName)), Self.SELF);
 				while (true) {
 					t = get(kitchenTemplate, Self.SELF);
-					Tuple data = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
+//					Tuple data = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
 					String cmd = t.getElementAt(String.class, ECommand.COMMAND.getValue());
-					exec(new KitchenAgent(cmd, data));
+					exec(new KitchenAgent(cmd, t));
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -72,11 +71,13 @@ public class Kitchen {
 		private String userName, cmd, dayTarget;
 		private int day, month, year;
 
-		private KitchenAgent(String cmd, Tuple data) {
+		private KitchenAgent(String cmd, Tuple t) {
 			super(cmd);
 			this.cmd = cmd;
-			// this.userName = data.getElementAt(String.class, 0);
+			this.userName = t.getElementAt(String.class, ECommand.USERNAME.getValue());
 
+			Tuple data = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
+			
 			this.day = data.getElementAt(Integer.class, EDayData.DAY.getValue());
 			this.month = data.getElementAt(Integer.class, EDayData.MONTH.getValue());
 			this.year = data.getElementAt(Integer.class, EDayData.YEAR.getValue());
@@ -165,7 +166,7 @@ public class Kitchen {
 						sendFeedback(cmd + "Feedback", new Tuple(false, "Day already exists"));
 					} else {
 						put(new Tuple(dayTarget, new Day(day, month, year)), Self.SELF);
-						get(feedbackTemplate(cmd), pointer);
+						get(new Template(new FormalTemplateField(String.class)), pointer);
 						sendFeedback(cmd + "Feedback", new Tuple(true, "Day created."));
 					}
 				} else if (cmd.equals("removeDay")) {
@@ -434,7 +435,7 @@ public class Kitchen {
 
 		private void sendFeedback(String cmd, Tuple result) {
 			try {
-				put(new Tuple(cmd, userName, kitchenName, true, new Tuple(result)), serverPointer);
+				put(new Tuple(cmd, userName, kitchenName, true, result), serverPointer);
 				System.out.println("Kitchen sent feedback");
 			} catch (Exception e) {
 				e.printStackTrace();
