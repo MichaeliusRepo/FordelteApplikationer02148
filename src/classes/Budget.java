@@ -13,65 +13,54 @@ import org.cmg.jresp.knowledge.ts.TupleSpace;
 import org.cmg.jresp.topology.Self;
 
 public class Budget {
-	protected static Node budgetSpace;
+	private static Node budgetSpace;
 
 	public Budget(String kitchenName) {
 		budgetSpace = new Node("Budget" + kitchenName, new TupleSpace());
 		budgetSpace.addPort(Server.vp);
 		budgetSpace.addAgent(new BudgetMonitor("Budget Agent"));
 		budgetSpace.start();
-
 	}
 
-	public static class BudgetMonitor extends Agent {
+	private class BudgetMonitor extends Agent {
 
-		Template cmdTemp = new Template(new FormalTemplateField(String.class), new FormalTemplateField(String.class),
-				new FormalTemplateField(String.class), new ActualTemplateField(false),
-				new FormalTemplateField(Tuple.class));
+		private Template cmdTemp = new Template(new FormalTemplateField(String.class),
+				new FormalTemplateField(String.class), new FormalTemplateField(String.class),
+				new ActualTemplateField(false), new FormalTemplateField(Tuple.class));
 
-		public BudgetMonitor(String name) {
+		private BudgetMonitor(String name) {
 			super(name);
-
 		}
 
 		@Override
 		protected void doRun() throws Exception {
-
-			while (true) {
-
-				try {
-					while (true) {
-						Tuple t = get(cmdTemp, Self.SELF);
-
-						exec(new BudgetAgent(t));
-					}
-
-				} catch (Exception e) {
-					e.printStackTrace();
+			try {
+				while (true) {
+					Tuple t = get(cmdTemp, Self.SELF);
+					exec(new BudgetAgent(t));
 				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
-
 	}
 
-	public static class BudgetAgent extends Agent {
+	private class BudgetAgent extends Agent {
 
-		String cmd, userName, kitchenName;
-		Tuple data;
+		private String cmd, userName, kitchenName;
+		private Tuple data;
 
-		public BudgetAgent(Tuple data) {
+		private BudgetAgent(Tuple data) {
 			super(data.getElementAt(String.class, ECommand.USERNAME.getValue()));
 			this.data = data.getElementAt(Tuple.class, ECommand.DATA.getValue());
 			this.cmd = data.getElementAt(String.class, ECommand.COMMAND.getValue());
 			this.kitchenName = data.getElementAt(String.class, ECommand.KITCHEN.getValue());
 			this.userName = data.getElementAt(String.class, ECommand.USERNAME.getValue());
-
 		}
 
 		@Override
 		protected void doRun() {
 			try {
-
 				switch (cmd) {
 
 				case "getBalance":
@@ -99,15 +88,15 @@ public class Budget {
 						new FormalTemplateField(Integer.class));
 				Tuple t = getp(temp);
 
-				if (t == null) {
+				if (t == null) 
 					feedback(feedback, false, userName + " has no balance set.");
-				} else {
+				 else {
 					put(new Tuple("user", userName, 0), Self.SELF);
 					feedback(feedback, true, userName + "'s balance has been reset.");
 				}
 
 			} catch (Exception e) {
-
+				e.printStackTrace();
 			}
 		}
 
@@ -121,11 +110,11 @@ public class Budget {
 					Tuple t = query(temp, Self.SELF);
 					balance = t.getElementAt(Double.class, 2);
 					feedback(feedback, true, "Balance for " + userName + ": " + balance + "kr");
-				} else {
+				} else 
 					feedback(feedback, false, userName + " could not be found.");
-				}
+				
 			} catch (Exception e) {
-
+				e.printStackTrace();
 			}
 		}
 
@@ -139,9 +128,9 @@ public class Budget {
 			}
 		}
 
+		@SuppressWarnings("unchecked")
 		private void dayBudget(Tuple data) {
 			try {
-
 				String dayName = data.getElementAt(String.class, 0);
 				String kitchenName = data.getElementAt(String.class, 1);
 
@@ -183,14 +172,13 @@ public class Budget {
 
 				} else {
 					int oldPrice = oldData.getElementAt(Integer.class, 3);
-					String oldBuyer = oldData.getElementAt(String.class, 2);
+					// String oldBuyer = oldData.getElementAt(String.class, 2);
 					ArrayList<String> oldAttendees = oldData.getElementAt(ArrayList.class, 4);
 
 					double oldPerPrice = oldPrice / oldAttendees.size();
 
-					for (String attendee : oldAttendees) {
+					for (String attendee : oldAttendees) 
 						addBalance(attendee, -oldPerPrice);
-					}
 
 					/*
 					 * Recursion can now be called with the new Tuple since the
@@ -200,33 +188,29 @@ public class Budget {
 					dayBudget(data);
 					feedback(feedback, true, "Budget had already been calculated. Has been updated");
 				}
-
 			} catch (Exception e) {
-
+				e.printStackTrace();
 			}
 		}
 
 		private void addBalance(String attendee, double perPrice) {
-
 			try {
 				Template temp = new Template(new ActualTemplateField("user"), new ActualTemplateField(attendee),
 						new FormalTemplateField(Double.class));
 				Tuple user = getp(temp);
-				if (user == null) {
+				if (user == null) 
 					put(new Tuple("user", attendee, perPrice), Self.SELF);
-				} else {
+				 else {
 					double newPrice = perPrice + user.getElementAt(Double.class, 2);
 					put(new Tuple("user", attendee, newPrice), Self.SELF);
 				}
-
 			} catch (Exception e) {
-
+				e.printStackTrace();
 			}
 		}
 
 		private boolean queryEmpty(Template t) {
 			LinkedList<Tuple> getAll = queryAll(t);
-
 			return (getAll.isEmpty()) ? true : false;
 		}
 	}

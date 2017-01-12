@@ -1,6 +1,5 @@
 package classes;
 
-import java.io.IOException;
 import java.util.LinkedList;
 
 import org.cmg.jresp.behaviour.Agent;
@@ -16,7 +15,7 @@ import org.cmg.jresp.topology.Self;
 public class Kitchen {
 	private String kitchenName;
 	private Node kitchenSpace;
-	private Budget budget;
+	// private Budget budget;
 
 	public Kitchen(String kitchenName) {
 		this.kitchenName = kitchenName;
@@ -452,7 +451,7 @@ public class Kitchen {
 			return feedbackTemplate;
 		}
 
-		// Use for debugging :-)))))
+		@SuppressWarnings("unused") // Use for debugging
 		private boolean queryEmpty(Template t) {
 			LinkedList<Tuple> getAll = queryAll(t);
 			return (getAll.isEmpty()) ? true : false;

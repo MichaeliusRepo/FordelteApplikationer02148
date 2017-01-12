@@ -7,6 +7,7 @@ public class Main {
 	public static void main(String[] args) {
 		Server dinnerClub = new Server();
 		User user = null;
+		@SuppressWarnings("resource")
 		Scanner in = new Scanner(System.in);
 		int day, month, year;
 

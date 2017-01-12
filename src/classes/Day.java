@@ -15,8 +15,8 @@ import org.cmg.jresp.topology.Self;
 
 public class Day {
 
-	int day, month, year;
-	String dayName;
+	private int day, month, year;
+	private String dayName;
 
 	public Day(int day, int month, int year) {
 		this.day = day;
@@ -30,53 +30,48 @@ public class Day {
 		daySpace.start();
 	}
 
-	public class DayMonitor extends Agent {
+	private class DayMonitor extends Agent {
 
 		// The monitor searches for tuples with the info:
 		// <COMMAND, USERNAME, KITCHENNAME, FEEDBACK, DATA>
-		Template cmdTemp = new Template(new FormalTemplateField(String.class), new FormalTemplateField(String.class),
-				new FormalTemplateField(String.class), new ActualTemplateField(false),
-				new FormalTemplateField(Tuple.class));
+		private Template cmdTemp = new Template(new FormalTemplateField(String.class),
+				new FormalTemplateField(String.class), new FormalTemplateField(String.class),
+				new ActualTemplateField(false), new FormalTemplateField(Tuple.class));
 
-		public DayMonitor(String name) {
+		private DayMonitor(String name) {
 			super(name);
-
 		}
 
 		@Override
 		protected void doRun() throws Exception {
-
 			put(new Tuple("dayCreated"), Self.SELF);
 			while (true) {
 				try {
 					Tuple t = getp(cmdTemp);
-
-					if (t != null) {
+					if (t != null)
 						exec(new DayAgent(t));
-					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
-
 		}
-
 	}
 
-	public class DayAgent extends Agent {
+	private class DayAgent extends Agent {
 
-		String cmd, userName, chef, buyer, kitchenName;
-		int attendees, price, totalAttendees;
-		Tuple dataTuple;
-		ArrayList<String> attendeesList;
+		private String cmd, userName, buyer, kitchenName; // ,chef
+		@SuppressWarnings("unused") // STFU Eclipse. It's in use, just try
+									// deleting it. I dare you. Just try.
+		private int attendees, price, totalAttendees;
+		private Tuple dataTuple;
+		private ArrayList<String> attendeesList;
 
-		public DayAgent(Tuple data) {
+		private DayAgent(Tuple data) {
 			super(data.getElementAt(String.class, ECommand.USERNAME.getValue()));
 			this.dataTuple = data.getElementAt(Tuple.class, ECommand.DATA.getValue());
 			this.cmd = data.getElementAt(String.class, ECommand.COMMAND.getValue());
 			this.kitchenName = data.getElementAt(String.class, ECommand.KITCHEN.getValue());
 			this.userName = data.getElementAt(String.class, ECommand.USERNAME.getValue());
-
 		}
 
 		@Override
@@ -118,12 +113,9 @@ public class Day {
 						getAttendees();
 						break;
 					}
-				} else {
-
 				}
-
 			} catch (Exception e) {
-
+				e.printStackTrace();
 			}
 		}
 
@@ -131,12 +123,11 @@ public class Day {
 			String feedback = "unattendDayFeedback";
 			try {
 				if (getp(new Template(new ActualTemplateField("attendee"), new ActualTemplateField(userName),
-						new FormalTemplateField(Integer.class))) == null) {
+						new FormalTemplateField(Integer.class))) == null)
 					feedback(feedback, false, userName + " isn't set to attend that day.");
-				} else {
+				else
 					feedback(feedback, true,
 							userName + " is no longer attending on: " + day + "/" + month + "/" + year);
-				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -145,27 +136,23 @@ public class Day {
 		private void setPrice(int price) {
 			String feedback = "setPriceFeedback";
 			try {
-
 				Tuple t = getp(new Template(new ActualTemplateField("price"), new FormalTemplateField(Integer.class)));
 
-				if (t == null) {
-					put(new Tuple("price", price), Self.SELF);
-					this.buyer = userName;
+				put(new Tuple("price", price), Self.SELF);
+				this.buyer = userName;
+
+				if (t == null)
 					feedback(feedback, true, "The price was set to " + price);
-				} else {
-					put(new Tuple("price", price), Self.SELF);
-					this.buyer = userName;
+				else
 					feedback(feedback, false, "The price was already set to " + t.getElementAt(Integer.class, 2)
 							+ ", but has been replaced.");
-				}
+
 				System.out.println("DayAddBalanceBefore");
 				addBalance();
 				System.out.println("DayAddBalanceAfter");
-
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-
 		}
 
 		private void addChef(String userName) {
@@ -174,21 +161,15 @@ public class Day {
 				LinkedList<Tuple> chefs = queryAll(
 						new Template(new ActualTemplateField("chef"), new FormalTemplateField(String.class)));
 
-				if (chefs.size() < 2) {
-
+				if (chefs.size() < 2)
 					if (queryp(
 							new Template(new ActualTemplateField("chef"), new ActualTemplateField(userName))) == null) {
-
 						put(new Tuple("chef", userName), Self.SELF);
 						feedback(feedback, true, userName + " was added as a chef.");
-
-					} else {
+					} else
 						feedback(feedback, false, userName + " is already a chef.");
-					}
-
-				} else {
+				else
 					feedback(feedback, false, "There are already two chefs.");
-				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -211,9 +192,9 @@ public class Day {
 						new FormalTemplateField(Integer.class));
 				Tuple t = getp(temp);
 
-				if (t == null) {
+				if (t == null)
 					put(new Tuple("attendee", userName, attendees), Self.SELF);
-				} else {
+				else {
 					put(new Tuple("attendee", userName, attendees), Self.SELF);
 					totalAttendees -= t.getElementAt(Integer.class, 2);
 				}
@@ -229,19 +210,18 @@ public class Day {
 			try {
 
 			} catch (Exception e) {
-
+				e.printStackTrace();
 			}
 		}
 
 		private void addBalance() {
 			try {
-
 				attendeesList = setAttendees();
 				put(new Tuple("addBalance", userName, kitchenName, true,
 						(new Tuple(dayName, kitchenName, buyer, price, attendeesList)), "addBalance"), Self.SELF);
 
 			} catch (Exception e) {
-
+				e.printStackTrace();
 			}
 		}
 
@@ -253,9 +233,8 @@ public class Day {
 			ListIterator<Tuple> iterator = attendeesTupleList.listIterator();
 			while (iterator.hasNext()) {
 				Tuple t = iterator.next();
-				for (int j = 1; j <= t.getElementAt(Integer.class, 2); j++) {
+				for (int j = 1; j <= t.getElementAt(Integer.class, 2); j++)
 					list.add(t.getElementAt(String.class, 1));
-				}
 			}
 			return list;
 		}

@@ -102,17 +102,14 @@ public class BaseMethodTest {
 
 	@Test
 	public void lockDay() throws Exception {
-		String feedback = null;
 		user.command("lockDay", day, month, year, 0);
 		Thread.sleep(milliseconds);
-		feedback = user.getFeedbackMsg();
-		assertNotEquals(feedback, null);
-
-		feedback = null;
+		assertNotEquals(user.getFeedbackMsg(), "Day created.");
+		
 		user.command("lockDay", day, month, year, 0);
 		Thread.sleep(milliseconds);
-		feedback = user.getFeedbackMsg();
-		assertNotEquals(feedback, null);
+		assertNotEquals(user.getFeedbackMsg(), "Day created.");
+		assertNotEquals(user.getFeedbackMsg().length(),12);
 	}
 
 	@Test
