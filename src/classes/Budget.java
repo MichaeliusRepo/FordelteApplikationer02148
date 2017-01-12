@@ -179,7 +179,7 @@ public class Budget {
 					 */
 					addBalance(buyer, -price);
 
-					feedback(feedback, true, "Budget has been update.");
+					feedback(feedback, true, "Budget has been updated.");
 
 				} else {
 					int oldPrice = oldData.getElementAt(Integer.class, 3);
