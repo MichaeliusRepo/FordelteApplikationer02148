@@ -18,6 +18,8 @@ import classes.Server;
 
 public class LoginController {
 	private Server DinnerClub = new Server();
+	private Stage stage;
+	private Scene loginScene, newUserScene;
 
     @FXML
     private Button newUserButton;
@@ -103,8 +105,7 @@ public class LoginController {
     void backButtonClicked(ActionEvent event) {
     	try {
 			((Node) event.getSource()).getScene().getWindow().hide();
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/Login.fxml"));
-			Parent root = loader.load();
+			Parent root = FXMLLoader.load(getClass().getResource("/application/Login.fxml"));
 			
 			Scene scene = new Scene(root,400,400);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
@@ -121,18 +122,22 @@ public class LoginController {
 
     @FXML
     void createNewUserButtonClicked(ActionEvent event) {
-    	DinnerClub.newUser(newUserName.getText(), kitchenName.getText());
+    	if(newUserName.getText() != null && kitchenName.getText() != null){
+    		DinnerClub.newUser(newUserName.getText(), kitchenName.getText());
+    	} else {
+    		System.out.println("Remember to insert kitchenName and Username");
+    	}
+    	
     	
     	try {
 			((Node) event.getSource()).getScene().getWindow().hide();
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/Login.fxml"));
-			Parent root = loader.load();
-			wrongUsername.setText("Insert your new username");
+			Parent root = FXMLLoader.load(getClass().getResource("/application/Login.fxml"));
 			Scene scene = new Scene(root,400,400);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			Stage stage = new Stage();
 			stage.setScene(scene);
 			stage.setTitle("Dinner Club");
+			//wrongUsername.setText("Insert your new username");
 			stage.show();
 			
 		} catch (IOException e) {
