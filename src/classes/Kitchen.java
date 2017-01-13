@@ -97,7 +97,7 @@ public class Kitchen {
 				setDay(cmd, data);
 				System.out.println(cmd);
 				break;
-				
+
 			case "getDays":
 				getDays(cmd, data);
 
@@ -161,10 +161,13 @@ public class Kitchen {
 
 			}
 		}
-		
+
 		private void getDays(String cmd, Tuple data) {
-			LinkedList<Tuple> list = queryAll(
+			LinkedList<Tuple> query = queryAll(
 					new Template(new FormalTemplateField(String.class), new FormalTemplateField(Day.class)));
+			LinkedList<String> list = new LinkedList<String>();
+			for (Tuple t : query)
+				list.add(t.getElementAt(Day.class, 1).getDate());
 			sendFeedback(cmd + "Feedback", new Tuple(true, "Here they are!",list));
 		}
 

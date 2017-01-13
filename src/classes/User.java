@@ -72,11 +72,13 @@ public class User {
 				feedbackMsg = dataTuple.getElementAt(String.class, 1);
 				System.out.println(userName + " got feedback: " + feedbackMsg);
 
-				if (t.getElementAt(String.class, ECommand.USERNAME.getValue()).contains("getDays")
-						|| t.getElementAt(String.class, ECommand.USERNAME.getValue()).contains("getAttendees")) {
+				if (t.getElementAt(String.class, ECommand.COMMAND.getValue()).contains("getDays")
+						|| t.getElementAt(String.class, ECommand.COMMAND.getValue()).contains("getAttendees")) {
 					@SuppressWarnings("unchecked")
-					LinkedList<String> list = dataTuple.getElementAt(LinkedList.class, 3);
+					LinkedList<String> list = dataTuple.getElementAt(LinkedList.class, 2);
 					returnData = list; // This cannot be done in one line. Thanks for nothing then, Java.
+					for (String str : returnData)
+						System.out.print(str + ", ");
 				}
 
 			} catch (Exception e) {
