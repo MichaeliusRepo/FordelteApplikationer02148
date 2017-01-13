@@ -51,9 +51,18 @@ public class Server {
 					String command = t.getElementAt(String.class, ECommand.COMMAND.getValue());
 					tupleData = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
 
-					if (command.contains("addUser"))
+					if (command.contains("addUser")) {
 						put(new Tuple(t.getElementAt(String.class, ECommand.USERNAME.getValue()),
 								t.getElementAt(String.class, ECommand.KITCHEN.getValue())), Self.SELF);
+						String kitchenName = t.getElementAt(String.class, ECommand.KITCHEN.getValue());
+						Template kitchenCheck = new Template(
+								new FormalTemplateField(String.class),
+								new ActualTemplateField(kitchenName)
+								);
+						if (queryp(kitchenCheck) != null)
+							new Kitchen(kitchenName);
+					}
+						
 					else {
 						System.out.println(
 								"Server Monitor was requested to " + t.getElementAt(ECommand.COMMAND.getValue()) + ", "
