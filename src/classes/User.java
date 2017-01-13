@@ -25,7 +25,7 @@ public class User {
 	private String kitchenName;
 	private PointToPoint p = new PointToPoint("Server", Server.vp.getAddress());
 	private String command;
-	private String feedbackMsg;
+	private String feedbackMsg = null;
 	private final ArrayList<String> kitchens = new ArrayList<String>();
 	private LinkedList<String> returnData;
 
@@ -45,8 +45,13 @@ public class User {
 	public void command(String command, int day, int month, int year, int extra) {
 		this.command = command;
 		Tuple t = new Tuple(command, userName, kitchenName, false, new Tuple(day, month, year, extra));
-		Agent userAgent = new UserAgent(command, t);
-		userSpace.addAgent(userAgent);
+		userSpace.addAgent(new UserAgent(command, t));
+	}
+
+	public void userRequests(String command, String userName, String kitchenName) {
+		this.command = command;
+		Tuple t = new Tuple(command, userName, kitchenName, false, new Tuple());
+		userSpace.addAgent(new UserAgent(command, t));
 	}
 
 	private class UserAgent extends Agent {
@@ -61,26 +66,46 @@ public class User {
 		@Override
 		protected void doRun() {
 			try {
+				String cmd = t.getElementAt(String.class, ECommand.COMMAND.getValue());
 				Template feedback = new Template(new FormalTemplateField(String.class),
 						new FormalTemplateField(String.class), new FormalTemplateField(String.class),
 						new ActualTemplateField(true), new FormalTemplateField(Tuple.class));
+				Template user = new Template(
+						new ActualTemplateField(t.getElementAt(String.class, ECommand.USERNAME.getValue())),
+						new ActualTemplateField(t.getElementAt(String.class, ECommand.KITCHEN.getValue())));
 
-				put(t, p); // AddDay sent to server
-				
-				t = get(feedback, p);
-				Tuple dataTuple = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
-				
-				feedbackMsg = dataTuple.getElementAt(String.class, 1);
-				System.out.println(userName + " got feedback: " + feedbackMsg);
+				System.out.println(cmd);
 
-				if (t.getElementAt(String.class, ECommand.COMMAND.getValue()).contains("getDays")
-						|| t.getElementAt(String.class, ECommand.COMMAND.getValue()).contains("getAttendees")) {
-					@SuppressWarnings("unchecked")
-					LinkedList<String> list = dataTuple.getElementAt(LinkedList.class, 2);
-					returnData = list; // This cannot be done in one line. Thanks for nothing then, Java.
-					for (String str : returnData)
-						System.out.print(str + ", ");
+				if (cmd.contains("User")) {
+					// User request
+					if (cmd == "addUser")
+						put(t, p);
+					t = query(user, p);
+					userName = t.getElementAt(String.class, 0);
+					kitchenName = t.getElementAt(String.class, 1);
+					feedbackMsg = userName + " belonging to " + kitchenName + " was retrieved.";
+					System.out.println(feedbackMsg);
+
+				} else {
+					// Command
+					put(t, p);
+					t = get(feedback, p);
+					Tuple dataTuple = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
+
+					feedbackMsg = dataTuple.getElementAt(String.class, 1);
+					System.out.println(userName + " got feedback: " + feedbackMsg);
+
+					if (t.getElementAt(String.class, ECommand.COMMAND.getValue()).contains("getDays")
+							|| t.getElementAt(String.class, ECommand.COMMAND.getValue()).contains("getAttendees")) {
+						@SuppressWarnings("unchecked")
+						LinkedList<String> list = dataTuple.getElementAt(LinkedList.class, 2);
+						returnData = list; // This cannot be done in one line.
+											// Thanks for nothing then, Java.
+						for (String str : returnData)
+							System.out.print(str + ", ");
+					}
 				}
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

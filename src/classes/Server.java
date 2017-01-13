@@ -30,21 +30,12 @@ public class Server {
 		server.addAgent(monitor);
 		server.start();
 	}
-	
-	public Tuple accessUser(String userName, String kitchenName, String cmd) {
-		server.addAgent(new UserManagingAgent(userName, kitchenName, cmd));
-		while (userTuple == null) {
-		}
-		Tuple t = userTuple;
-		userTuple = null;
-		return t;
-	}
 
 	private class Monitor extends Agent {
 
 		private Tuple t;
 		private Tuple tupleData;
-		private Template what = new Template(new FormalTemplateField(String.class),
+		private Template commandTuples = new Template(new FormalTemplateField(String.class),
 				new FormalTemplateField(String.class), new FormalTemplateField(String.class),
 				new ActualTemplateField(false), new FormalTemplateField(Tuple.class));
 
@@ -56,11 +47,14 @@ public class Server {
 		protected void doRun() {
 			while (true) {
 				try {
-					t = get(what, Self.SELF);
+					t = get(commandTuples, Self.SELF);
 					String command = t.getElementAt(String.class, ECommand.COMMAND.getValue());
 					tupleData = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
 
-					if (!command.contains("Feedback")) {
+					if (command.contains("addUser"))
+						put(new Tuple(t.getElementAt(String.class, ECommand.USERNAME.getValue()),
+								t.getElementAt(String.class, ECommand.KITCHEN.getValue())), Self.SELF);
+					else {
 						System.out.println(
 								"Server Monitor was requested to " + t.getElementAt(ECommand.COMMAND.getValue()) + ", "
 										+ tupleData.getElementAt(Integer.class, EDayData.DAY.getValue()) + "/"
@@ -72,16 +66,16 @@ public class Server {
 						 * check that the user is a valid source and not
 						 * malicious
 						 */
-						Agent agent = new ServerAgent(command, t);
-						exec(agent);
-					} else {
-						// This section has been moved to user.
+						exec(new ServerAgent(command, t));
 					}
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
+
 		}
+
 	}
 
 	private class ServerAgent extends Agent {
@@ -104,31 +98,6 @@ public class Server {
 				e.printStackTrace();
 			}
 		}
-	}
-
-	private class UserManagingAgent extends Agent {
-
-		String userName, kitchenName, cmd;
-
-		private UserManagingAgent(String userName, String kitchenName, String cmd) {
-			super(userName);
-			this.userName = userName;
-			this.kitchenName = kitchenName;
-			this.cmd = cmd;
-		}
-
-		@Override
-		protected void doRun() {
-			try {
-				if (cmd.contains("add"))
-					put(new Tuple(userName, kitchenName), Self.SELF);
-				userTuple = queryp(
-						new Template(new ActualTemplateField(userName), new ActualTemplateField(kitchenName)));
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-
 	}
 
 }

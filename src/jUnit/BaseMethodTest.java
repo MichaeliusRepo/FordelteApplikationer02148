@@ -17,8 +17,8 @@ public class BaseMethodTest {
 	// Properties > Java Build Path > Project > Add > JUnit
 
 	private final Server dinnerClub = new Server();
-	private final String userName = "Lenny Wolf";
-	private final String kitchenName = "What Love Can Be";
+	private final String userName = "Steven Tyler";
+	private final String kitchenName = "Love in an Elavator";
 	private User user;
 	private final int day = 29;
 	private final int month = 2;
@@ -27,8 +27,11 @@ public class BaseMethodTest {
 
 	@Before
 	public void setup() throws Exception {
-		dinnerClub.newUser(userName, kitchenName);
-		user = dinnerClub.getUser(userName);
+//		dinnerClub.newUser(userName, kitchenName);
+//		user = dinnerClub.getUser(userName);
+		user = new User("","");
+		user.command("addUser", day, month, year, 0);
+		
 
 		user.command("addDay", day, month, year, 0);
 		Thread.sleep(milliseconds);
