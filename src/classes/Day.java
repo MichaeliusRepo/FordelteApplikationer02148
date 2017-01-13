@@ -122,7 +122,7 @@ public class Day {
 						break;
 
 					default:
-						feedback(cmd + "Feedback", false, "Shut the fuck up faggot, the day is locked.");
+						feedback(cmd + "Feedback", true, "Shut the fuck up faggot, the day is locked.");
 					}
 				}
 			} catch (Exception e) {
@@ -207,7 +207,6 @@ public class Day {
 					throw new Exception();
 				}
 				feedback(feedback, true, msg);
-
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
