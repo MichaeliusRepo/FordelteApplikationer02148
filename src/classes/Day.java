@@ -254,7 +254,7 @@ public class Day {
 			try {
 				LinkedList<Tuple> attendeesTupleList = queryAll(new Template(new ActualTemplateField("attendee"),
 						new FormalTemplateField(String.class), new FormalTemplateField(Integer.class)));
-				ArrayList<String> list = new ArrayList<String>();
+				LinkedList<String> list = new LinkedList<String>();
 				String attendees = "Attendees:\n";
 
 				ListIterator<Tuple> iterator = attendeesTupleList.listIterator();
