@@ -36,6 +36,10 @@ public class User {
 		userSpace.addPort(Server.vp);
 		userSpace.start();
 	}
+	
+	public String[] getDays() {
+		return daysGotten;
+	}
 
 	public void command(String command, int day, int month, int year, int extra) {
 		this.command = command;
