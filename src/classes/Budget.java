@@ -50,12 +50,12 @@ public class Budget {
 		private String cmd, userName, kitchenName;
 		private Tuple data;
 
-		private BudgetAgent(Tuple data) {
-			super(data.getElementAt(String.class, ECommand.USERNAME.getValue()));
-			this.data = data.getElementAt(Tuple.class, ECommand.DATA.getValue());
-			this.cmd = data.getElementAt(String.class, ECommand.COMMAND.getValue());
-			this.kitchenName = data.getElementAt(String.class, ECommand.KITCHEN.getValue());
-			this.userName = data.getElementAt(String.class, ECommand.USERNAME.getValue());
+		private BudgetAgent(Tuple cmdTuple) {
+			super(cmdTuple.getElementAt(String.class, ECommand.USERNAME.getValue()));
+			this.data = cmdTuple.getElementAt(Tuple.class, ECommand.DATA.getValue());
+			this.cmd = cmdTuple.getElementAt(String.class, ECommand.COMMAND.getValue());
+			this.kitchenName = cmdTuple.getElementAt(String.class, ECommand.KITCHEN.getValue());
+			this.userName = cmdTuple.getElementAt(String.class, ECommand.USERNAME.getValue());
 		}
 
 		@Override
@@ -85,13 +85,13 @@ public class Budget {
 			String feedback = "resetBalanceFeedback";
 			try {
 				Template temp = new Template(new ActualTemplateField("user"), new ActualTemplateField(userName),
-						new FormalTemplateField(Integer.class));
+						new FormalTemplateField(Double.class));
 				Tuple t = getp(temp);
 
 				if (t == null) 
 					feedback(feedback, false, userName + " has no balance set.");
 				 else {
-					put(new Tuple("user", userName, 0), Self.SELF);
+					put(new Tuple("user", userName, 0.0), Self.SELF);
 					feedback(feedback, true, userName + "'s balance has been reset.");
 				}
 
@@ -120,7 +120,7 @@ public class Budget {
 
 		private void feedback(String feedback, boolean result, String message) {
 			try {
-				put(new Tuple(new Tuple(userName, kitchenName, result, message), feedback), Self.SELF);
+				put(new Tuple(feedback, userName, kitchenName, true, new Tuple(result, message)), Self.SELF);
 				Template what = new Template(new FormalTemplateField(Tuple.class), new ActualTemplateField(feedback));
 				System.out.println(queryEmpty(what));
 			} catch (Exception e) {
