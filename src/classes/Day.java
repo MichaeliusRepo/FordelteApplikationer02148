@@ -118,13 +118,13 @@ public class Day {
 				if (queryp(new Template(new ActualTemplateField("locked"))) == null) {
 					if (getp(new Template(new ActualTemplateField("attendee"), new ActualTemplateField(userName),
 							new FormalTemplateField(Integer.class))) == null)
-						feedback(feedback, false, userName + " isn't set to attend that day.");
+						feedback(feedback, false, userName + " isn't set to attend that day.", null);
 					else {
 						feedback(feedback, true,
-								userName + " is no longer attending on: " + day + "/" + month + "/" + year);
+								userName + " is no longer attending on: " + day + "/" + month + "/" + year, null);
 					}
 				} else {
-					feedback(feedback, false, "Day is locked");
+					feedback(feedback, false, "Day is locked", null);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -142,16 +142,16 @@ public class Day {
 					this.buyer = userName;
 
 					if (t == null)
-						feedback(feedback, true, "The price was set to " + price);
+						feedback(feedback, true, "The price was set to " + price, null);
 					else
 						feedback(feedback, false, "The price was already set to " + t.getElementAt(Integer.class, 2)
-								+ ", but has been replaced.");
+								+ ", but has been replaced.", null);
 
 					System.out.println("DayAddBalanceBefore");
 					addBalance();
 					System.out.println("DayAddBalanceAfter");
 				} else {
-					feedback(feedback, false, "Day hasn't been locked yet.");
+					feedback(feedback, false, "Day hasn't been locked yet.", null);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -168,15 +168,15 @@ public class Day {
 						if (queryp(new Template(new ActualTemplateField("chef"),
 								new ActualTemplateField(userName))) == null) {
 							put(new Tuple("chef", userName), Self.SELF);
-							feedback(feedback, true, userName + " was added as a chef.");
+							feedback(feedback, true, userName + " was added as a chef.", null);
 						} else {
-							feedback(feedback, false, userName + " is already a chef.");
+							feedback(feedback, false, userName + " is already a chef.", null);
 						}
 					} else {
-						feedback(feedback, false, "There are already two chefs.");
+						feedback(feedback, false, "There are already two chefs.", null);
 					}
 				} else {
-					feedback(feedback, false, "Day was locked");
+					feedback(feedback, false, "Day was locked", null);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -203,7 +203,7 @@ public class Day {
 				default:
 					throw new Exception();
 				}
-				feedback(feedback, true, msg);
+				feedback(feedback, true, msg, null);
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -215,9 +215,9 @@ public class Day {
 			try {
 				if (queryp(new Template(new ActualTemplateField("locked"))) == null) {
 					put(new Tuple("locked"), Self.SELF);
-					feedback(feedback, true, dayName + " was locked.");
+					feedback(feedback, true, dayName + " was locked.", null);
 				} else {
-					feedback(feedback, true, dayName + " was already locked.");
+					feedback(feedback, true, dayName + " was already locked.", null);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -239,13 +239,13 @@ public class Day {
 						totalAttendees -= t.getElementAt(Integer.class, 2);
 					}
 					totalAttendees += attendees;
-					feedback(feedback, true, userName + " added with " + attendees + " attendees.");
+					feedback(feedback, true, userName + " added with " + attendees + " attendees.", null);
 
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			} else {
-				feedback(feedback, false, "Day is locked");
+				feedback(feedback, false, "Day is locked", null);
 			}
 		}
 
@@ -268,7 +268,7 @@ public class Day {
 
 				}
 
-				feedback(feedback, true, attendees);
+				feedback(feedback, true, attendees, list);
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -300,9 +300,9 @@ public class Day {
 			return list;
 		}
 
-		private void feedback(String feedback, boolean result, String message) {
+		private void feedback(String feedback, boolean result, String message, Object o) {
 			try {
-				put(new Tuple(feedback, userName, kitchenName, true, new Tuple(result, message)), Self.SELF);
+				put(new Tuple(feedback, userName, kitchenName, true, new Tuple(result, message, o)), Self.SELF);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
