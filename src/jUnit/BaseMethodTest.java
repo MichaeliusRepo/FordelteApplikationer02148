@@ -126,10 +126,16 @@ public class BaseMethodTest {
 	
 	// TODO This methods are yet to be fully implemented, it seems.
 	@Test
-	public void getChef() throws Exception {		
+	public void getChef() throws Exception {	
+		user.command("addChef", day, month, year, 0);
+		Thread.sleep(milliseconds);
+		assertEquals(user.getFeedbackMsg(), userName + " was added as a chef.");
+		
 		user.command("getChef", day, month, year, 0);
 		Thread.sleep(milliseconds);
+		assertNotEquals(user.getFeedbackMsg(), userName + " was added as a chef.");
 		assertNotEquals(user.getFeedbackMsg(),"Day created.");
+		assertTrue(user.getFeedbackMsg().contains(userName));
 	}
 
 	@Test

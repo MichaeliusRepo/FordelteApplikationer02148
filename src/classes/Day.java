@@ -161,7 +161,7 @@ public class Day {
 				LinkedList<Tuple> chefs = queryAll(
 						new Template(new ActualTemplateField("chef"), new FormalTemplateField(String.class)));
 
-				if (chefs.size() < 2)
+				if (chefs.size() <= 2)
 					if (queryp(
 							new Template(new ActualTemplateField("chef"), new ActualTemplateField(userName))) == null) {
 						put(new Tuple("chef", userName), Self.SELF);
@@ -170,6 +170,32 @@ public class Day {
 						feedback(feedback, false, userName + " is already a chef.");
 				else
 					feedback(feedback, false, "There are already two chefs.");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		private void getChef() {
+			try {
+				String feedback = "getChefFeedback";
+				String msg;
+				LinkedList<Tuple> chefs = queryAll(
+						new Template(new ActualTemplateField("chef"), new FormalTemplateField(String.class)));
+				switch (chefs.size()) {
+				case 0:
+					msg = "Nobody as of yet is added as chef to this date.";
+					break;
+				case 1:
+					msg = chefs.get(0).getElementAt(String.class, 1) + " is today's cook.";
+					break;
+				case 2:
+					msg = chefs.get(0).getElementAt(String.class, 1) + " and " + chefs.get(1).getElementAt(String.class, 1) + " are cooks today.";
+					break;
+				default:
+					throw new Exception();
+				}
+				feedback(feedback, true, msg);
+				
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
