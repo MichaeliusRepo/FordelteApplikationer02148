@@ -120,6 +120,10 @@ public class Kitchen {
 				executeDayCmd(cmd, data);
 				// addChef(data);
 				break;
+			
+			case "getChef":
+				executeDayCmd(cmd, data);
+				break;
 
 			case "lockDay":
 				System.out.println(cmd);

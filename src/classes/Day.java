@@ -92,6 +92,10 @@ public class Day {
 					case "lockDay":
 						lockDay();
 						break;
+					
+					case "getChef":
+						getChef();
+						break;
 
 					case "addChef":
 						addChef(userName);
@@ -111,6 +115,10 @@ public class Day {
 
 					case "getAttendees":
 						getAttendees();
+						break;
+					
+					case "getChef":
+						getChef();
 						break;
 					}
 				}
