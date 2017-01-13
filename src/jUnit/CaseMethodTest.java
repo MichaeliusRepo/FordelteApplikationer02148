@@ -24,6 +24,7 @@ public class CaseMethodTest {
 	private int day = 29;
 	private int month = 2;
 	private int year = 2016;
+	private final int milliseconds = 200;
 	
 	@Before
 	public void setup() throws Exception {
@@ -43,7 +44,7 @@ public class CaseMethodTest {
 		
 		user.command("lockDay", day, month, year, 0);
 		Thread.sleep(100);
-		// assertEquals(user.getFeedbackMsg,"Dagen findes allerede");
+		assertNotEquals(user.getFeedbackMsg(),"Dagen findes allerede");
 		
 		String feedback = null;
 		
@@ -51,6 +52,43 @@ public class CaseMethodTest {
 		Thread.sleep(100);
 		feedback = user.getFeedbackMsg();
 		assertNotEquals(feedback, null);
+	}
+	
+	
+	@Test
+	public void setTwoChefs() throws Exception {
+		user.command("addChef", day, month, year, 0);
+		Thread.sleep(milliseconds);
+		assertEquals(user.getFeedbackMsg(), userName + " was added as a chef.");
+
+		user.command("addChef", day, month, year, 0);
+		Thread.sleep(milliseconds);
+		assertEquals(user.getFeedbackMsg(), userName + " is already a chef.");
+
+		String str = "Mathias";
+		dinnerClub.newUser(str, kitchenName);
+		User user2 = dinnerClub.getUser(str);
+		
+		String user2Feedback = null;
+		
+		user2.command("addChef", day, month, year, 0);
+		Thread.sleep(milliseconds);
+		user2Feedback = user.getFeedbackMsg();
+		assertNotEquals(user2Feedback, null);
+		assertNotEquals(user2Feedback, "Den valgte dag findes ikke");
+		assertEquals(user2.getFeedbackMsg(), "Mathias was added as a chef.");
+
+		String str2 = "Emilie";
+		dinnerClub.newUser(str2, kitchenName);
+		User user3 = dinnerClub.getUser(str2);
+		user3.command("addChef", day, month, year, 0);
+		Thread.sleep(milliseconds);
+		assertEquals(user3.getFeedbackMsg(), "There are already two chefs.");
+	}
+	
+	@Test
+	public void getTwoChefs() throws Exception {
+		
 	}
 	
 }

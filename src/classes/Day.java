@@ -71,7 +71,6 @@ public class Day {
 			this.cmd = data.getElementAt(String.class, ECommand.COMMAND.getValue());
 			this.kitchenName = data.getElementAt(String.class, ECommand.KITCHEN.getValue());
 			this.userName = data.getElementAt(String.class, ECommand.USERNAME.getValue());
-		//	this.locked = dayIsLocked();
 		}
 
 		@Override
@@ -310,18 +309,5 @@ public class Day {
 			}
 		}
 
-		private boolean dayIsLocked() {
-			try {
-				Tuple lock = queryp(new Template(new ActualTemplateField("locked")));
-				if(lock == null) {
-					return false;
-				} else {
-					return true;
-				}
-			} catch(Exception e) {
-				e.printStackTrace();
-			}
-			return false;
-		}
 	}
 }
