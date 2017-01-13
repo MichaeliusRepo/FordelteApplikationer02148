@@ -138,7 +138,7 @@ public class KitchenController {
     }
     
 	private void newScene(ActionEvent event, String path, String user) throws IOException {
-		
+		int x = 400;
 		((Node) event.getSource()).getScene().getWindow().hide();
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
 		Parent root = loader.load();
@@ -169,11 +169,12 @@ public class KitchenController {
 			dayController.setServer(dinnerClub);
 			dayController.setUser(user);
 			dayController.titleLabel.setText(((RadioButton)toggleGroup.getSelectedToggle()).getText());
+			x = 500;
 			break;
 		
 		}
 		
-		Scene scene = new Scene(root,400,400);
+		Scene scene = new Scene(root,x,400);
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		Stage stage = new Stage();
 		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
