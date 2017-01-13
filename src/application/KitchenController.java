@@ -168,7 +168,7 @@ public class KitchenController {
 			DayController dayController = loader.getController();
 			dayController.setServer(dinnerClub);
 			dayController.setUser(user);
-			dayController.titleLabel.setText(((RadioButton)toggleGroup.getSelectedToggle()).getText());
+			dayController.updateTabel(((RadioButton)toggleGroup.getSelectedToggle()).getText());
 			x = 500;
 			break;
 		
