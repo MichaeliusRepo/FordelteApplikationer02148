@@ -3,6 +3,7 @@ package classes;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.cmg.jresp.behaviour.Agent;
@@ -26,7 +27,7 @@ public class User {
 	private String command;
 	private String feedbackMsg;
 	private final ArrayList<String> kitchens = new ArrayList<String>();
-	private String[] daysGotten;
+	private LinkedList<String> returnData;
 
 	public User(String userName, String kitchenName) {
 		this.userName = userName;
@@ -36,9 +37,9 @@ public class User {
 		userSpace.addPort(Server.vp);
 		userSpace.start();
 	}
-	
-	public String[] getDays() {
-		return daysGotten;
+
+	public List<String> getDays() {
+		return returnData;
 	}
 
 	public void command(String command, int day, int month, int year, int extra) {
@@ -60,12 +61,9 @@ public class User {
 		@Override
 		protected void doRun() {
 			try {
-				Template feedback = new Template(
-						new FormalTemplateField(String.class),
-						new FormalTemplateField(String.class),
-						new FormalTemplateField(String.class),
-						new FormalTemplateField(Boolean.class),
-						new FormalTemplateField(Tuple.class));
+				Template feedback = new Template(new FormalTemplateField(String.class),
+						new FormalTemplateField(String.class), new FormalTemplateField(String.class),
+						new FormalTemplateField(Boolean.class), new FormalTemplateField(Tuple.class));
 
 				put(t, p); // AddDay sent to server
 
@@ -73,12 +71,12 @@ public class User {
 				Tuple dataTuple = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
 				feedbackMsg = dataTuple.getElementAt(String.class, 1);
 				System.out.println(userName + " got feedback: " + feedbackMsg);
-				
-				if (t.getElementAt(String.class, ECommand.USERNAME.getValue()).contains("getDays")) {
+
+				if (t.getElementAt(String.class, ECommand.USERNAME.getValue()).contains("getDays")
+						|| t.getElementAt(String.class, ECommand.USERNAME.getValue()).contains("getAttendees")) {
 					@SuppressWarnings("unchecked")
-					List<String> list = dataTuple.getElementAt(List.class, 3);
-					int i = list.size();
-				daysGotten = list.toArray(new String[i]);
+					LinkedList<String> list = dataTuple.getElementAt(LinkedList.class, 3);
+					returnData = list; // This cannot be done in one line. Thanks for nothing then, Java.
 				}
 
 			} catch (Exception e) {
