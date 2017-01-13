@@ -23,12 +23,12 @@
       </Button>
       <ScrollPane layoutX="45.0" layoutY="136.0" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="49.0">
          <content>
-            <TableView prefHeight="200.0" prefWidth="400.0">
+            <TableView fx:id="dayTableView" prefHeight="200.0" prefWidth="400.0">
               <columns>
                 <TableColumn id="date" fx:id="dateTableColumn" prefWidth="100.0" text="Date" />
                 <TableColumn fx:id="chefTableColumn" prefWidth="100.0" text="Chef" />
-                  <TableColumn fx:id="attendTableColumn" prefWidth="100.0" text="Total nr." />
-                  <TableColumn prefWidth="100.0" text="Attend" />
+                  <TableColumn fx:id="totalTableColumn" prefWidth="100.0" text="Total nr." />
+                  <TableColumn fx:id="attendTableColumn" prefWidth="100.0" text="Attend" />
               </columns>
             </TableView>
          </content>

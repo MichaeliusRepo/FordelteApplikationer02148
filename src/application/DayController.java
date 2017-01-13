@@ -15,6 +15,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -23,17 +25,23 @@ public class DayController {
 	private String user;
 	
 	@FXML
-	public Label titleLabel;
+	private Label titleLabel;
+	
+	@FXML
+	private TableView<DayTableColumn> dayTableView;
 
     @FXML
-    private TableColumn<?, ?> dateTableColumn;
+    private TableColumn<DayTableColumn, String> dateTableColumn;
 
     @FXML
-    private TableColumn<?, ?> chefTableColumn;
+    private TableColumn<DayTableColumn, String> chefTableColumn;
+    
+    @FXML
+    private TableColumn<DayTableColumn, String> totalTableColumn;
 
     @FXML
-    private TableColumn<?, ?> attendTableColumn;
-
+    private TableColumn<DayTableColumn, String> attendTableColumn;
+    
     @FXML
     private CheckBox viewPreviousCheckBox;
 
@@ -79,10 +87,26 @@ public class DayController {
     
     @FXML
     void updateButtonClicked(ActionEvent event) {
+    	
+    	updateTabel(titleLabel.getText());
 
     }
     
-    //////////////////////////////
+    public void updateTabel(String kitchenName) {
+    	titleLabel.setText(kitchenName);
+    	int i = 0;
+    	DayTableColumn tableColumn = new DayTableColumn(dinnerClub, user, i);
+    	while(tableColumn.haveNextDay()){
+    		dayTableView.getItems().add(tableColumn);
+    	}
+    	
+    	dateTableColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
+    	chefTableColumn.setCellValueFactory(new PropertyValueFactory<>("chef"));
+    	totalTableColumn.setCellValueFactory(new PropertyValueFactory<>("total"));
+    	attendTableColumn.setCellValueFactory(new PropertyValueFactory<>("attend"));
+	}
+
+	//////////////////////////////
     // controller methods
     
     public void setServer(Server dinnerClub){
