@@ -106,13 +106,11 @@ public class BaseMethodTest {
 		assertEquals(user.getFeedbackMsg(), "The chosen day doesn't exist.");
 	}
 
-	
-	// TODO This methods are yet to be fully implemented, it seems.
 	@Test
 	public void getChef() throws Exception {	
 		user.command("getChef", day, month, year, 0);
 		Thread.sleep(milliseconds);
-		assertNotEquals(user.getFeedbackMsg(),"Nobody as of yet is added as chef to this date.");
+		assertEquals(user.getFeedbackMsg(),"Nobody as of yet is added as chef to this date.");
 		
 		user.command("addChef", day, month, year, 0);
 		Thread.sleep(milliseconds);
@@ -120,9 +118,10 @@ public class BaseMethodTest {
 		
 		user.command("getChef", day, month, year, 0);
 		Thread.sleep(milliseconds);
-		assertNotEquals(user.getFeedbackMsg(), userName + " is today's cook.");	
+		assertEquals(user.getFeedbackMsg(), userName + " is today's cook.");	
 	}
 
+	// TODO This methods are yet to be fully implemented, it seems.
 	@Test
 	public void setPrice() throws Exception {
 		user.command("setPrice", day, month, year, 200);
@@ -156,6 +155,7 @@ public class BaseMethodTest {
 		user.command("getBalance", day, month, year, 0);
 		Thread.sleep(milliseconds);
 		assertNotEquals(user.getFeedbackMsg(),"Day created.");
+		assertTrue(user.getFeedbackMsg().contains("balance"));
 	}
 
 }
