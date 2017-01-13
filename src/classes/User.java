@@ -38,7 +38,7 @@ public class User {
 		userSpace.start();
 	}
 
-	public List<String> getDays() {
+	public LinkedList<String> getDays() {
 		return returnData;
 	}
 
@@ -63,12 +63,13 @@ public class User {
 			try {
 				Template feedback = new Template(new FormalTemplateField(String.class),
 						new FormalTemplateField(String.class), new FormalTemplateField(String.class),
-						new FormalTemplateField(Boolean.class), new FormalTemplateField(Tuple.class));
+						new ActualTemplateField(true), new FormalTemplateField(Tuple.class));
 
 				put(t, p); // AddDay sent to server
-
-				t = get(feedback, Self.SELF);
+				
+				t = get(feedback, p);
 				Tuple dataTuple = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
+				
 				feedbackMsg = dataTuple.getElementAt(String.class, 1);
 				System.out.println(userName + " got feedback: " + feedbackMsg);
 
@@ -80,7 +81,6 @@ public class User {
 					for (String str : returnData)
 						System.out.print(str + ", ");
 				}
-
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
