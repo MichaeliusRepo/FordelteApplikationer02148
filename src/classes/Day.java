@@ -30,6 +30,10 @@ public class Day {
 		daySpace.start();
 	}
 
+	public String getName() {
+		return day + "/" + month + "/" + year;
+	}
+	
 	private class DayMonitor extends Agent {
 
 		// The monitor searches for tuples with the info:
@@ -177,10 +181,12 @@ public class Day {
 							new Template(new ActualTemplateField("chef"), new ActualTemplateField(userName))) == null) {
 						put(new Tuple("chef", userName), Self.SELF);
 						feedback(feedback, true, userName + " was added as a chef.");
-					} else
+					} else {
 						feedback(feedback, false, userName + " is already a chef.");
-				else
+					}
+				else {
 					feedback(feedback, false, "There are already two chefs.");
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

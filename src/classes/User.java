@@ -1,7 +1,9 @@
 package classes;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.cmg.jresp.behaviour.Agent;
 import org.cmg.jresp.comp.Node;
@@ -24,6 +26,7 @@ public class User {
 	private String command;
 	private String feedbackMsg;
 	private final ArrayList<String> kitchens = new ArrayList<String>();
+	private String[] daysGotten;
 
 	public User(String userName, String kitchenName) {
 		this.userName = userName;
@@ -66,6 +69,13 @@ public class User {
 				Tuple dataTuple = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
 				feedbackMsg = dataTuple.getElementAt(String.class, 1);
 				System.out.println(userName + " got feedback: " + feedbackMsg);
+				
+				if (t.getElementAt(String.class, ECommand.USERNAME.getValue()).contains("getDays")) {
+					@SuppressWarnings("unchecked")
+					List<String> list = dataTuple.getElementAt(List.class, 3);
+					int i = list.size();
+				daysGotten = list.toArray(new String[i]);
+				}
 
 			} catch (Exception e) {
 				e.printStackTrace();

@@ -100,6 +100,10 @@ public class Main {
 			case "Get Balance":
 				user.command("getBalance", 0, 0, 0, 0);
 				break;
+			
+			case "Get Days":
+				user.command("getDays", 0, 0, 0, 0);
+				break;
 			}
 
 		}
