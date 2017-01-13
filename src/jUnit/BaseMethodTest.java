@@ -52,26 +52,6 @@ public class BaseMethodTest {
 		user.command("addChef", day, month, year, 0);
 		Thread.sleep(milliseconds);
 		assertEquals(user.getFeedbackMsg(), userName + " is already a chef.");
-
-		String str = "Mathias";
-		dinnerClub.newUser(str, kitchenName);
-		User user2 = dinnerClub.getUser(str);
-		
-		String user2Feedback = null;
-		
-		user2.command("addChef", day, month, year, 0);
-		Thread.sleep(milliseconds);
-		user2Feedback = user.getFeedbackMsg();
-		assertNotEquals(user2Feedback, null);
-		assertNotEquals(user2Feedback, "Den valgte dag findes ikke");
-		assertEquals(user2.getFeedbackMsg(), "Mathias was added as a chef.");
-
-		String str2 = "Emilie";
-		dinnerClub.newUser(str2, kitchenName);
-		User user3 = dinnerClub.getUser(str2);
-		user3.command("addChef", day, month, year, 0);
-		Thread.sleep(milliseconds);
-		assertEquals(user3.getFeedbackMsg(), "There are already two chefs.");
 	}
 
 	@Test
@@ -105,11 +85,14 @@ public class BaseMethodTest {
 		user.command("lockDay", day, month, year, 0);
 		Thread.sleep(milliseconds);
 		assertNotEquals(user.getFeedbackMsg(), "Day created.");
+		assertTrue(user.getFeedbackMsg().contains("was locked"));
 		
 		user.command("lockDay", day, month, year, 0);
 		Thread.sleep(milliseconds);
+		assertFalse(user.getFeedbackMsg().contains("was locked"));
 		assertNotEquals(user.getFeedbackMsg(), "Day created.");
 		assertNotEquals(user.getFeedbackMsg().length(),12);
+		assertTrue(user.getFeedbackMsg().contains("locked"));
 	}
 
 	@Test
@@ -127,15 +110,17 @@ public class BaseMethodTest {
 	// TODO This methods are yet to be fully implemented, it seems.
 	@Test
 	public void getChef() throws Exception {	
+		user.command("getChef", day, month, year, 0);
+		Thread.sleep(milliseconds);
+		assertNotEquals(user.getFeedbackMsg(),"Nobody as of yet is added as chef to this date.");
+		
 		user.command("addChef", day, month, year, 0);
 		Thread.sleep(milliseconds);
 		assertEquals(user.getFeedbackMsg(), userName + " was added as a chef.");
 		
 		user.command("getChef", day, month, year, 0);
 		Thread.sleep(milliseconds);
-		assertNotEquals(user.getFeedbackMsg(), userName + " was added as a chef.");
-		assertNotEquals(user.getFeedbackMsg(),"Day created.");
-		assertTrue(user.getFeedbackMsg().contains(userName));
+		assertNotEquals(user.getFeedbackMsg(), userName + " is today's cook.");	
 	}
 
 	@Test

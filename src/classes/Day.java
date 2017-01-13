@@ -92,7 +92,7 @@ public class Day {
 					case "lockDay":
 						lockDay();
 						break;
-					
+
 					case "getChef":
 						getChef();
 						break;
@@ -116,10 +116,13 @@ public class Day {
 					case "getAttendees":
 						getAttendees();
 						break;
-					
+
 					case "getChef":
 						getChef();
 						break;
+
+					default:
+						feedback(cmd + "Feedback", false, "Shut the fuck up faggot, the day is locked.");
 					}
 				}
 			} catch (Exception e) {
@@ -197,13 +200,14 @@ public class Day {
 					msg = chefs.get(0).getElementAt(String.class, 1) + " is today's cook.";
 					break;
 				case 2:
-					msg = chefs.get(0).getElementAt(String.class, 1) + " and " + chefs.get(1).getElementAt(String.class, 1) + " are cooks today.";
+					msg = chefs.get(0).getElementAt(String.class, 1) + " and "
+							+ chefs.get(1).getElementAt(String.class, 1) + " are cooks today.";
 					break;
 				default:
 					throw new Exception();
 				}
 				feedback(feedback, true, msg);
-				
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
