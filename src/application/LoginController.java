@@ -134,6 +134,7 @@ public class LoginController {
 			KitchenController controller = loader.getController();
 			controller.setServer(dinnerClub);
 			controller.findUsersKitchens(usernameTextField.getText());
+			controller.titleLabel.setText("Hi "+usernameTextField.getText()+"!");
 		}
 
 		Scene scene = new Scene(root, 400, 400);

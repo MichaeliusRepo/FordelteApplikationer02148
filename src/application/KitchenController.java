@@ -12,6 +12,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
@@ -25,6 +26,9 @@ public class KitchenController {
 	
     ////////////////////////
     // Select kitchen
+	
+	@FXML
+    public Label titleLabel;
     
 	@FXML
     private ToggleGroup toggleGroup;
@@ -164,6 +168,7 @@ public class KitchenController {
 			DayController dayController = loader.getController();
 			dayController.setServer(dinnerClub);
 			dayController.setUser(user);
+			dayController.titleLabel.setText(((RadioButton)toggleGroup.getSelectedToggle()).getText());
 			break;
 		
 		}

@@ -13,6 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -20,9 +21,9 @@ import javafx.stage.WindowEvent;
 public class DayController {
 	private Server dinnerClub;
 	private String user;
-
-    @FXML
-    private Button logOutButton;
+	
+	@FXML
+	public Label titleLabel;
 
     @FXML
     private TableColumn<?, ?> dateTableColumn;
@@ -36,6 +37,9 @@ public class DayController {
     @FXML
     private CheckBox viewPreviousCheckBox;
 
+    @FXML
+    private Button logOutButton;
+    
     @FXML
     private Button backButton;
 

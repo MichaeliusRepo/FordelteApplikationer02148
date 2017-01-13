@@ -11,7 +11,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.DayController">
    <children>
-      <Label contentDisplay="CENTER" layoutX="79.0" layoutY="85.0" text="Days with Dinner">
+      <Label fx:id="titleLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="79.0" layoutY="85.0" text="Days with Dinner" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
          <font>
             <Font size="30.0" />
          </font>
