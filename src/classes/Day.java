@@ -1,6 +1,7 @@
 package classes;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
@@ -265,9 +266,8 @@ public class Day {
 						list.add(attendee);
 						attendees = attendee + "\n";
 					}
-
 				}
-
+				Collections.sort(list, String.CASE_INSENSITIVE_ORDER);
 				feedback(feedback, true, attendees, list);
 
 			} catch (Exception e) {
