@@ -61,8 +61,8 @@ public class DayController {
     private Button updateButton;
 
     @FXML
-    void addDayButtonClicked(ActionEvent event) {
-
+    void addDayButtonClicked(ActionEvent event) throws IOException {
+    	newScene(event,"/application/AddDay.fxml");
     }
 
     @FXML

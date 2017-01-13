@@ -91,11 +91,11 @@ public class KitchenController {
     	
     	if(!newKitchenTextField.getText().equals("")){
         	
-    		/*if(user.addKitchen(newKitchenTextField.getText())){
+    		if(user.addKitchen(newKitchenTextField.getText())){
         		System.out.println("A new kitchen has been created: "+newKitchenTextField.getText());
         	} else {
         		System.out.println("This kitchen already exist: "+newKitchenTextField.getText());
-        	}*/
+        	}
     		
 			newScene(event,"/application/SelectKitchen.fxml");
 			
@@ -147,18 +147,16 @@ public class KitchenController {
 		switch (path){
 		case "/application/Login.fxml":
 			LoginController loginController = loader.getController();
-			//loginController.setServer(dinnerClub);
+			loginController.setUser(user);
 			break;
 		
 		case ("/application/SelectKitchen.fxml"):
 			kitchenController = loader.getController();
-			//kitchenController.setServer(dinnerClub);
 			kitchenController.findUsersKitchens(user);
 			break;
 			
 		case "/application/CreateDinnerClub.fxml":
 			kitchenController = loader.getController();
-			//kitchenController.setServer(dinnerClub);
 			kitchenController.setUser(user);
 			break;
 			

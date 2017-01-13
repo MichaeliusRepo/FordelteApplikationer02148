@@ -101,12 +101,20 @@ public class User {
 		return null;
 	}
 
-	public void addKitchen(String newKitchenName) {
+	public boolean addKitchen(String newKitchenName) {
 		kitchens.add(newKitchenName);
+		return true;
 	}
 
 	public void setKitchen(String selectedKitchenName) {
 		this.kitchenName = selectedKitchenName;
+	}
+
+	public User setInfo(String text) {
+		if(text.equals("Emilie")){
+			return this;
+		}
+		return null;
 	}
 
 }
