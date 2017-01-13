@@ -12,6 +12,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
@@ -25,6 +26,9 @@ public class KitchenController {
 	
     ////////////////////////
     // Select kitchen
+	
+	@FXML
+    public Label titleLabel;
     
 	@FXML
     private ToggleGroup toggleGroup;
@@ -56,9 +60,10 @@ public class KitchenController {
     }
 
     @FXML
-    void selectDinnerClubButtonClicked(ActionEvent event) {
+    void selectDinnerClubButtonClicked(ActionEvent event) throws IOException {
     	System.out.println(((RadioButton)toggleGroup.getSelectedToggle()).getText());
     	dinnerClub.getUser(user).setKitchen(((RadioButton)toggleGroup.getSelectedToggle()).getText());
+    	newScene(event,"/application/DayOverview.fxml", user);
     }
     
     @FXML
@@ -133,21 +138,39 @@ public class KitchenController {
     }
     
 	private void newScene(ActionEvent event, String path, String user) throws IOException {
+		
 		((Node) event.getSource()).getScene().getWindow().hide();
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
 		Parent root = loader.load();
 		
-		if(path.equals("/application/Login.fxml")){
-			LoginController controller = loader.getController();
-			controller.setServer(dinnerClub);
-		} else if(path.equals("/application/SelectKitchen.fxml") ){
-			KitchenController controller = loader.getController();
-			controller.setServer(dinnerClub);
-			controller.findUsersKitchens(user);
-		} else if(path.equals("/application/CreateDinnerClub.fxml")){
-			KitchenController controller = loader.getController();
-			controller.setServer(dinnerClub);
-			controller.setUser(user);
+		KitchenController kitchenController;
+		
+		
+		switch (path){
+		case "/application/Login.fxml":
+			LoginController loginController = loader.getController();
+			loginController.setServer(dinnerClub);
+			break;
+		
+		case ("/application/SelectKitchen.fxml"):
+			kitchenController = loader.getController();
+			kitchenController.setServer(dinnerClub);
+			kitchenController.findUsersKitchens(user);
+			break;
+			
+		case "/application/CreateDinnerClub.fxml":
+			kitchenController = loader.getController();
+			kitchenController.setServer(dinnerClub);
+			kitchenController.setUser(user);
+			break;
+			
+		case "/application/DayOverview.fxml":
+			DayController dayController = loader.getController();
+			dayController.setServer(dinnerClub);
+			dayController.setUser(user);
+			dayController.titleLabel.setText(((RadioButton)toggleGroup.getSelectedToggle()).getText());
+			break;
+		
 		}
 		
 		Scene scene = new Scene(root,400,400);
