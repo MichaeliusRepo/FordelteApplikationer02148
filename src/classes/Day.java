@@ -61,7 +61,6 @@ public class Day {
 
 		private String cmd, userName, buyer, kitchenName;
 		private int attendees, price, totalAttendees;
-		private boolean locked;
 		private Tuple dataTuple;
 		private ArrayList<String> attendeesList;
 
