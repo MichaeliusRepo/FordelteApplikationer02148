@@ -2,7 +2,7 @@ package application;
 
 import java.io.IOException;
 
-import classes.Server;
+import classes.User;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -20,8 +20,8 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 public class LoginController {
-	private Server dinnerClub;
-
+	// private Server dinnerClub;
+	private User user;
 
 	///////////////////////////////////
 	// Login Scene
@@ -45,41 +45,37 @@ public class LoginController {
 
 	@FXML
 	void loginButtonClicked(ActionEvent event) throws IOException {
-		String user = usernameTextField.getText();
+		String username = usernameTextField.getText();
 
-		if (dinnerClub.getUser(user) != null) {
+		if (user.setInfo(username) != null) {
 			wrongUsernameLabel.setText("");
-			// new window
 			newScene(event, "/application/SelectKitchen.fxml");
 		} else {
 			wrongUsernameLabel.setText("  Unknown username");
 			System.out.println("wrong");
 		}
+
 	}
-    
-	
-	
+
 	@FXML // Type enter to activate this code
-    void loginEnterTyped(ActionEvent event){
-		usernameTextField.setOnKeyPressed(new EventHandler<KeyEvent>(){
-	        
+	void loginEnterTyped(ActionEvent event) {
+		usernameTextField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+
 			@Override
-	        public void handle(KeyEvent ke){
-	        	
-	            if (ke.getCode().equals(KeyCode.ENTER)){
-	                
-	                try {
+			public void handle(KeyEvent ke) {
+
+				if (ke.getCode().equals(KeyCode.ENTER)) {
+
+					try {
 						loginButtonClicked(event);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-	            }
-	        }
-	    });
+				}
+			}
+		});
 
-    }
-	
-	
+	}
 
 	///////////////////////////////////
 	// new user
@@ -104,9 +100,10 @@ public class LoginController {
 	@FXML
 	void createNewUserButtonClicked(ActionEvent event) throws IOException {
 		System.out.println(newUserNameTextField.getText() + " " + kitchenNameTextField.getText());
-		System.out.println("" + dinnerClub);
+		System.out.println("" + user);
 		if (!newUserNameTextField.getText().equals("") && !kitchenNameTextField.getText().equals("")) {
-			dinnerClub.newUser(newUserNameTextField.getText(), kitchenNameTextField.getText());
+			// user.newUser(newUserNameTextField.getText(),
+			// kitchenNameTextField.getText());
 		} else {
 			System.out.println("Remember to insert kitchenName and Username");
 		}
@@ -114,13 +111,8 @@ public class LoginController {
 		newScene(event, "/application/Login.fxml");
 	}
 
-	
 	//////////////////////////////
 	// controller methods
-
-	public void setServer(Server dinnerClub) {
-		this.dinnerClub = dinnerClub;
-	}
 
 	private void newScene(ActionEvent event, String path) throws IOException {
 		((Node) event.getSource()).getScene().getWindow().hide();
@@ -129,12 +121,12 @@ public class LoginController {
 
 		if (path.equals("/application/Login.fxml") || path.equals("/application/NewUser.fxml")) {
 			LoginController controller = loader.getController();
-			controller.setServer(dinnerClub);
+			controller.setUser(user);
 		} else if (path.equals("/application/SelectKitchen.fxml")) {
 			KitchenController controller = loader.getController();
-			controller.setServer(dinnerClub);
-			controller.findUsersKitchens(usernameTextField.getText());
-			controller.titleLabel.setText("Hi "+usernameTextField.getText()+"!");
+			controller.setUser(user);
+			controller.findUsersKitchens(user.setInfo(usernameTextField.getText()));
+			controller.titleLabel.setText("Hi " + usernameTextField.getText() + "!");
 		}
 
 		Scene scene = new Scene(root, 400, 400);
@@ -151,5 +143,13 @@ public class LoginController {
 		stage.setScene(scene);
 		stage.setTitle("Dinner Club");
 		stage.show();
+	}
+
+	public void setUser(User user) {
+		System.out.println("1: " + user);
+		System.out.println("2: " + this.user);
+		this.user = user;
+		System.out.println("3: " + this.user);
+
 	}
 }

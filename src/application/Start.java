@@ -1,6 +1,6 @@
 package application;
 	
-import classes.Server;
+import classes.User;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -20,7 +20,7 @@ public class Start extends Application {
 			Parent root = loader.load();
 			
 			LoginController controller = loader.getController();
-			controller.setServer(new Server());
+			controller.setUser(new User("",""));
 			
 			Scene scene = new Scene(root,400,400);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());

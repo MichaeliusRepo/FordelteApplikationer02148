@@ -3,6 +3,7 @@ package application;
 import java.io.IOException;
 
 import classes.Server;
+import classes.User;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -21,8 +22,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 public class DayController {
-	private Server dinnerClub;
-	private String user;
+	private User user;
 	
 	@FXML
 	private Label titleLabel;
@@ -61,13 +61,13 @@ public class DayController {
     private Button updateButton;
 
     @FXML
-    void addDayButtonClicked(ActionEvent event) {
-
+    void addDayButtonClicked(ActionEvent event) throws IOException {
+    	newScene(event,"/application/AddDay.fxml");
     }
 
     @FXML
     void backButtonClicked(ActionEvent event) throws IOException {
-    	newScene(event,"/application/SelectKitchen.fxml",user);
+    	newScene(event,"/application/SelectKitchen.fxml");
     }
 
     @FXML
@@ -77,7 +77,7 @@ public class DayController {
 
     @FXML
     void logOutButtonClicked(ActionEvent event) throws IOException {
-    	newScene(event,"/application/Login.fxml",user);
+    	newScene(event,"/application/Login.fxml");
     }
 
     @FXML
@@ -95,7 +95,7 @@ public class DayController {
     public void updateTabel(String kitchenName) {
     	titleLabel.setText(kitchenName);
     	int i = 0;
-    	DayTableColumn tableColumn = new DayTableColumn(dinnerClub, user, i);
+    	DayTableColumn tableColumn = new DayTableColumn(user, i);
     	while(tableColumn.haveNextDay()){
     		dayTableView.getItems().add(tableColumn);
     	}
@@ -109,16 +109,13 @@ public class DayController {
 	//////////////////////////////
     // controller methods
     
-    public void setServer(Server dinnerClub){
-    	this.dinnerClub = dinnerClub;
-    }
     
-    public void setUser(String user){
+    public void setUser(User user){
     	this.user = user;
     }
 
     
-	private void newScene(ActionEvent event, String path, String user) throws IOException {
+	private void newScene(ActionEvent event, String path) throws IOException {
 		((Node) event.getSource()).getScene().getWindow().hide();
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
 		Parent root = loader.load();
@@ -127,24 +124,21 @@ public class DayController {
 		switch (path){
 		case "/application/Login.fxml":
 			LoginController loginController = loader.getController();
-			loginController.setServer(dinnerClub);
 			break;
 		
 		case ("/application/SelectKitchen.fxml"):
 			kitchenController = loader.getController();
-			kitchenController.setServer(dinnerClub);
+			kitchenController.setUser(user);
 			kitchenController.findUsersKitchens(user);
 			break;
 			
 		case "/application/CreateDinnerClub.fxml":
 			kitchenController = loader.getController();
-			kitchenController.setServer(dinnerClub);
 			kitchenController.setUser(user);
 			break;
 			
 		case "/application/DayOverview.fxml":
 			DayController dayController = loader.getController();
-			dayController.setServer(dinnerClub);
 			dayController.setUser(user);
 			break;
 		

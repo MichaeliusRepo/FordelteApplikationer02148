@@ -3,6 +3,7 @@ package application;
 import java.io.IOException;
 
 import classes.Server;
+import classes.User;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -20,8 +21,9 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 public class KitchenController {
-	private Server dinnerClub;
-	private String user;
+	//private Server dinnerClub;
+	private String username;
+	private User user;
 	
 	
     ////////////////////////
@@ -56,19 +58,19 @@ public class KitchenController {
 
     @FXML
     void newKitchenButtonClicked(ActionEvent event) throws IOException {
-		newScene(event, "/application/CreateDinnerClub.fxml", user);
+		newScene(event, "/application/CreateDinnerClub.fxml");
     }
 
     @FXML
     void selectDinnerClubButtonClicked(ActionEvent event) throws IOException {
     	System.out.println(((RadioButton)toggleGroup.getSelectedToggle()).getText());
-    	dinnerClub.getUser(user).setKitchen(((RadioButton)toggleGroup.getSelectedToggle()).getText());
-    	newScene(event,"/application/DayOverview.fxml", user);
+    	user.setKitchen(((RadioButton)toggleGroup.getSelectedToggle()).getText());
+    	newScene(event,"/application/DayOverview.fxml");
     }
     
     @FXML
     void logOutButtonClicked(ActionEvent event) throws IOException {
-		newScene(event, "/application/Login.fxml", user);
+		newScene(event, "/application/Login.fxml");
     }
     
     
@@ -88,15 +90,14 @@ public class KitchenController {
     void createKitchenButtonClicked(ActionEvent event) throws IOException {
     	
     	if(!newKitchenTextField.getText().equals("")){
-    		System.out.println("new Kicthen creating: "+dinnerClub);
         	
-    		if(dinnerClub.addKitchen(newKitchenTextField.getText())){
+    		if(user.addKitchen(newKitchenTextField.getText())){
         		System.out.println("A new kitchen has been created: "+newKitchenTextField.getText());
         	} else {
         		System.out.println("This kitchen already exist: "+newKitchenTextField.getText());
         	}
-        	dinnerClub.getUser(user).addKitchen(newKitchenTextField.getText());
-			newScene(event,"/application/SelectKitchen.fxml", user);
+    		
+			newScene(event,"/application/SelectKitchen.fxml");
 			
     	} else {
     		System.out.println("not valid: Remember to write a name");
@@ -105,39 +106,36 @@ public class KitchenController {
 
     @FXML
     void backButtonClicked(ActionEvent event) throws IOException {
-		newScene(event,"/application/SelectKitchen.fxml", user);
+		newScene(event,"/application/SelectKitchen.fxml");
 
     }
     
     //////////////////////////////
     // controller methods
+   
     
-    public void setServer(Server dinnerClub){
-    	this.dinnerClub = dinnerClub;
-    }
-    
-    public void setUser(String user){
+    public void setUser(User user){
     	this.user = user;
     }
     
-    public void findUsersKitchens(String userName){
-    	setUser(userName);
-    	setRadioButtons(userName,kitchen1, 0);
-    	setRadioButtons(userName,kitchen2, 1);
-    	setRadioButtons(userName,kitchen3, 2);
-    	setRadioButtons(userName,kitchen4, 3);
+    public void findUsersKitchens(User user){
+    	setUser(user);
+    	setRadioButtons(kitchen1, 0);
+    	setRadioButtons(kitchen2, 1);
+    	setRadioButtons(kitchen3, 2);
+    	setRadioButtons(kitchen4, 3);
     }
     
-    private void setRadioButtons(String userName, RadioButton kitchen, int i){
-    	if(dinnerClub.getUser(userName).getKitchenName(i) != null){
-    		kitchen.setText(dinnerClub.getUser(userName).getKitchenName(i));
+    private void setRadioButtons(RadioButton kitchen, int i){
+    	if(user.getKitchenName(i) != null){
+    		kitchen.setText(user.getKitchenName(i));
     		kitchen.setVisible(true);
     	} else {
     		kitchen.setVisible(false);
     	}
     }
     
-	private void newScene(ActionEvent event, String path, String user) throws IOException {
+	private void newScene(ActionEvent event, String path) throws IOException {
 		int x = 400;
 		((Node) event.getSource()).getScene().getWindow().hide();
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
@@ -149,24 +147,21 @@ public class KitchenController {
 		switch (path){
 		case "/application/Login.fxml":
 			LoginController loginController = loader.getController();
-			loginController.setServer(dinnerClub);
+			loginController.setUser(user);
 			break;
 		
 		case ("/application/SelectKitchen.fxml"):
 			kitchenController = loader.getController();
-			kitchenController.setServer(dinnerClub);
 			kitchenController.findUsersKitchens(user);
 			break;
 			
 		case "/application/CreateDinnerClub.fxml":
 			kitchenController = loader.getController();
-			kitchenController.setServer(dinnerClub);
 			kitchenController.setUser(user);
 			break;
 			
 		case "/application/DayOverview.fxml":
 			DayController dayController = loader.getController();
-			dayController.setServer(dinnerClub);
 			dayController.setUser(user);
 			dayController.updateTabel(((RadioButton)toggleGroup.getSelectedToggle()).getText());
 			x = 500;
