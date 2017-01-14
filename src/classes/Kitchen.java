@@ -15,13 +15,10 @@ import org.cmg.jresp.topology.Self;
 public class Kitchen {
 	private String kitchenName;
 	private Node kitchenSpace;
-	// private Budget budget;
 
 	public Kitchen(String kitchenName) {
 		this.kitchenName = kitchenName;
-
 		kitchenSpace = new Node(kitchenName, new TupleSpace());
-		// budget = new Budget(kitchenName);
 		kitchenSpace.addPort(Server.vp);
 		Agent monitor = new KitchenMonitor("kitchenMonitor");
 		kitchenSpace.addAgent(monitor);
@@ -35,8 +32,6 @@ public class Kitchen {
 	private class KitchenMonitor extends Agent {
 
 		private Tuple t;
-		// <String command, String user, String kitchenName, Boolean feedback,
-		// Tuple data>
 		private Template kitchenTemplate = new Template(new FormalTemplateField(String.class),
 				new FormalTemplateField(String.class), new FormalTemplateField(String.class),
 				new ActualTemplateField(false), new FormalTemplateField(Tuple.class));
@@ -47,7 +42,6 @@ public class Kitchen {
 
 		@Override
 		protected void doRun() {
-
 			try {
 				put(new Tuple("Budget" + kitchenName, new Budget(kitchenName)), Self.SELF);
 				while (true) {
@@ -94,71 +88,36 @@ public class Kitchen {
 			switch (cmd) {
 
 			case "addDay":
+			case "removeDay":
 				setDay(cmd, data);
-				System.out.println(cmd);
 				break;
 
 			case "getDays":
 				getDays(cmd, data);
 
-			case "removeDay":
-				System.out.println(cmd);
-				setDay(cmd, data);
-				break;
-
 			case "attendDay":
-				System.out.println(cmd);
-				executeDayCmd(cmd, data);
-				// attendDay(data);
-				break;
-
 			case "unattendDay":
-				System.out.println(cmd);
-				executeDayCmd(cmd, data);
-				// unattendDay(data);
-				break;
-
 			case "addChef":
-				System.out.println(cmd);
-				executeDayCmd(cmd, data);
-				// addChef(data);
-				break;
-
 			case "getChef":
-				executeDayCmd(cmd, data);
-				break;
-
 			case "lockDay":
-				System.out.println(cmd);
-				executeDayCmd(cmd, data);
-				// lockDay(data);
-				break;
-
 			case "getAttendees":
-				System.out.println(cmd);
 				executeDayCmd(cmd, data);
-				// getAttendees(data);
 				break;
 
 			case "setPrice":
-				System.out.println(cmd);
 				setPrice(data);
 				break;
 
 			case "addBalance":
-				System.out.println(cmd);
 				addBalance(data);
 				break;
 
 			case "getBalance":
-				System.out.println(cmd);
 				getBalance(data);
 				break;
 			case "resetUserBalance":
-				System.out.println(cmd);
 				resetUserBalance(data);
 				break;
-
 			}
 		}
 
@@ -168,7 +127,7 @@ public class Kitchen {
 			LinkedList<String> list = new LinkedList<String>();
 			for (Tuple t : query)
 				list.add(t.getElementAt(Day.class, 1).getDate());
-			sendFeedback(cmd + "Feedback", new Tuple(true, "Here they are!",list));
+			sendFeedback(cmd + "Feedback", new Tuple(true, "Here they are!", list));
 		}
 
 		private void setDay(String cmd, Tuple data) {
@@ -199,7 +158,6 @@ public class Kitchen {
 		}
 
 		private void executeDayCmd(String cmd, Tuple data) {
-
 			try {
 				if (checkDayExists(dayTarget)) {
 					Tuple t = new Tuple(cmd, userName, kitchenName, false, data);
@@ -215,7 +173,6 @@ public class Kitchen {
 
 		private void setPrice(Tuple data) {
 			int price = data.getElementAt(Integer.class, 0);
-
 			try {
 				if (checkDayExists(dayTarget)) {
 					put(new Tuple("setPrice", userName, kitchenName, false, new Tuple(price)), pointer);
@@ -234,7 +191,6 @@ public class Kitchen {
 		}
 
 		private void addBalance(Tuple data) {
-
 			try {
 				put(new Tuple("addBalance", userName, kitchenName, false,
 						data.getElementAt(Tuple.class, ECommand.DATA.getValue())), budgetPointer);
@@ -244,7 +200,6 @@ public class Kitchen {
 		}
 
 		private void getBalance(Tuple data) {
-
 			try {
 				put(new Tuple("getBalance", userName, kitchenName, false, data), budgetPointer);
 				sendFeedback("getBalanceFeedback", recieveFeedback("Budget" + kitchenName, "getBalanceFeedback"));
@@ -270,7 +225,6 @@ public class Kitchen {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-
 			return null;
 		}
 
@@ -290,9 +244,6 @@ public class Kitchen {
 		}
 
 		private Template feedbackTemplate(String command) {
-			// <String command, String user, String kitchenName, Boolean
-			// feedback,
-			// Tuple data>
 			Template feedbackTemplate = new Template(new ActualTemplateField(command),
 					new ActualTemplateField(userName), new ActualTemplateField(kitchenName),
 					new ActualTemplateField(true), new FormalTemplateField(Tuple.class));
@@ -304,6 +255,5 @@ public class Kitchen {
 			LinkedList<Tuple> getAll = queryAll(t);
 			return (getAll.isEmpty()) ? true : false;
 		}
-
 	}
 }

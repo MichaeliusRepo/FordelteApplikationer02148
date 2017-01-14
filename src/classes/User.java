@@ -74,8 +74,6 @@ public class User {
 						new ActualTemplateField(t.getElementAt(String.class, ECommand.USERNAME.getValue())),
 						new ActualTemplateField(t.getElementAt(String.class, ECommand.KITCHEN.getValue())));
 
-				System.out.println(cmd);
-
 				if (cmd.contains("User")) {
 					// User request
 					if (cmd == "addUser")
@@ -99,8 +97,7 @@ public class User {
 							|| t.getElementAt(String.class, ECommand.COMMAND.getValue()).contains("getAttendees")) {
 						@SuppressWarnings("unchecked")
 						LinkedList<String> list = dataTuple.getElementAt(LinkedList.class, 2);
-						returnData = list; // This cannot be done in one line.
-											// Thanks for nothing then, Java.
+						returnData = list;
 						for (String str : returnData)
 							System.out.print(str + ", ");
 					}

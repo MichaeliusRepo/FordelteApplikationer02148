@@ -16,26 +16,24 @@ public class CaseMethodTest {
 	// https://github.com/junit-team/junit4
 	// Right click Dinner Club Project >
 	// Properties > Java Build Path > Project > Add > JUnit
-	
-	private Server dinnerClub = new Server();
-	private String userName = "Lenny Wolf";
-	private String kitchenName = "What Love Can Be";
-	private User user;
-	private int day = 29;
-	private int month = 2;
-	private int year = 2016;
+
+	@SuppressWarnings("unused")
+	private final Server dinnerClub = new Server();
+	private final String userName = "Steven Tyler";
+	private final String kitchenName = "Love in an Elavator";
+	private final User user = new User("", "");
+	private final int day = 29;
+	private final int month = 2;
+	private final int year = 2016;
 	private final int milliseconds = 200;
-	
+
 	@Before
 	public void setup() throws Exception {
-		dinnerClub.newUser(userName, kitchenName);
-		user = dinnerClub.getUser(userName);
-		
+		user.userRequests("addUser", userName, kitchenName);
+		Thread.sleep(milliseconds);
+
 		user.command("addDay", day, month, year, 0);
-		Thread.sleep(100);
-		
-		user.command("attendDay", day, month, year, 0);
-		Thread.sleep(100);
+		Thread.sleep(milliseconds);
 	}
 	
 	@Test
@@ -65,30 +63,54 @@ public class CaseMethodTest {
 		Thread.sleep(milliseconds);
 		assertEquals(user.getFeedbackMsg(), userName + " is already a chef.");
 
-		String str = "Mathias";
-		dinnerClub.newUser(str, kitchenName);
-		User user2 = dinnerClub.getUser(str);
 		
-		String user2Feedback = null;
+		User user2 = new User("","");
+		String str2 = "Mathias";
+		user2.userRequests("addUser", str2, kitchenName);
+		Thread.sleep(milliseconds);
 		
 		user2.command("addChef", day, month, year, 0);
 		Thread.sleep(milliseconds);
-		user2Feedback = user.getFeedbackMsg();
+		String user2Feedback = user.getFeedbackMsg();
 		assertNotEquals(user2Feedback, null);
 		assertNotEquals(user2Feedback, "Den valgte dag findes ikke");
 		assertEquals(user2.getFeedbackMsg(), "Mathias was added as a chef.");
 
-		String str2 = "Emilie";
-		dinnerClub.newUser(str2, kitchenName);
-		User user3 = dinnerClub.getUser(str2);
+		
+		User user3 = new User("","");
+		String str3 = "Emilie";
+		user3.userRequests("addUser", str3, kitchenName);
+		Thread.sleep(milliseconds);
+		
 		user3.command("addChef", day, month, year, 0);
 		Thread.sleep(milliseconds);
-		assertEquals(user3.getFeedbackMsg(), "There are already two chefs.");
+		String user3Feedback = user.getFeedbackMsg();
+		assertEquals(user3Feedback, "There are already two chefs.");
 	}
 	
 	@Test
 	public void getTwoChefs() throws Exception {
+		user.command("addChef", day, month, year, 0);
+		Thread.sleep(milliseconds);
+		assertEquals(user.getFeedbackMsg(), userName + " was added as a chef.");
+
+		User user2 = new User("","");
+		String str2 = "Mathias";
+		user2.userRequests("addUser", str2, kitchenName);
+		Thread.sleep(milliseconds);
 		
+		user2.command("addChef", day, month, year, 0);
+		Thread.sleep(milliseconds);
+		String user2Feedback = user.getFeedbackMsg();
+		assertNotEquals(user2Feedback, null);
+		assertNotEquals(user2Feedback, "Den valgte dag findes ikke");
+		assertEquals(user2.getFeedbackMsg(), "Mathias was added as a chef.");
+		
+		user2.command("getChef", day, month, year, 0);
+		Thread.sleep(milliseconds);
+		user2Feedback = user.getFeedbackMsg();
+		assertTrue(user2Feedback.contains(userName));
+		assertTrue(user2Feedback.contains(str2));
 	}
 	
 }

@@ -16,10 +16,11 @@ public class BaseMethodTest {
 	// Right click Dinner Club Project >
 	// Properties > Java Build Path > Project > Add > JUnit
 
+	@SuppressWarnings("unused")
 	private final Server dinnerClub = new Server();
 	private final String userName = "Steven Tyler";
 	private final String kitchenName = "Love in an Elavator";
-	private User user;
+	private final User user = new User("", "");
 	private final int day = 29;
 	private final int month = 2;
 	private final int year = 2016;
@@ -27,11 +28,8 @@ public class BaseMethodTest {
 
 	@Before
 	public void setup() throws Exception {
-//		dinnerClub.newUser(userName, kitchenName);
-//		user = dinnerClub.getUser(userName);
-		user = new User("","");
-		user.command("addUser", day, month, year, 0);
-		
+		user.userRequests("addUser", userName, kitchenName);
+		Thread.sleep(milliseconds);
 
 		user.command("addDay", day, month, year, 0);
 		Thread.sleep(milliseconds);
