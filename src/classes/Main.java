@@ -10,7 +10,6 @@ public class Main {
 	static int day;
 	static int month;
 	static int year;
-	static boolean loggedIn = false;
 
 	public static void main(String[] args) throws Exception {
 		logIn();
@@ -33,19 +32,17 @@ public class Main {
 				Thread.sleep(200);
 			}
 		}
-		loggedIn = true;
 	}
 
 	private static void logOut() throws Exception {
 		user = new User("", "");
+		logIn();
 	}
 
 	private static void runApplication() throws Exception {
 
 		while (true) {
 			Thread.sleep(200);
-			if (!loggedIn)
-				logIn();
 
 			System.out.println("Type help for all commands. Please enter 'day' if you want to add/edit a day.");
 			String cmd = in.nextLine();
