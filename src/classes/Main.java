@@ -42,8 +42,6 @@ public class Main {
 	private static void runApplication() throws Exception {
 
 		while (true) {
-			Thread.sleep(200);
-
 			System.out.println("Type help for all commands. Please enter 'day' if you want to add/edit a day.");
 			String cmd = in.nextLine();
 
@@ -107,6 +105,7 @@ public class Main {
 				logOut();
 				break;
 			}
+			Thread.sleep(200);
 		}
 	}
 

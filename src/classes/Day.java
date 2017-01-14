@@ -30,7 +30,7 @@ public class Day {
 		daySpace.addAgent(dayAgent);
 		daySpace.start();
 	}
-	
+
 	public String getDate() {
 		return day + "/" + month + "/" + year;
 	}
@@ -65,6 +65,7 @@ public class Day {
 	private class DayAgent extends Agent {
 
 		private String cmd, userName, buyer, kitchenName;
+		@SuppressWarnings("unused")
 		private int attendees, price, totalAttendees;
 		private Tuple dataTuple;
 		private ArrayList<String> attendeesList;
@@ -111,6 +112,10 @@ public class Day {
 					this.price = dataTuple.getElementAt(Integer.class, 0);
 					setPrice(price);
 					break;
+
+				case "getPrice":
+					getPrice();
+					break;
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -149,9 +154,8 @@ public class Day {
 					if (t == null)
 						feedback(feedback, true, "The price was set to " + price, null);
 					else
-						feedback(feedback, false, "The price was already set to " + t.getElementAt(Integer.class, 2)
+						feedback(feedback, false, "The price was already set to " + t.getElementAt(Integer.class, 1)
 								+ ", but has been replaced.", null);
-
 					System.out.println("DayAddBalanceBefore");
 					addBalance();
 					System.out.println("DayAddBalanceAfter");
@@ -161,6 +165,14 @@ public class Day {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		}
+
+		private void getPrice() {
+			String feedback = "getPriceFeedback";
+			Tuple t = queryp(new Template(new ActualTemplateField("price"), new FormalTemplateField(Integer.class)));
+			int price = t.getElementAt(Integer.class, 1);
+			feedback(feedback, true, "Currently the price is at " + price, null);
+
 		}
 
 		private void addChef(String userName) {

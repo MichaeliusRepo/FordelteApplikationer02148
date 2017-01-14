@@ -121,27 +121,50 @@ public class BaseMethodTest {
 		Thread.sleep(milliseconds);
 		assertEquals(user.getFeedbackMsg(), userName + " is today's cook.");	
 	}
-
-	// TODO This methods are yet to be fully implemented, it seems.
+	
 	@Test
 	public void setPrice() throws Exception {
+		user.command("lockDay", day, month, year, 0);
+		Thread.sleep(milliseconds);
+		assertTrue(user.getFeedbackMsg().contains("was locked"));
+		
 		user.command("setPrice", day, month, year, 200);
 		Thread.sleep(milliseconds);
-		assertNotEquals(user.getFeedbackMsg(),"Day created.");
+		assertEquals(user.getFeedbackMsg(),"The price was set to 200");
 	}
 
 	@Test
 	public void getPrice() throws Exception {
+		user.command("lockDay", day, month, year, 0);
+		Thread.sleep(milliseconds);
+		assertTrue(user.getFeedbackMsg().contains("was locked"));
+		
+		user.command("setPrice", day, month, year, 200);
+		Thread.sleep(milliseconds);
+		assertEquals(user.getFeedbackMsg(),"The price was set to 200");
+		
 		user.command("getPrice", day, month, year, 0);
 		Thread.sleep(milliseconds);
-		assertNotEquals(user.getFeedbackMsg(),"Day created.");
+		assertEquals(user.getFeedbackMsg(),"Currently the price is at 200");
 	}
+
+	// TODO This methods below are yet to be fully implemented, it seems.
 
 	@Test
 	public void getAttendees() throws Exception {
 		user.command("getAttendees", day, month, year, 0);
 		Thread.sleep(milliseconds);
 		assertNotEquals(user.getFeedbackMsg(),"Day created.");
+		assertTrue(user.getFeedbackMsg().contains("Attendees:"));
+		
+		user.command("attendDay", day, month, year, 0);
+		Thread.sleep(milliseconds);
+		assertEquals(user.getFeedbackMsg(), userName + " added with 0 attendees.");
+		
+		user.command("getAttendees", day, month, year, 0);
+		Thread.sleep(milliseconds);
+//		assertEquals(user.getFeedbackMsg(), userName + " added with 1 attendees.");
+		assertTrue(user.getFeedbackMsg().contains(userName));
 	}
 
 	@Test
@@ -149,6 +172,7 @@ public class BaseMethodTest {
 		user.command("resetUserBalance", day, month, year, 0);
 		Thread.sleep(milliseconds);
 		assertNotEquals(user.getFeedbackMsg(),"Day created.");
+		assertTrue(user.getFeedbackMsg().contains("balance"));
 	}
 
 	@Test
@@ -156,7 +180,7 @@ public class BaseMethodTest {
 		user.command("getBalance", day, month, year, 0);
 		Thread.sleep(milliseconds);
 		assertNotEquals(user.getFeedbackMsg(),"Day created.");
-		assertTrue(user.getFeedbackMsg().contains("balance"));
+		assertTrue(user.getFeedbackMsg().contains("Balance"));
 	}
 
 }
