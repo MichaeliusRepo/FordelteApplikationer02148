@@ -50,8 +50,8 @@ public class Server {
 					t = get(commandTuples, Self.SELF);
 					String command = t.getElementAt(String.class, ECommand.COMMAND.getValue());
 					tupleData = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
-
-					if (command.contains("addUser")) {
+					
+					if (command.equals("addUser")) {
 						put(new Tuple(t.getElementAt(String.class, ECommand.USERNAME.getValue()),
 								t.getElementAt(String.class, ECommand.KITCHEN.getValue())), Self.SELF);
 						String kitchenName = t.getElementAt(String.class, ECommand.KITCHEN.getValue());

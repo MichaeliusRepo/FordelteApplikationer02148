@@ -76,7 +76,7 @@ public class User {
 
 				if (cmd.contains("User")) {
 					// User request
-					if (cmd == "addUser")
+					if (cmd.equals("addUser"))
 						put(t, p);
 					t = query(user, p);
 					userName = t.getElementAt(String.class, 0);
@@ -93,8 +93,8 @@ public class User {
 					feedbackMsg = dataTuple.getElementAt(String.class, 1);
 					System.out.println(userName + " got feedback: " + feedbackMsg);
 
-					if (t.getElementAt(String.class, ECommand.COMMAND.getValue()).contains("getDays")
-							|| t.getElementAt(String.class, ECommand.COMMAND.getValue()).contains("getAttendees")) {
+					if (t.getElementAt(String.class, ECommand.COMMAND.getValue()).equals("getDays")
+							|| t.getElementAt(String.class, ECommand.COMMAND.getValue()).equals("getAttendees")) {
 						@SuppressWarnings("unchecked")
 						LinkedList<String> list = dataTuple.getElementAt(LinkedList.class, 2);
 						returnData = list;
