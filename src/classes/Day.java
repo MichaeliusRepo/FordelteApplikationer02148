@@ -295,7 +295,7 @@ public class Day {
 			try {
 				attendeesList = setAttendees();
 				put(new Tuple("addBalance", userName, kitchenName, true,
-						(new Tuple(dayName, kitchenName, buyer, price, attendeesList)), "addBalance"), Self.SELF);
+						(new Tuple(dayName, kitchenName, buyer, price, attendeesList))), Self.SELF);
 
 			} catch (Exception e) {
 				e.printStackTrace();

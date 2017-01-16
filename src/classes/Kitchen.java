@@ -193,8 +193,7 @@ public class Kitchen {
 
 		private void addBalance(Tuple data) {
 			try {
-				put(new Tuple("addBalance", userName, kitchenName, false,
-						data.getElementAt(Tuple.class, ECommand.DATA.getValue())), budgetPointer);
+				put(new Tuple("addBalance", userName, kitchenName, false, data), budgetPointer);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
