@@ -98,11 +98,13 @@ public class User {
 					if (cmd.equals("addUser"))
 						put(t, p);
 					t = query(user, p);
-					userName = t.getElementAt(String.class, 0);
-					kitchenName = t.getElementAt(String.class, 1);
-					feedbackMsg = userName + " belonging to " + kitchenName + " was retrieved.";
-					System.out.println(feedbackMsg);
-
+					if (t != null) {
+						userName = t.getElementAt(String.class, 0);
+						feedbackMsg = userName + " belonging to " + kitchenName + " was retrieved.";
+						System.out.println(feedbackMsg);
+					} else 
+						userName = null;
+					
 				} else {
 					// Command
 					put(t, p);
@@ -143,12 +145,16 @@ public class User {
 		return null;
 	}
 
-	public void addKitchen(String newKitchenName) {
+	// TODO
+	public boolean addKitchen(String newKitchenName) {
 		kitchens.add(newKitchenName);
+		return true;
 	}
 
-	public void setKitchen(String selectedKitchenName) {
+	// TODO
+	public boolean setKitchen(String selectedKitchenName) {
 		this.kitchenName = selectedKitchenName;
+		return true;
 	}
 
 }
