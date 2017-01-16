@@ -131,9 +131,9 @@ public class User {
 					t = get(feedback, p);
 					dataTuple = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
 
-					for (int i = 0; i < 100; i++) {
-						System.out.println(dataTuple.getElementAt(i).getClass().getSimpleName());
-					}
+//					for (int i = 0; i < 100; i++) {
+//						System.out.println(dataTuple.getElementAt(i).getClass().getSimpleName());
+//					}
 					
 					feedbackMsg = dataTuple.getElementAt(String.class, 1);
 					System.out.println(userName + " got feedback: " + feedbackMsg);
@@ -187,6 +187,7 @@ public class User {
 
 				case "createKitchen":
 					put(t, p); // put server request
+					
 					t = get(feedback, p); // get feedback
 					dataTuple = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
 					exists = dataTuple.getElementAt(Boolean.class, 0);
