@@ -89,7 +89,7 @@ public class Server {
 
 						if (!exists) // Put userData into Server if
 										// nonexistent
-							put(new Tuple(userName, new Tuple(null, null, null, null)), Self.SELF);
+							put(new Tuple(userName, new Tuple("","","","")), Self.SELF);
 
 						// Feedback for user if creation was successful.
 						put(new Tuple(command, userName, "", true, new Tuple(exists)), Self.SELF);

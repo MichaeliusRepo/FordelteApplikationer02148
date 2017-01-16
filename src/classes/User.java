@@ -29,7 +29,7 @@ public class User {
 	// private String[] kitchens = { null, null, null, null };
 	private ArrayList<String> kitchens = new ArrayList<String>();
 
-	// private int kitchenPointer;
+	private int kitchenPointer;
 
 	private LinkedList<String> returnData;
 
@@ -65,7 +65,7 @@ public class User {
 		while (feedbackMsg == null) {
 			Thread.sleep(10);
 		} // Wait for Server to return proper feedback.
-		return (userName != null || userName != "") ? true : false;
+		return (feedbackMsg.contains(userName));
 	}
 
 	public boolean getUser(String userName) throws Exception {
@@ -75,7 +75,8 @@ public class User {
 		while (feedbackMsg == null) {
 			Thread.sleep(10);
 		} // Wait for Server to return proper feedback.
-		return (userName != null || userName != "") ? true : false;
+		System.out.println(feedbackMsg.contains("was"));
+		return (feedbackMsg.contains(userName));
 	}
 
 	public boolean createKitchen(String kitchenName) throws Exception {
@@ -92,7 +93,12 @@ public class User {
 			Thread.sleep(10);
 		} // Wait for Server to return proper feedback.
 
-		return (feedbackMsg.contains("was created")) ? true : false;
+		return (feedbackMsg.contains("was created"));
+	}
+	
+	public boolean joinKitchen(String kitchenName) throws Exception {
+		// TODO
+		return true;
 	}
 
 	private class UserAgent extends Agent {
@@ -173,8 +179,9 @@ public class User {
 						userName = t.getElementAt(String.class, ECommand.USERNAME.getValue());
 						feedbackMsg = userName + " was retrieved.";
 						kitchens.clear();
+						t = dataTuple.getElementAt(Tuple.class, 1).getElementAt(Tuple.class, 1);
 						for (int i = 0; i < 4; i++)
-							kitchens.add(i, dataTuple.getElementAt(String.class, i));
+							kitchens.add(t.getElementAt(String.class, i));
 					} else {
 						userName = null;
 						feedbackMsg = "Username not found.";
@@ -228,13 +235,6 @@ public class User {
 
 	public String getUserName() {
 		return userName;
-	}
-
-	public String getKitchenName(int i) {
-		if (i < kitchens.size()) {
-			return kitchens.get(i);
-		}
-		return null;
 	}
 
 }

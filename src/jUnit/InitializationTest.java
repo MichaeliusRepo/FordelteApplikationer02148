@@ -23,19 +23,58 @@ public class InitializationTest {
 	private final int month = 2;
 	private final int year = 2016;
 	private final int milliseconds = 200;
+	private boolean result;
 
 	@Test // that the program can actually run.
 	public void setup() throws Exception {
-		user.addUser(userName);
+		
+		// user doesn't exist
+		result = user.getUser(userName);
+		Thread.sleep(milliseconds);
+		assertFalse(result);
+		
+		// add user
+		result = user.addUser(userName);
 		Thread.sleep(milliseconds);
 		assertTrue(user.getFeedbackMsg().contains(userName));
+		assertTrue(result);
 		
-		user.createKitchen(kitchenName);
+		// user already exists
+		result = user.addUser(userName);
+		Thread.sleep(milliseconds);
+		assertFalse(user.getFeedbackMsg().contains(userName));
+		assertFalse(result);
+		
+		// get user successfully
+		result = user.getUser(userName);
+		Thread.sleep(milliseconds);
+		assertTrue(result);
+		assertTrue(user.getFeedbackMsg().contains(userName));
+		
+		result = user.createKitchen(kitchenName);
 		Thread.sleep(milliseconds);
 		assertTrue(user.getFeedbackMsg().contains("was created"));
+		assertTrue(result);
 		
 		user.command("addDay", kitchenName, day, month, year, 0);
 		Thread.sleep(milliseconds);
 		assertEquals(user.getFeedbackMsg(), "Day created.");
+	}
+	
+	@Test
+	public void getUser() throws Exception {
+		result = user.addUser(userName);
+		Thread.sleep(milliseconds);
+		
+		// get user successfully
+		result = user.getUser(userName);
+		Thread.sleep(milliseconds);
+		assertTrue(result);
+		assertTrue(user.getFeedbackMsg().contains(userName));
+	}
+	
+	@Test
+	public void massKitchenCreation() throws Exception {
+		fail();
 	}
 }
