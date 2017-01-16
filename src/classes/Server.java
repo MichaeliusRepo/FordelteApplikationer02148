@@ -119,55 +119,14 @@ public class Server {
 						break;
 
 					case "joinKitchen":
-
+						getObject = new Template(new ActualTemplateField(kitchenName),
+								new FormalTemplateField(Tuple.class));
+						exists = (queryp(getObject) != null);
+						
+						if (exists)
+						
 						break;
 					}
-
-					// Warning: code repeats.
-
-					// if (command.contains("User")) {
-					// if (command.equals("addUser"))
-					// put(new Tuple(userName, new Tuple(null, null, null,
-					// null)), Self.SELF);
-					//
-					// Template getUser = new Template(new
-					// ActualTemplateField(userName),
-					// new FormalTemplateField(Tuple.class));
-					// boolean userExists = (queryp(getUser) != null);
-					// put(new Tuple(command, userName, "", true, new
-					// Tuple(userExists)), Self.SELF);
-					// }
-					//
-					// else if (command.contains("Kitchen")) {
-					// if (command.equals("addKitchen"))
-					// put(new Tuple(kitchenName, new Kitchen(kitchenName)),
-					// Self.SELF);
-					// Template getKitchen = new Template(new
-					// ActualTemplateField(kitchenName),
-					// new FormalTemplateField(Kitchen.class));
-					// boolean kitchenExists = (queryp(getKitchen) != null);
-					// put(new Tuple(command, userName, kitchenName, true, new
-					// Tuple(kitchenExists)), Self.SELF);
-					//
-					// } else {
-					// System.out.println(
-					// "Server Monitor was requested to " +
-					// t.getElementAt(ECommand.COMMAND.getValue()) + ", "
-					// + tupleData.getElementAt(Integer.class,
-					// EDayData.DAY.getValue()) + "/"
-					// + tupleData.getElementAt(Integer.class,
-					// EDayData.MONTH.getValue()) + "/"
-					// + tupleData.getElementAt(Integer.class,
-					// EDayData.YEAR.getValue()) + " to "
-					// + t.getElementAt(String.class,
-					// ECommand.KITCHEN.getValue()));
-					// /*
-					// * Since the tuple went in here, this is a great time to
-					// * check that the user is a valid source and not
-					// * malicious
-					// */
-					// exec(new ServerAgent(command, t));
-					// }
 
 				} catch (Exception e) {
 					e.printStackTrace();

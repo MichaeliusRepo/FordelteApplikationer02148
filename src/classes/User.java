@@ -68,9 +68,9 @@ public class User {
 		return (userName != null || userName != "") ? true : false;
 	}
 
-	public boolean getUser(String kitchenName) throws Exception {
+	public boolean getUser(String userName) throws Exception {
 		feedbackMsg = null;
-		Tuple t = new Tuple("getUser", userName, kitchenName, false, new Tuple());
+		Tuple t = new Tuple("getUser", userName, "", false, new Tuple());
 		userSpace.addAgent(new UserAgent(command, t));
 		while (feedbackMsg == null) {
 			Thread.sleep(10);
@@ -91,7 +91,7 @@ public class User {
 		while (feedbackMsg == null) {
 			Thread.sleep(10);
 		} // Wait for Server to return proper feedback.
-		
+
 		return (feedbackMsg.contains("was created")) ? true : false;
 	}
 
@@ -109,6 +109,7 @@ public class User {
 			try {
 
 				String cmd = t.getElementAt(String.class, ECommand.COMMAND.getValue());
+				String kitchenName = t.getElementAt(String.class, ECommand.KITCHEN.getValue());
 				Template user = new Template(
 						new ActualTemplateField(t.getElementAt(String.class, ECommand.USERNAME.getValue())),
 						new ActualTemplateField(t.getElementAt(String.class, ECommand.KITCHEN.getValue())));
@@ -131,10 +132,6 @@ public class User {
 					t = get(feedback, p);
 					dataTuple = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
 
-//					for (int i = 0; i < 100; i++) {
-//						System.out.println(dataTuple.getElementAt(i).getClass().getSimpleName());
-//					}
-					
 					feedbackMsg = dataTuple.getElementAt(String.class, 1);
 					System.out.println(userName + " got feedback: " + feedbackMsg);
 
@@ -176,7 +173,7 @@ public class User {
 						userName = t.getElementAt(String.class, ECommand.USERNAME.getValue());
 						feedbackMsg = userName + " was retrieved.";
 						kitchens.clear();
-						for (int i = 0; i < 4; i++) 
+						for (int i = 0; i < 4; i++)
 							kitchens.add(i, dataTuple.getElementAt(String.class, i));
 					} else {
 						userName = null;
@@ -187,11 +184,10 @@ public class User {
 
 				case "createKitchen":
 					put(t, p); // put server request
-					
+
 					t = get(feedback, p); // get feedback
 					dataTuple = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
 					exists = dataTuple.getElementAt(Boolean.class, 0);
-					String kitchenName = t.getElementAt(String.class, ECommand.KITCHEN.getValue());
 
 					if (!exists) { // if doesn't exist, create
 						kitchens.add(kitchenName);
@@ -203,9 +199,20 @@ public class User {
 					break;
 
 				case "joinKitchen":
+					put(t, p); // put server request
 
+					t = get(feedback, p); // get feedback
+					dataTuple = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
+					exists = dataTuple.getElementAt(Boolean.class, 0);
+
+					if (!exists) { // if doesn't exist, create
+						kitchens.add(kitchenName);
+						feedbackMsg = kitchenName + " was created.";
+					} else
+						feedbackMsg = kitchenName + " already exists.";
+
+					System.out.println(userName + " got feedback: " + feedbackMsg);
 					break;
-
 				}
 
 			} catch (Exception e) {
