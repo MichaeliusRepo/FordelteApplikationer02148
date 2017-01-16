@@ -27,7 +27,7 @@ public class User {
 	private String userName = "";
 	private Node userSpace;
 	private SocketPort userPort;
-	private PointToPoint p = new PointToPoint("Server", new SocketPortAddress("10.16.164.253", 8080));
+	private PointToPoint p;
 	private String command;
 	private String feedbackMsg = null;
 
@@ -40,6 +40,7 @@ public class User {
 
 	public User() throws UnknownHostException, IOException {
 		userPort = new SocketPort(InetAddress.getLocalHost().getHostAddress(), 8080);
+		p  = new PointToPoint("Server", new SocketPortAddress("10.16.164.253", 8080));
 		userSpace = new Node(userName, new TupleSpace());
 		userSpace.addPort(userPort);
 		userSpace.start();
@@ -47,8 +48,10 @@ public class User {
 
 	public User(String userName) throws Exception {
 		this.userName = userName;
+		userPort = new SocketPort(InetAddress.getLocalHost().getHostAddress(), 8080);
+		p  = new PointToPoint("Server", new SocketPortAddress("10.16.164.253", 8080));
 		userSpace = new Node(userName, new TupleSpace());
-		userSpace.addPort(Server.vp);
+		userSpace.addPort(userPort);
 		userSpace.start();
 		getUser(userName);
 	}
