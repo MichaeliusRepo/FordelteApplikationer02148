@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class Main {
 
 	static Server dinnerClub = new Server();
-	static User user = new User("", "");
+	static User user = new User();
 	static Scanner in = new Scanner(System.in);
 	static int day;
 	static int month;
@@ -35,7 +35,7 @@ public class Main {
 	}
 
 	private static void logOut() throws Exception {
-		user = new User("", "");
+		user = new User();
 		logIn();
 	}
 

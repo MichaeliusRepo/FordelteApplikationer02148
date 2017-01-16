@@ -20,22 +20,27 @@ import org.cmg.jresp.knowledge.Template;
 @SuppressWarnings("unused")
 
 public class User {
-	private String userName;
+	private String userName = "";
 	private Node userSpace;
-	private String kitchenName;
+	private String kitchenName = "";
 	private PointToPoint p = new PointToPoint("Server", Server.vp.getAddress());
 	private String command;
 	private String feedbackMsg = null;
 	private final ArrayList<String> kitchens = new ArrayList<String>();
 	private LinkedList<String> returnData;
 
-	public User(String userName, String kitchenName) {
-		this.userName = userName;
-		this.kitchenName = kitchenName;
-		kitchens.add(kitchenName);
+	public User() {
 		userSpace = new Node(userName, new TupleSpace());
 		userSpace.addPort(Server.vp);
 		userSpace.start();
+	}
+	
+	public User(String userName) {
+		this.userName = userName;
+		userSpace = new Node(userName, new TupleSpace());
+		userSpace.addPort(Server.vp);
+		userSpace.start();
+		getUser(userName);
 	}
 
 	public LinkedList<String> getDays() {
@@ -53,6 +58,20 @@ public class User {
 		Tuple t = new Tuple(command, userName, kitchenName, false, new Tuple());
 		userSpace.addAgent(new UserAgent(command, t));
 	}
+	
+	public boolean getUser(String userName) {
+		this.userName = null;
+		Tuple t = new Tuple("getUser", userName, "", false, new Tuple());
+		userSpace.addAgent(new UserAgent(command, t));
+		return (userName != null || userName != "") ? true : false;
+	}
+	
+	public boolean addUser(String userName) {
+		this.userName = null;
+		Tuple t = new Tuple("addUser", userName, "", false, new Tuple());
+		userSpace.addAgent(new UserAgent(command, t));
+		return (userName != null || userName != "") ? true : false;
+	}
 
 	private class UserAgent extends Agent {
 
@@ -69,7 +88,7 @@ public class User {
 
 				String cmd = t.getElementAt(String.class, ECommand.COMMAND.getValue());
 				Template feedback = new Template(new FormalTemplateField(String.class),
-						new FormalTemplateField(String.class), new FormalTemplateField(String.class),
+						new ActualTemplateField(userName), new FormalTemplateField(String.class),
 						new ActualTemplateField(true), new FormalTemplateField(Tuple.class));
 				Template user = new Template(
 						new ActualTemplateField(t.getElementAt(String.class, ECommand.USERNAME.getValue())),
