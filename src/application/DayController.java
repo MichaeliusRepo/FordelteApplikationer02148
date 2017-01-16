@@ -124,6 +124,7 @@ public class DayController {
 		switch (path){
 		case "/application/Login.fxml":
 			LoginController loginController = loader.getController();
+			loginController.setUser(new User());
 			break;
 		
 		case ("/application/SelectKitchen.fxml"):

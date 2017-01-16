@@ -21,8 +21,7 @@ public class Start extends Application {
 			Parent root = loader.load();
 			
 			LoginController controller = loader.getController();
-			controller.setUser(new User("",""));
-			
+			controller.setUser(new User());
 			Scene scene = new Scene(root,400,400);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setOnCloseRequest(new EventHandler <WindowEvent>() {

@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.StartController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.DayController">
    <children>
       <Label contentDisplay="CENTER" layoutX="121.0" layoutY="84.0" text="Dinner Club">
          <font>
@@ -29,8 +29,8 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="addDayButton" mnemonicParsing="false" onAction="#addDayButtonClicked" prefHeight="27.0" prefWidth="215.0" text="Add day" GridPane.columnSpan="3" GridPane.rowIndex="3" />
-            <DatePicker fx:id="datePicker" prefHeight="27.0" prefWidth="217.0" GridPane.columnSpan="3" GridPane.rowIndex="1" />
+            <Button fx:id="createDayButton" mnemonicParsing="false" onAction="#createDayButtonClicked" prefHeight="27.0" prefWidth="215.0" text="Add day" GridPane.columnSpan="3" GridPane.rowIndex="3" />
+            <DatePicker fx:id="newDateDatePicker" prefHeight="27.0" prefWidth="217.0" GridPane.columnSpan="3" GridPane.rowIndex="1" />
          </children>
       </GridPane>
       <Label layoutX="97.0" layoutY="152.0" prefHeight="37.0" prefWidth="215.0" text="Please add a day to your dinner club: ">

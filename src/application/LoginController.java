@@ -20,7 +20,6 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 public class LoginController {
-	// private Server dinnerClub;
 	private User user;
 
 	///////////////////////////////////
@@ -46,8 +45,8 @@ public class LoginController {
 	@FXML
 	void loginButtonClicked(ActionEvent event) throws IOException {
 		String username = usernameTextField.getText();
-
-		if (user.setInfo(username) != null) {
+		
+		if (user.getUser(username)) {
 			wrongUsernameLabel.setText("");
 			newScene(event, "/application/SelectKitchen.fxml");
 		} else {
@@ -99,15 +98,15 @@ public class LoginController {
 
 	@FXML
 	void createNewUserButtonClicked(ActionEvent event) throws IOException {
-		System.out.println(newUserNameTextField.getText() + " " + kitchenNameTextField.getText());
-		System.out.println("" + user);
-		if (!newUserNameTextField.getText().equals("") && !kitchenNameTextField.getText().equals("")) {
-			// user.newUser(newUserNameTextField.getText(),
-			// kitchenNameTextField.getText());
+		String username = newUserNameTextField.getText();
+		String kitchenName = newUserNameTextField.getText();
+		
+		if (!username.equals("") && !kitchenName.equals("") && user.addUser(username)) {
+			System.out.println("new user has been created: "+ username + " and " + kitchenName);
 		} else {
-			System.out.println("Remember to insert kitchenName and Username");
+			System.out.println("Remember to insert kitchenName and Username, or a user has not been made.");
 		}
-
+		 
 		newScene(event, "/application/Login.fxml");
 	}
 
@@ -124,8 +123,7 @@ public class LoginController {
 			controller.setUser(user);
 		} else if (path.equals("/application/SelectKitchen.fxml")) {
 			KitchenController controller = loader.getController();
-			controller.setUser(user);
-			controller.findUsersKitchens(user.setInfo(usernameTextField.getText()));
+			controller.findUsersKitchens(user);
 			controller.titleLabel.setText("Hi " + usernameTextField.getText() + "!");
 		}
 

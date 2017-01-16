@@ -63,6 +63,7 @@ public class KitchenController {
 
     @FXML
     void selectDinnerClubButtonClicked(ActionEvent event) throws IOException {
+    	
     	System.out.println(((RadioButton)toggleGroup.getSelectedToggle()).getText());
     	user.setKitchen(((RadioButton)toggleGroup.getSelectedToggle()).getText());
     	newScene(event,"/application/DayOverview.fxml");
@@ -147,7 +148,7 @@ public class KitchenController {
 		switch (path){
 		case "/application/Login.fxml":
 			LoginController loginController = loader.getController();
-			loginController.setUser(user);
+			loginController.setUser(new User());
 			break;
 		
 		case ("/application/SelectKitchen.fxml"):
