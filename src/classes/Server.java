@@ -51,6 +51,11 @@ public class Server {
 					String command = t.getElementAt(String.class, ECommand.COMMAND.getValue());
 					tupleData = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
 					
+					/*
+					 * Perhaps we should implement switch cases here, and create
+					 * methods for each case, instead of an if statement?
+					 */
+					
 					if (command.equals("addUser")) {
 						put(new Tuple(t.getElementAt(String.class, ECommand.USERNAME.getValue()),
 								t.getElementAt(String.class, ECommand.KITCHEN.getValue())), Self.SELF);
