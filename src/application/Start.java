@@ -1,5 +1,6 @@
 package application;
 	
+import classes.Server;
 import classes.User;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -41,6 +42,7 @@ public class Start extends Application {
 	}
 	
 	public static void main(String[] args) {
+		new Server();
 		launch(args);
 	}
 }

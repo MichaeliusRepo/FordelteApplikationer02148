@@ -66,6 +66,7 @@ public class User {
 		@Override
 		protected void doRun() {
 			try {
+
 				String cmd = t.getElementAt(String.class, ECommand.COMMAND.getValue());
 				Template feedback = new Template(new FormalTemplateField(String.class),
 						new FormalTemplateField(String.class), new FormalTemplateField(String.class),
@@ -73,6 +74,11 @@ public class User {
 				Template user = new Template(
 						new ActualTemplateField(t.getElementAt(String.class, ECommand.USERNAME.getValue())),
 						new ActualTemplateField(t.getElementAt(String.class, ECommand.KITCHEN.getValue())));
+
+				/*
+				 * Perhaps we should implement switch cases here, and create
+				 * methods for each case, instead of an if statement?
+				 */
 
 				if (cmd.contains("User")) {
 					// User request
