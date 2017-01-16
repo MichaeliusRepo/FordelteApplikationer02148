@@ -53,12 +53,6 @@ public class User {
 		userSpace.addAgent(new UserAgent(command, t));
 	}
 
-	public void userRequests(String command, String userName, String kitchenName) {
-		this.command = command;
-		Tuple t = new Tuple(command, userName, kitchenName, false, new Tuple());
-		userSpace.addAgent(new UserAgent(command, t));
-	}
-	
 	public boolean getUser(String userName) {
 		this.userName = null;
 		Tuple t = new Tuple("getUser", userName, "", false, new Tuple());

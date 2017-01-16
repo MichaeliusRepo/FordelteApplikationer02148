@@ -21,16 +21,17 @@ public class Main {
 			System.out.print("Write 'addUser' to create a new user, or 'getUser' to log in to an existing account.");
 			String cmd = in.nextLine();
 			String userName;
-			String kitchenName;
+			// String kitchenName;
 
-			if (cmd.equals("addUser") || cmd.equals("getUser")) {
-				System.out.print("Please enter an user name: ");
-				userName = in.nextLine();
-				System.out.print("Please enter a dinner club's name: ");
-				kitchenName = in.nextLine();
-				user.userRequests(cmd, userName, kitchenName);
-				Thread.sleep(200);
-			}
+			System.out.print("Please enter an user name: ");
+			userName = in.nextLine();
+
+			if (cmd.equals("addUser"))
+				user.addUser(userName);
+			if (cmd.equals("getUser"))
+				user.getUser(userName);
+
+			Thread.sleep(200);
 		}
 	}
 
