@@ -28,6 +28,10 @@ public class User {
 	private String feedbackMsg = null;
 	private final ArrayList<String> kitchens = new ArrayList<String>();
 	private LinkedList<String> returnData;
+	
+	private final Template feedback = new Template(new FormalTemplateField(String.class),
+			new ActualTemplateField(userName), new FormalTemplateField(String.class),
+			new ActualTemplateField(true), new FormalTemplateField(Tuple.class));
 
 	public User() {
 		userSpace = new Node(userName, new TupleSpace());
@@ -81,9 +85,6 @@ public class User {
 			try {
 
 				String cmd = t.getElementAt(String.class, ECommand.COMMAND.getValue());
-				Template feedback = new Template(new FormalTemplateField(String.class),
-						new ActualTemplateField(userName), new FormalTemplateField(String.class),
-						new ActualTemplateField(true), new FormalTemplateField(Tuple.class));
 				Template user = new Template(
 						new ActualTemplateField(t.getElementAt(String.class, ECommand.USERNAME.getValue())),
 						new ActualTemplateField(t.getElementAt(String.class, ECommand.KITCHEN.getValue())));
@@ -97,10 +98,15 @@ public class User {
 					// User request
 					if (cmd.equals("addUser"))
 						put(t, p);
-					t = query(user, p);
-					if (t != null) {
+					
+					t = query(feedback, p);
+					
+					boolean userExists = t.getElementAt(Tuple.class, ECommand.DATA.getValue()).getElementAt(Boolean.class, 0);
+					
+					
+					if (userExists) {
 						userName = t.getElementAt(String.class, 0);
-						feedbackMsg = userName + " belonging to " + kitchenName + " was retrieved.";
+						feedbackMsg = userName + " was retrieved from server.";
 						System.out.println(feedbackMsg);
 					} else 
 						userName = null;

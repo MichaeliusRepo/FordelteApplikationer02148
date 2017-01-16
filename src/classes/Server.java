@@ -50,25 +50,24 @@ public class Server {
 					t = get(commandTuples, Self.SELF);
 					String command = t.getElementAt(String.class, ECommand.COMMAND.getValue());
 					tupleData = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
-					
+
 					/*
 					 * Perhaps we should implement switch cases here, and create
 					 * methods for each case, instead of an if statement?
 					 */
-					
-					if (command.equals("addUser")) {
-						put(new Tuple(t.getElementAt(String.class, ECommand.USERNAME.getValue()),
-								t.getElementAt(String.class, ECommand.KITCHEN.getValue())), Self.SELF);
-						String kitchenName = t.getElementAt(String.class, ECommand.KITCHEN.getValue());
-						Template kitchenCheck = new Template(
-								new FormalTemplateField(String.class),
-								new ActualTemplateField(kitchenName)
-								);
-						if (queryp(kitchenCheck) != null)
-							new Kitchen(kitchenName);
-					}
+
+					if (command.contains("User")) {
+						String userName = t.getElementAt(String.class, ECommand.USERNAME.getValue());
 						
-					else {
+						if (command.equals("addUser"))
+							put(new Tuple(userName, new Tuple(null, null, null, null)), Self.SELF);
+
+						Template getUser = new Template(new ActualTemplateField(userName),
+								new FormalTemplateField(Tuple.class));
+						boolean userExists = (queryp(getUser) != null);
+						put(new Tuple(command, userName, "", true, new Tuple(userExists)), Self.SELF);
+
+					} else {
 						System.out.println(
 								"Server Monitor was requested to " + t.getElementAt(ECommand.COMMAND.getValue()) + ", "
 										+ tupleData.getElementAt(Integer.class, EDayData.DAY.getValue()) + "/"
@@ -82,7 +81,6 @@ public class Server {
 						 */
 						exec(new ServerAgent(command, t));
 					}
-
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
