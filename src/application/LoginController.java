@@ -43,7 +43,7 @@ public class LoginController {
 	}
 
 	@FXML
-	void loginButtonClicked(ActionEvent event) throws IOException {
+	void loginButtonClicked(ActionEvent event) throws Exception {
 		String username = usernameTextField.getText();
 		
 		if (user.getUser(username)) {
@@ -67,7 +67,7 @@ public class LoginController {
 
 					try {
 						loginButtonClicked(event);
-					} catch (IOException e) {
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}
@@ -97,7 +97,7 @@ public class LoginController {
 	}
 
 	@FXML
-	void createNewUserButtonClicked(ActionEvent event) throws IOException {
+	void createNewUserButtonClicked(ActionEvent event) throws Exception {
 		String username = newUserNameTextField.getText();
 		String kitchenName = kitchenNameTextField.getText();
 		

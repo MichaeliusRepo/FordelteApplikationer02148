@@ -23,10 +23,11 @@
       <RadioButton fx:id="kitchen3" layoutX="143.0" layoutY="207.0" mnemonicParsing="false" toggleGroup="$toggleGroup" />
       <Button fx:id="selectButton" layoutX="202.0" layoutY="296.0" mnemonicParsing="false" onAction="#selectDinnerClubButtonClicked" prefWidth="170.0" text="Select" />
       <RadioButton fx:id="kitchen4" layoutX="142.0" layoutY="240.0" mnemonicParsing="false" toggleGroup="$toggleGroup" />
-      <Button fx:id="logOutButton" layoutX="333.0" layoutY="14.0" mnemonicParsing="false" onAction="#logOutButtonClicked" prefHeight="18.0" prefWidth="53.0" text="Log out">
+      <Button fx:id="logOutButton" layoutX="333.0" layoutY="14.0" mnemonicParsing="false" onAction="#logOutButtonClicked" prefHeight="18.0" prefWidth="53.0" text="Log out" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
          <font>
             <Font size="10.0" />
          </font>
       </Button>
+      <Label fx:id="noKitchenLabel" layoutX="333.0" layoutY="333.0" textFill="#bc0a0a" AnchorPane.rightAnchor="20.0" />
    </children>
 </AnchorPane>

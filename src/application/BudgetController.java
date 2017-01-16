@@ -33,6 +33,10 @@ public class BudgetController {
     @FXML
     private Label balanceLabel;
 
+
+
+	private String kitchenName;
+
     @FXML
     void backButtonClicked(ActionEvent event) throws IOException {
     	newScene(event,"/application/DayOverview.fxml");
@@ -47,10 +51,14 @@ public class BudgetController {
 	//////////////////////////////
     // controller methods
     
+    public void setKitchenName(String kitchenName){
+    	this.kitchenName = kitchenName;
+    }
+    
     public void setBalance(){
     	balanceLabel.setText("test");
     	
-    	user.command("getBalance", 0, 0, 0, 0);
+    	user.command("getBalance", kitchenName, 0, 0, 0, 0);
     	if(user.getFeedbackMsg() != null){
     		
     		balanceLabel.setText(user.getFeedbackMsg());

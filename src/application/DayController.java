@@ -2,7 +2,6 @@ package application;
 
 import java.io.IOException;
 
-import classes.Server;
 import classes.User;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -95,6 +94,7 @@ public class DayController {
 	}
 
 	public void updateTabel(String kitchenName) {
+		this.kitchenName = kitchenName;
 		titleLabel.setText(kitchenName);
 		int i = 0;
 
@@ -145,7 +145,7 @@ public class DayController {
 			int month = newDateDatePicker.getValue().getMonthValue();
 			int year = newDateDatePicker.getValue().getYear();
 			System.out.println("Creating the day: " + newDateDatePicker.getValue().toString());
-			user.command("addDay", day, month, year, 0);
+			user.command("addDay", kitchenName, day, month, year, 0);
 			newScene(event, "/application/DayOverview.fxml");
 		} else {
 			noDayLabel.setText("  Insert a date");
@@ -180,6 +180,7 @@ public class DayController {
 		case "/application/DayOverview.fxml":
 		case "/application/AddDay.fxml":
 			DayController dayController = loader.getController();
+			dayController.setKitchenName(kitchenName);
 			dayController.setUser(user);
 			x = 500;
 			break;
@@ -188,6 +189,7 @@ public class DayController {
 			BudgetController budgetController = loader.getController();
 			budgetController.setUser(user);
 			budgetController.setBalance();
+			budgetController.setKitchenName(kitchenName);
 			break;
 
 		}
@@ -205,6 +207,11 @@ public class DayController {
 		stage.setScene(scene);
 		stage.setTitle("Dinner Club");
 		stage.show();
+	}
+
+	private void setKitchenName(String kitchenName) {
+		this.kitchenName = kitchenName;
+		
 	}
 
 }

@@ -29,7 +29,7 @@ public class User {
 	// private String[] kitchens = { null, null, null, null };
 	private ArrayList<String> kitchens = new ArrayList<String>();
 
-	private int kitchenPointer;
+	// private int kitchenPointer;
 
 	private LinkedList<String> returnData;
 
@@ -228,6 +228,13 @@ public class User {
 
 	public String getUserName() {
 		return userName;
+	}
+
+	public String getKitchenName(int i) {
+		if (i < kitchens.size()) {
+			return kitchens.get(i);
+		}
+		return null;
 	}
 
 }

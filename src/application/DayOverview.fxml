@@ -31,21 +31,13 @@
       <Button fx:id="addDayButton" layoutX="215.0" layoutY="350.0" mnemonicParsing="false" onAction="#addDayButtonClicked" text="Add Day" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="214.0" AnchorPane.rightAnchor="214.0" />
       <Button fx:id="budgetButton" layoutX="289.0" layoutY="349.0" mnemonicParsing="false" onAction="#bugdetButtonClicked" text="Budget" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0" />
       <Button fx:id="updateButton" layoutX="165.0" layoutY="11.0" mnemonicParsing="false" onAction="#updateButtonClicked" text="Update" AnchorPane.leftAnchor="215.0" AnchorPane.rightAnchor="214.0" AnchorPane.topAnchor="20.0" />
-      <ScrollPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="130.0">
-        <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="400.0">
-               <children>
-                  <TableView fx:id="dayTableView" prefWidth="418.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                    <columns>
-                      <TableColumn id="date" fx:id="dateTableColumn" prefWidth="100.0" text="Date" />
-                      <TableColumn fx:id="chefTableColumn" prefWidth="100.0" text="Chef" />
-                        <TableColumn fx:id="totalTableColumn" prefWidth="100.0" text="Total nr." />
-                        <TableColumn fx:id="attendTableColumn" prefWidth="100.0" text="Attend" />
-                    </columns>
-                  </TableView>
-               </children>
-            </AnchorPane>
-        </content>
-      </ScrollPane>
+      <TableView fx:id="dayTableView" prefWidth="418.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="130.0">
+        <columns>
+          <TableColumn id="date" fx:id="dateTableColumn" prefWidth="100.0" text="Date" />
+          <TableColumn fx:id="chefTableColumn" prefWidth="100.0" text="Chef" />
+            <TableColumn fx:id="totalTableColumn" prefWidth="100.0" text="Total nr." />
+            <TableColumn fx:id="attendTableColumn" prefWidth="100.0" text="Attend" />
+        </columns>
+      </TableView>
    </children>
 </AnchorPane>

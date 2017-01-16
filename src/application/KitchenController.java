@@ -31,6 +31,9 @@ public class KitchenController {
 	
 	@FXML
     public Label titleLabel;
+	
+	@FXML
+	private Label noKitchenLabel;
     
 	@FXML
     private ToggleGroup toggleGroup;
@@ -64,9 +67,13 @@ public class KitchenController {
     @FXML
     void selectDinnerClubButtonClicked(ActionEvent event) throws IOException {
     	
-    	System.out.println(((RadioButton)toggleGroup.getSelectedToggle()).getText());
-    	user.setKitchen(((RadioButton)toggleGroup.getSelectedToggle()).getText());
-    	newScene(event,"/application/DayOverview.fxml");
+    	if(((RadioButton) toggleGroup.getSelectedToggle()).getText().length() > 0){
+    		System.out.println(((RadioButton)toggleGroup.getSelectedToggle()).getText());
+        	newScene(event,"/application/DayOverview.fxml");
+    	} else {
+    		noKitchenLabel.setText("Please select a dinner club");
+    	}
+    	
     }
     
     @FXML
@@ -79,6 +86,9 @@ public class KitchenController {
     // Create new kitchen
     
     @FXML
+    private Label emptyLabel;
+    
+    @FXML
     private Button createKitchenButton;
 
     @FXML
@@ -88,20 +98,19 @@ public class KitchenController {
     private Button backButton;
 
     @FXML
-    void createKitchenButtonClicked(ActionEvent event) throws IOException {
+    void createKitchenButtonClicked(ActionEvent event) throws Exception {
     	
     	if(!newKitchenTextField.getText().equals("")){
         	
-    		if(user.addKitchen(newKitchenTextField.getText())){
+    		if(user.createKitchen(newKitchenTextField.getText())){
         		System.out.println("A new kitchen has been created: "+newKitchenTextField.getText());
         	} else {
         		System.out.println("This kitchen already exist: "+newKitchenTextField.getText());
         	}
-    		
 			newScene(event,"/application/SelectKitchen.fxml");
 			
     	} else {
-    		System.out.println("not valid: Remember to write a name");
+    		emptyLabel.setText("not valid: Remember to write a name");
     	}
     }
 
