@@ -5,6 +5,7 @@ import java.util.Scanner;
 public class Main {
 
 	static Server dinnerClub = new Server();
+	static String str = "What Love Can Be";
 	static User user = new User();
 	static Scanner in = new Scanner(System.in);
 	static int day;
@@ -64,12 +65,12 @@ public class Main {
 				case "attendDay":
 					System.out.print("Please enter how many guest you want to bring: (e.g. 0) ");
 					int guest = Integer.parseInt(in.nextLine());
-					user.command(dayCmd, day, month, year, guest);
+					user.command(dayCmd, str, day, month, year, guest);
 					break;
 				case "setPrice":
 					System.out.print("Please enter the total price: (e.g. 200) ");
 					int price = Integer.parseInt(in.nextLine());
-					user.command(dayCmd, day, month, year, price);
+					user.command(dayCmd, str, day, month, year, price);
 					break;
 				case "addDay":
 				case "addChef":
@@ -79,7 +80,7 @@ public class Main {
 				case "getChef":
 				case "getPrice":
 				case "getAttendees":
-					user.command(dayCmd, day, month, year, 0);
+					user.command(dayCmd, str, day, month, year, 0);
 					break;
 				}
 				break;
@@ -87,7 +88,7 @@ public class Main {
 			case "resetUserBalance":
 			case "getBalance":
 			case "getDays":
-				user.command(cmd, 0, 0, 0, 0);
+				user.command(cmd, str, 0, 0, 0, 0);
 				break;
 
 			case "help":

@@ -49,25 +49,23 @@ public class Server {
 				try {
 					t = get(commandTuples, Self.SELF);
 					String command = t.getElementAt(String.class, ECommand.COMMAND.getValue());
+					String userName = t.getElementAt(String.class, ECommand.USERNAME.getValue());
+					String kitchenName = t.getElementAt(String.class, ECommand.KITCHEN.getValue());
 					tupleData = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
+
+					Template getObject;
+					boolean exists;
 
 					/*
 					 * Perhaps we should implement switch cases here, and create
 					 * methods for each case, instead of an if statement?
 					 */
 
-					if (command.contains("User")) {
-						String userName = t.getElementAt(String.class, ECommand.USERNAME.getValue());
-						
-						if (command.equals("addUser"))
-							put(new Tuple(userName, new Tuple(null, null, null, null)), Self.SELF);
+					// Perhaps you should make your own code work first.
+					// Then we'll talk business.
 
-						Template getUser = new Template(new ActualTemplateField(userName),
-								new FormalTemplateField(Tuple.class));
-						boolean userExists = (queryp(getUser) != null);
-						put(new Tuple(command, userName, "", true, new Tuple(userExists)), Self.SELF);
-
-					} else {
+					switch (command) {
+					default:
 						System.out.println(
 								"Server Monitor was requested to " + t.getElementAt(ECommand.COMMAND.getValue()) + ", "
 										+ tupleData.getElementAt(Integer.class, EDayData.DAY.getValue()) + "/"
@@ -80,7 +78,96 @@ public class Server {
 						 * malicious
 						 */
 						exec(new ServerAgent(command, t));
+						break;
+
+					case "addUser":
+						getObject = new Template(new ActualTemplateField(userName),
+								new FormalTemplateField(Tuple.class));
+						exists = (queryp(getObject) != null);
+
+						if (!exists) // Put userData into Server if
+										// nonexistent
+							put(new Tuple(userName, new Tuple(null, null, null, null)), Self.SELF);
+
+						// Feedback for user if creation was successful.
+						put(new Tuple(command, userName, "", true, new Tuple(exists)), Self.SELF);
+						break;
+
+					case "getUser":
+						getObject = new Template(new ActualTemplateField(userName),
+								new FormalTemplateField(Tuple.class));
+						Tuple result = queryp(getObject);
+
+						exists = (result != null);
+
+						// Feedback for user if creation was successful.
+						put(new Tuple(command, userName, "", true, new Tuple(exists, result)), Self.SELF);
+						break;
+
+					case "createKitchen":
+						getObject = new Template(new ActualTemplateField(kitchenName),
+								new FormalTemplateField(Tuple.class));
+						exists = (queryp(getObject) != null);
+
+						if (!exists) // Put userData into Server if
+							// nonexistent
+							put(new Tuple(kitchenName, new Kitchen(kitchenName)), Self.SELF);
+						// Feedback for user if creation was successful.
+						put(new Tuple(command, userName, kitchenName, true, new Tuple(exists)), Self.SELF);
+						break;
+
+					case "joinKitchen":
+
+						break;
 					}
+
+					// Warning: code repeats.
+
+					return;
+					// if (command.contains("User")) {
+					// if (command.equals("addUser"))
+					// put(new Tuple(userName, new Tuple(null, null, null,
+					// null)), Self.SELF);
+					//
+					// Template getUser = new Template(new
+					// ActualTemplateField(userName),
+					// new FormalTemplateField(Tuple.class));
+					// boolean userExists = (queryp(getUser) != null);
+					// put(new Tuple(command, userName, "", true, new
+					// Tuple(userExists)), Self.SELF);
+					// }
+					//
+					// else if (command.contains("Kitchen")) {
+					// if (command.equals("addKitchen"))
+					// put(new Tuple(kitchenName, new Kitchen(kitchenName)),
+					// Self.SELF);
+					// Template getKitchen = new Template(new
+					// ActualTemplateField(kitchenName),
+					// new FormalTemplateField(Kitchen.class));
+					// boolean kitchenExists = (queryp(getKitchen) != null);
+					// put(new Tuple(command, userName, kitchenName, true, new
+					// Tuple(kitchenExists)), Self.SELF);
+					//
+					// } else {
+					// System.out.println(
+					// "Server Monitor was requested to " +
+					// t.getElementAt(ECommand.COMMAND.getValue()) + ", "
+					// + tupleData.getElementAt(Integer.class,
+					// EDayData.DAY.getValue()) + "/"
+					// + tupleData.getElementAt(Integer.class,
+					// EDayData.MONTH.getValue()) + "/"
+					// + tupleData.getElementAt(Integer.class,
+					// EDayData.YEAR.getValue()) + " to "
+					// + t.getElementAt(String.class,
+					// ECommand.KITCHEN.getValue()));
+					// /*
+					// * Since the tuple went in here, this is a great time to
+					// * check that the user is a valid source and not
+					// * malicious
+					// */
+					// exec(new ServerAgent(command, t));
+					// }
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
