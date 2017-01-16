@@ -33,10 +33,6 @@ public class User {
 
 	private LinkedList<String> returnData;
 
-	private final Template feedback = new Template(new FormalTemplateField(String.class),
-			new ActualTemplateField(userName), new FormalTemplateField(String.class), new ActualTemplateField(true),
-			new FormalTemplateField(Tuple.class));
-
 	public User() {
 		userSpace = new Node(userName, new TupleSpace());
 		userSpace.addPort(Server.vp);
@@ -89,13 +85,14 @@ public class User {
 			System.out.println(userName + " got feedback: " + feedbackMsg);
 			return false;
 		}
-		
+
 		Tuple t = new Tuple("addKitchen", userName, kitchenName, false, new Tuple());
 		userSpace.addAgent(new UserAgent(command, t));
 		while (feedbackMsg == null) {
 			Thread.sleep(10);
 		} // Wait for Server to return proper feedback.
-		return (userName != null || userName != "") ? true : false;
+		
+		return (feedbackMsg.contains("was created")) ? true : false;
 	}
 
 	private class UserAgent extends Agent {
@@ -117,6 +114,11 @@ public class User {
 						new ActualTemplateField(t.getElementAt(String.class, ECommand.KITCHEN.getValue())));
 				boolean exists;
 				Tuple dataTuple;
+
+				Template feedback = new Template(new FormalTemplateField(String.class),
+						new ActualTemplateField(t.getElementAt(String.class, ECommand.USERNAME.getValue())),
+						new FormalTemplateField(String.class), new ActualTemplateField(true),
+						new FormalTemplateField(Tuple.class));
 				/*
 				 * Perhaps we should implement switch cases here, and create
 				 * methods for each case, instead of an if statement?
@@ -145,16 +147,16 @@ public class User {
 				case "addUser":
 					put(t, p); // put server request
 					t = query(feedback, p); // get feedback
-					
+
 					dataTuple = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
 					exists = dataTuple.getElementAt(Boolean.class, 0);
-					
+
 					if (!exists) {
-						userName = null;
-						feedbackMsg = "Username already exists. Pick another.";
-					} else {
 						userName = t.getElementAt(String.class, ECommand.USERNAME.getValue());
 						feedbackMsg = userName + " was retrieved.";
+					} else {
+						userName = null;
+						feedbackMsg = "Username already exists. Pick another.";
 					}
 					System.out.println(userName + " got feedback: " + feedbackMsg);
 					break;
@@ -162,18 +164,16 @@ public class User {
 				case "getUser":
 					put(t, p); // put server request
 					t = query(feedback, p); // get feedback
-					
+
 					dataTuple = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
 					exists = dataTuple.getElementAt(Boolean.class, 0);
-					
+
 					if (exists) { // if this exists, it was successful.
 						userName = t.getElementAt(String.class, ECommand.USERNAME.getValue());
 						feedbackMsg = userName + " was retrieved.";
-						
 						kitchens.clear();
-						for (int i = 0; i < 4; i++) {
-							kitchens.add(i, dataTuple.getElementAt(String.class, i));;
-						}
+						for (int i = 0; i < 4; i++) 
+							kitchens.add(i, dataTuple.getElementAt(String.class, i));
 					} else {
 						userName = null;
 						feedbackMsg = "Username not found.";
@@ -187,18 +187,18 @@ public class User {
 					dataTuple = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
 					exists = dataTuple.getElementAt(Boolean.class, 0);
 					String kitchenName = t.getElementAt(String.class, ECommand.KITCHEN.getValue());
-					
+
 					if (!exists) { // if doesn't exist, create
 						kitchens.add(kitchenName);
 						feedbackMsg = kitchenName + " was created.";
-					} else 
+					} else
 						feedbackMsg = kitchenName + " already exists.";
-					
+
 					System.out.println(userName + " got feedback: " + feedbackMsg);
 					break;
 
 				case "joinKitchen":
-					
+
 					break;
 
 				}
