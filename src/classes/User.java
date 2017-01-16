@@ -78,15 +78,15 @@ public class User {
 		return (userName != null || userName != "") ? true : false;
 	}
 
-	public boolean addKitchen(String kitchenName) throws Exception {
+	public boolean createKitchen(String kitchenName) throws Exception {
 		feedbackMsg = null;
-		if (kitchens.get(3) != null) {
+		if (kitchens.size() > 4) {
 			feedbackMsg = "You may only be a member of up to 4 kitchens.";
 			System.out.println(userName + " got feedback: " + feedbackMsg);
 			return false;
 		}
 
-		Tuple t = new Tuple("addKitchen", userName, kitchenName, false, new Tuple());
+		Tuple t = new Tuple("createKitchen", userName, kitchenName, false, new Tuple());
 		userSpace.addAgent(new UserAgent(command, t));
 		while (feedbackMsg == null) {
 			Thread.sleep(10);
@@ -131,6 +131,10 @@ public class User {
 					t = get(feedback, p);
 					dataTuple = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
 
+					for (int i = 0; i < 100; i++) {
+						System.out.println(dataTuple.getElementAt(i).getClass().getSimpleName());
+					}
+					
 					feedbackMsg = dataTuple.getElementAt(String.class, 1);
 					System.out.println(userName + " got feedback: " + feedbackMsg);
 
@@ -146,7 +150,7 @@ public class User {
 
 				case "addUser":
 					put(t, p); // put server request
-					t = query(feedback, p); // get feedback
+					t = get(feedback, p); // get feedback
 
 					dataTuple = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
 					exists = dataTuple.getElementAt(Boolean.class, 0);
@@ -163,7 +167,7 @@ public class User {
 
 				case "getUser":
 					put(t, p); // put server request
-					t = query(feedback, p); // get feedback
+					t = get(feedback, p); // get feedback
 
 					dataTuple = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
 					exists = dataTuple.getElementAt(Boolean.class, 0);
@@ -183,7 +187,7 @@ public class User {
 
 				case "createKitchen":
 					put(t, p); // put server request
-					t = query(feedback, p); // get feedback
+					t = get(feedback, p); // get feedback
 					dataTuple = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
 					exists = dataTuple.getElementAt(Boolean.class, 0);
 					String kitchenName = t.getElementAt(String.class, ECommand.KITCHEN.getValue());

@@ -30,6 +30,10 @@ public class InitializationTest {
 		Thread.sleep(milliseconds);
 		assertTrue(user.getFeedbackMsg().contains(userName));
 		
+		user.createKitchen(kitchenName);
+		Thread.sleep(milliseconds);
+		assertTrue(user.getFeedbackMsg().contains("was created"));
+		
 		user.command("addDay", kitchenName, day, month, year, 0);
 		Thread.sleep(milliseconds);
 		assertEquals(user.getFeedbackMsg(), "Day created.");

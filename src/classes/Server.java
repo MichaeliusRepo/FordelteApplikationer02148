@@ -63,7 +63,9 @@ public class Server {
 
 					// Perhaps you should make your own code work first.
 					// Then we'll talk business.
-
+					
+					System.out.println(command);
+					
 					switch (command) {
 					default:
 						System.out.println(
