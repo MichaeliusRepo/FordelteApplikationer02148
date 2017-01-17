@@ -56,12 +56,21 @@ public class KitchenController {
     @FXML
     private Button newKitchenButton;
     
+
+    @FXML
+    private Button joinKitchenButton;
+    
     @FXML
     private Button logOutButton;
 
     @FXML
     void newKitchenButtonClicked(ActionEvent event) throws IOException {
 		newScene(event, "/application/CreateDinnerClub.fxml");
+    }
+    
+    @FXML
+    void joinKitchenButtonClicked(ActionEvent event) throws IOException {
+    	newScene(event, "/application/JoinDinnerClub.fxml");
     }
 
     @FXML
@@ -104,21 +113,47 @@ public class KitchenController {
         	
     		if(user.createKitchen(newKitchenTextField.getText())){
         		System.out.println("A new kitchen has been created: "+newKitchenTextField.getText());
+        		newScene(event,"/application/SelectKitchen.fxml");
         	} else {
-        		System.out.println("This kitchen already exist: "+newKitchenTextField.getText());
+        		emptyLabel.setText(user.getFeedbackMsg());
         	}
-			newScene(event,"/application/SelectKitchen.fxml");
-			
+    		
     	} else {
     		emptyLabel.setText("not valid: Remember to write a name");
     	}
     }
+   
 
     @FXML
     void backButtonClicked(ActionEvent event) throws IOException {
 		newScene(event,"/application/SelectKitchen.fxml");
 
     }
+    
+    ////////////////////////
+    // Join kitchen
+    
+    @FXML
+    private TextField joinKitchenTextField;
+    
+    @FXML
+    private Button joinExcistingKitchenButton;
+    
+    @FXML
+    void joinExcistingKitchenButtonClicked(ActionEvent event) throws Exception{
+    	if(!joinKitchenTextField.getText().equals("")){
+
+    		if(user.joinKitchen(joinKitchenTextField.getText())){
+        		System.out.println("You have joined: "+joinKitchenTextField.getText());
+        		newScene(event,"/application/SelectKitchen.fxml");
+        	} else {
+        		emptyLabel.setText(user.getFeedbackMsg());
+        	}
+    	} else {
+    		emptyLabel.setText("not valid: Remember to write a name");
+    	}
+    }
+    
     
     //////////////////////////////
     // controller methods
@@ -166,6 +201,7 @@ public class KitchenController {
 			kitchenController.findUsersKitchens(user);
 			break;
 			
+		case "/application/JoinDinnerClub.fxml":
 		case "/application/CreateDinnerClub.fxml":
 			kitchenController = loader.getController();
 			kitchenController.setUser(user);
@@ -174,7 +210,11 @@ public class KitchenController {
 		case "/application/DayOverview.fxml":
 			DayController dayController = loader.getController();
 			dayController.setUser(user);
-			dayController.updateTabel(((RadioButton)toggleGroup.getSelectedToggle()).getText());
+			try {
+				dayController.updateTabel(((RadioButton)toggleGroup.getSelectedToggle()).getText());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			x = 500;
 			break;
 		
@@ -184,7 +224,6 @@ public class KitchenController {
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		Stage stage = new Stage();
 		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            
             public void handle(WindowEvent t) {
                 Platform.exit();
                 System.exit(0);

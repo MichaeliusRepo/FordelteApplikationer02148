@@ -14,14 +14,14 @@
             <Font size="30.0" />
          </font>
       </Label>
-      <Button fx:id="newKitchenButton" layoutX="28.0" layoutY="296.0" mnemonicParsing="false" onAction="#newKitchenButtonClicked" prefWidth="170.0" text="Create Dinner Club" />
+      <Button fx:id="newKitchenButton" layoutX="36.0" layoutY="337.0" mnemonicParsing="false" onAction="#newKitchenButtonClicked" prefHeight="27.0" prefWidth="145.0" text="Create Dinner Club" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="40.0" />
       <RadioButton fx:id="kitchen1" layoutX="143.0" layoutY="142.0" mnemonicParsing="false" selected="true">
          <toggleGroup>
             <ToggleGroup fx:id="toggleGroup" />
          </toggleGroup></RadioButton>
       <RadioButton fx:id="kitchen2" layoutX="143.0" layoutY="173.0" mnemonicParsing="false" toggleGroup="$toggleGroup" />
       <RadioButton fx:id="kitchen3" layoutX="143.0" layoutY="207.0" mnemonicParsing="false" toggleGroup="$toggleGroup" />
-      <Button fx:id="selectButton" layoutX="202.0" layoutY="296.0" mnemonicParsing="false" onAction="#selectDinnerClubButtonClicked" prefWidth="170.0" text="Select" />
+      <Button fx:id="selectButton" layoutX="209.0" layoutY="284.0" mnemonicParsing="false" onAction="#selectDinnerClubButtonClicked" prefHeight="69.0" prefWidth="145.0" text="Select" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="46.0" AnchorPane.topAnchor="292.0" />
       <RadioButton fx:id="kitchen4" layoutX="142.0" layoutY="240.0" mnemonicParsing="false" toggleGroup="$toggleGroup" />
       <Button fx:id="logOutButton" layoutX="333.0" layoutY="14.0" mnemonicParsing="false" onAction="#logOutButtonClicked" prefHeight="18.0" prefWidth="53.0" text="Log out" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
          <font>
@@ -29,5 +29,6 @@
          </font>
       </Button>
       <Label fx:id="noKitchenLabel" layoutX="333.0" layoutY="333.0" textFill="#bc0a0a" AnchorPane.rightAnchor="20.0" />
+      <Button fx:id="joinKitchenButton" layoutX="55.0" layoutY="292.0" mnemonicParsing="false" onAction="#joinKitchenButtonClicked" prefHeight="27.0" prefWidth="145.0" text="Join Dinner Club" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="215.0" AnchorPane.topAnchor="292.0" />
    </children>
 </AnchorPane>

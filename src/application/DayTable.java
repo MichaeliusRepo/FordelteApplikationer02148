@@ -6,18 +6,21 @@ import classes.Server;
 import classes.User;
 
 public class DayTable {
-	private String date, chef, total, attend;
+	private String date, chef, total, attend, kitchenName;
 	private User user;
 	private LinkedList<String> days;
 	private int i, day, month, year, counter;
 
-	public DayTable(User user, int i) {
+	public DayTable(User user, String kitchenName, int i) throws Exception {
 		this.user = user;
-		//user.command("addDay", 1, 1, 1, 0);
-		//user.command("addDay", 2, 2, 2, 0);
+		this.kitchenName = kitchenName;
+		user.command("addDay", kitchenName, 1, 1, 1, 0);
+		user.command("addDay", kitchenName, 2, 2, 2, 0);
 
-		this.days = user.getDays();
-		setValues(i);
+		
+		System.out.println("dayTable: "+user.getDays(kitchenName));
+		this.days = user.getDays(kitchenName);
+		//setValues(i);
 	}
 
 
@@ -30,17 +33,17 @@ public class DayTable {
 	}
 
 	public String getChef() {
-		//user.command("getChef", day, month, year, 0);
+		user.command("getChef", kitchenName, day, month, year, 0);
 		return user.getFeedbackMsg();
 	}
 
 	public String getTotal() {
-		//user.command("getPrice", day, month, year, 0);
+		user.command("getPrice", kitchenName, day, month, year, 0);
 		return user.getFeedbackMsg();
 	}
 
 	public String getAttend() {
-		//user.command("getAttendees", day, month, year, 0);
+		user.command("getAttendees", kitchenName, day, month, year, 0);
 		return user.getFeedbackMsg();
 	}
 

@@ -5,6 +5,7 @@ import java.io.IOException;
 import classes.User;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,8 +18,11 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 
 public class DayController {
@@ -87,21 +91,21 @@ public class DayController {
 	}
 
 	@FXML
-	void updateButtonClicked(ActionEvent event) {
+	void updateButtonClicked(ActionEvent event) throws Exception {
 
 		updateTabel(titleLabel.getText());
 
 	}
 
-	public void updateTabel(String kitchenName) {
+	public void updateTabel(String kitchenName) throws Exception {
 		this.kitchenName = kitchenName;
 		titleLabel.setText(kitchenName);
 		int i = 0;
 
-		DayTable dayTable = new DayTable(user, i);
+		DayTable dayTable = new DayTable(user, kitchenName, i);
 
 		while (dayTable.haveNextDay()) {
-			dayTableView.getItems().add(new DayTable(user, i));
+			dayTableView.getItems().add(new DayTable(user, kitchenName, i));
 			i++;
 		}
 
@@ -110,12 +114,22 @@ public class DayController {
 		totalTableColumn.setCellValueFactory(new PropertyValueFactory<>("total"));
 		attendTableColumn.setCellValueFactory(new PropertyValueFactory<>("attend"));
 
-		dayTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-			if (newSelection != null) {
-				System.out.println("selected day: " + newSelection.getDate());
-			}
-		});
+		dayTableView.setOnMousePressed(new EventHandler<MouseEvent>() {
+		    private String daySelected;
 
+			@Override 
+		    public void handle(MouseEvent event) {
+		        if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+		        	try {
+		        		daySelected = dayTableView.getSelectionModel().getSelectedItem().getDate();
+		        		System.out.println(daySelected);
+						newScene(event, "/application/DayWindow.fxml");
+					} catch (IOException e) {
+						e.printStackTrace();
+					}                   
+		        }
+		    }
+		});
 	}
 
 	//////////////////////////////
@@ -129,7 +143,7 @@ public class DayController {
 
 	@FXML
 	private Button backToOverviewButton;
-	
+
 	@FXML
 	private Label noDayLabel;
 
@@ -153,18 +167,39 @@ public class DayController {
 	}
 
 	//////////////////////////////
+	// day window
+
+	@FXML
+	private Button dayUpdateButton;
+
+	@FXML
+	private TableColumn<?, ?> dayNameColumn;
+
+	@FXML
+	private TableColumn<?, ?> dayAttendingColumn;
+
+	@FXML
+	private TextArea dayNote;
+
+	@FXML
+	void dayUpdateButtonClicked(ActionEvent event) {
+
+	}
+
+	//////////////////////////////
 	// controller methods
 
 	public void setUser(User user) {
 		this.user = user;
 	}
 
-	private void newScene(ActionEvent event, String path) throws IOException {
-		((Node) event.getSource()).getScene().getWindow().hide();
+	private void newScene(Event event, String path) throws IOException {
+		if (event != null)
+			((Node) event.getSource()).getScene().getWindow().hide();
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
 		Parent root = loader.load();
 		KitchenController kitchenController;
-		int x = 400;
+		int x = 400, y = 400;
 
 		switch (path) {
 		case "/application/Login.fxml":
@@ -177,12 +212,14 @@ public class DayController {
 			kitchenController.findUsersKitchens(user);
 			break;
 
+		case "/application/DayWindow.fxml":
+			y = 500;
 		case "/application/DayOverview.fxml":
+			x = 600;
 		case "/application/AddDay.fxml":
 			DayController dayController = loader.getController();
 			dayController.setKitchenName(kitchenName);
 			dayController.setUser(user);
-			x = 500;
 			break;
 
 		case "/application/Budget.fxml":
@@ -194,16 +231,15 @@ public class DayController {
 
 		}
 
-		Scene scene = new Scene(root, x, 400);
+		Scene scene = new Scene(root, x, y);
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		Stage stage = new Stage();
-		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-
-			public void handle(WindowEvent t) {
-				Platform.exit();
-				System.exit(0);
-			}
-		});
+			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+				public void handle(WindowEvent t) {
+					Platform.exit();
+					System.exit(0);
+				}
+			});
 		stage.setScene(scene);
 		stage.setTitle("Dinner Club");
 		stage.show();
@@ -211,7 +247,7 @@ public class DayController {
 
 	private void setKitchenName(String kitchenName) {
 		this.kitchenName = kitchenName;
-		
+
 	}
 
 }
