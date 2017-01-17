@@ -185,6 +185,8 @@ public class User {
 					dataTuple = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
 					exists = dataTuple.getElementAt(Boolean.class, 0);
 
+					kitchens.clear(); // Always clear!
+
 					if (!exists) {
 						userName = t.getElementAt(String.class, ECommand.USERNAME.getValue());
 						feedbackMsg = userName + " was retrieved.";
@@ -207,9 +209,12 @@ public class User {
 						feedbackMsg = userName + " was retrieved.";
 						kitchens.clear();
 						t = dataTuple.getElementAt(Tuple.class, 1).getElementAt(Tuple.class, 1);
-						for (int i = 0; i < kitchens.size(); i++)
-							if (t.getElementAt(String.class, i) != "")
-								kitchens.add(t.getElementAt(String.class, i));
+						for (int i = 0; i < 4; i++) {
+							if (t.getElementAt(String.class, i) == "")
+								break;
+							kitchens.add(t.getElementAt(String.class, i));
+						}
+
 					} else {
 						userName = null;
 						feedbackMsg = "Username not found.";
@@ -240,10 +245,14 @@ public class User {
 					dataTuple = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
 					exists = dataTuple.getElementAt(Boolean.class, 0);
 
-					if (exists) { //
-						kitchens.add(kitchenName);
-						feedbackMsg = "You joined " + kitchenName;
-					} else
+					if (exists)
+						if (kitchens.contains(kitchenName))
+							feedbackMsg = "You are already a member.";
+						else {
+							kitchens.add(kitchenName);
+							feedbackMsg = "You joined " + kitchenName;
+						}
+					else
 						feedbackMsg = kitchenName + " does not exist.";
 
 					System.out.println(userName + " got feedback: " + feedbackMsg);

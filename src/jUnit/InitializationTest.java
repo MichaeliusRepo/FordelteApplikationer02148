@@ -100,8 +100,6 @@ public class InitializationTest {
 	
 	@Test
 	public void massKitchenCreation() throws Exception {
-		System.out.println("---BEGIN---");
-		
 		result = user.addUser(userName);
 		Thread.sleep(milliseconds);
 		assertTrue(user.getFeedbackMsg().contains(userName));
@@ -130,5 +128,43 @@ public class InitializationTest {
 		result = user.createKitchen("Don't Know What You Got ('Till It's Gone)");
 		Thread.sleep(milliseconds);
 		assertFalse(result);
+	}
+	
+	@Test
+	public void joinKitchen() throws Exception {
+		result = user.addUser(userName);
+		Thread.sleep(milliseconds);
+		assertTrue(user.getFeedbackMsg().contains(userName));
+		assertTrue(result);
+		
+		assertFalse(user.joinKitchen(kitchenName));
+		Thread.sleep(milliseconds);
+		
+		assertTrue(user.createKitchen(kitchenName));
+		Thread.sleep(milliseconds);
+		
+		assertFalse(user.joinKitchen(kitchenName));
+		Thread.sleep(milliseconds);
+		
+		user.addUser("Lenny Wolf");
+		Thread.sleep(milliseconds);
+		assertTrue(user.joinKitchen(kitchenName));
+	}
+	
+	@Test
+	public void invisibleKITCHENS() throws Exception {
+		assertTrue(user.addUser(userName));
+		Thread.sleep(milliseconds);
+		
+		assertTrue(user.createKitchen(kitchenName));
+		Thread.sleep(milliseconds);
+		
+		assertTrue(user.addUser("Lenny Wolf"));
+		Thread.sleep(milliseconds);
+		
+		assertTrue(user.getUser(userName));
+		Thread.sleep(milliseconds);
+		
+		assertEquals(user.getKitchenName(0), kitchenName);
 	}
 }
