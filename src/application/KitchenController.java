@@ -137,7 +137,8 @@ public class KitchenController {
     }
     
     private void setRadioButtons(RadioButton kitchen, int i){
-    	if(user.getKitchenName(i) != null){
+    	System.out.println(user.getKitchenName(i));
+    	if(user.getKitchenName(i) != ""){
     		kitchen.setText(user.getKitchenName(i));
     		kitchen.setVisible(true);
     	} else {

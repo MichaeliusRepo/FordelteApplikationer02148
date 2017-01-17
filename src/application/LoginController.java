@@ -83,7 +83,7 @@ public class LoginController {
 	private TextField newUserNameTextField;
 
 	@FXML
-	private TextField kitchenNameTextField;
+	private Label newUserLabel;
 
 	@FXML
 	private Button createNewUserButton;
@@ -99,15 +99,14 @@ public class LoginController {
 	@FXML
 	void createNewUserButtonClicked(ActionEvent event) throws Exception {
 		String username = newUserNameTextField.getText();
-		String kitchenName = kitchenNameTextField.getText();
 		
-		if (!username.equals("") && !kitchenName.equals("") && user.addUser(username)) {
-			System.out.println("new user has been created: "+ username + " and " + kitchenName);
+		if (username.equals("")  ) {
+			newUserLabel.setText("Please enter a username");
+		} else if (user.addUser(username)){
+			newScene(event, "/application/Login.fxml");
 		} else {
-			System.out.println("Remember to insert kitchenName and Username, or a user has not been made.");
+			newUserLabel.setText("Please enter another username, "+username+" already excist");
 		}
-		 
-		newScene(event, "/application/Login.fxml");
 	}
 
 	//////////////////////////////
