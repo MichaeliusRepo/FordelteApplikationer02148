@@ -16,7 +16,7 @@ import org.cmg.jresp.topology.Self;
 
 public class Day {
 
-	private int day, month, year;
+	private int day, month, year, attendees;
 	private String dayName;
 
 	public Day(int day, int month, int year) {
@@ -49,6 +49,7 @@ public class Day {
 
 		@Override
 		protected void doRun() throws Exception {
+			attendees = 0;
 			put(new Tuple("dayCreated"), Self.SELF);
 			while (true) {
 				try {
@@ -84,7 +85,6 @@ public class Day {
 
 				switch (cmd) {
 				case "attendDay":
-					this.attendees = dataTuple.getElementAt(Integer.class, 0);
 					attendDay(userName, attendees);
 					break;
 
