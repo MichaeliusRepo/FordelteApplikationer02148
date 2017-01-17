@@ -230,6 +230,7 @@ public class Day {
 		private void lockDay() {
 			String feedback = "lockDayFeedback";
 			try {
+				System.out.println(totalAttendees);
 				if (queryp(new Template(new ActualTemplateField("locked"))) == null && totalAttendees > 0) {
 					put(new Tuple("locked"), Self.SELF);
 					feedback(feedback, true, dayName + " was locked.", null);
@@ -258,6 +259,7 @@ public class Day {
 						totalAttendees -= t.getElementAt(Integer.class, 2);
 					}
 					totalAttendees += attendees;
+					System.out.println(totalAttendees);
 					feedback(feedback, true, userName + " added with " + attendees + " attendees.", null);
 
 				} catch (Exception e) {
