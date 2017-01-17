@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.DayController">
+   <children>
+      <Button fx:id="logOutButton" layoutX="333.0" layoutY="14.0" mnemonicParsing="false" onAction="#logOutButtonClicked" prefHeight="25.0" prefWidth="65.0" text="Log out" AnchorPane.leftAnchor="500.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0" />
+      <Button fx:id="dayBackButton" layoutX="19.0" layoutY="14.0" mnemonicParsing="false" onAction="#dayBackButtonClicked" prefHeight="25.0" prefWidth="65.0" text="Back" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="500.0" AnchorPane.topAnchor="20.0" />
+      <Button fx:id="budgetButton" layoutX="289.0" layoutY="349.0" mnemonicParsing="false" onAction="#bugdetButtonClicked" prefWidth="84.0" text="Budget" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" />
+      <Button fx:id="dayUpdateButton" layoutX="120.0" layoutY="20.0" mnemonicParsing="false" onAction="#dayUpdateButtonClicked" prefHeight="25.0" prefWidth="170.0" text="Update" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="310.0" AnchorPane.topAnchor="20.0" />
+      <ScrollPane layoutX="20.0" layoutY="69.0" prefHeight="327.0" prefWidth="260.0" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="310.0" AnchorPane.topAnchor="63.0">
+         <content>
+            <TableView prefHeight="470.0" prefWidth="268.0">
+              <columns>
+                <TableColumn fx:id="dayNameColumn" prefWidth="175.0" text="Name" />
+                <TableColumn fx:id="dayAttendingColumn" prefWidth="100.0" text="Attending" />
+              </columns>
+            </TableView>
+         </content>
+      </ScrollPane>
+      <Pane layoutX="300.0" layoutY="335.0" prefHeight="200.0" prefWidth="260.0" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="310.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="335.0">
+         <children>
+            <TextArea fx:id="dayNote" prefHeight="200.0" prefWidth="270.0" />
+         </children>
+      </Pane>
+      <Button layoutX="528.0" layoutY="555.0" mnemonicParsing="false" text="Set Note" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0" />
+      <GridPane layoutX="310.0" layoutY="63.0" AnchorPane.bottomAnchor="285.0" AnchorPane.leftAnchor="310.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="63.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="129.5" minWidth="10.0" prefWidth="91.5" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="179.5" minWidth="10.0" prefWidth="178.5" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Date:" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Chefs:" GridPane.rowIndex="1" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Shopper:" GridPane.rowIndex="2" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Total Price:" GridPane.rowIndex="3" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Price per Person:" GridPane.rowIndex="4" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Notes:" GridPane.rowIndex="5" />
+            <Label text="Label" GridPane.columnIndex="1">
+               <GridPane.margin>
+                  <Insets left="5.0" />
+               </GridPane.margin>
+            </Label>
+            <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="5.0" />
+               </GridPane.margin>
+            </Label>
+            <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets left="5.0" />
+               </GridPane.margin>
+            </Label>
+            <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <GridPane.margin>
+                  <Insets left="5.0" />
+               </GridPane.margin>
+            </Label>
+            <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="4">
+               <padding>
+                  <Insets left="5.0" />
+               </padding>
+            </Label>
+         </children>
+      </GridPane>
+      <Button layoutX="310.0" layoutY="20.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="170.0" text="Set Chefs" AnchorPane.leftAnchor="310.0" AnchorPane.rightAnchor="120.0" />
+   </children>
+</AnchorPane>
