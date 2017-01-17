@@ -103,10 +103,9 @@ public class DayController {
 		this.kitchenName = kitchenName;
 		titleLabel.setText(kitchenName);
 		DayTable dayTable = new DayTable(user, kitchenName, 0);
-
+		System.out.println("previous "+previous);
 		for(int i = 0; i<dayTable.daysSize();i++){
 			if(previous){
-				System.out.println("previous "+dayTable.getDate());
 				dayTableView.getItems().add(new DayTable(user, kitchenName, i));
 			} else if(Calendar.getInstance().after(dayTable.getDate())) {
 				System.out.println("NOT previous "+dayTable.getDate()+" "+Calendar.getInstance().after(dayTable.getDate()));
@@ -235,6 +234,7 @@ public class DayController {
 			break;
 			
 		case "/application/DayWindow.fxml":
+			x = 600;
 			y = 500;
 		case "/application/AddDay.fxml":
 			dayController = loader.getController();

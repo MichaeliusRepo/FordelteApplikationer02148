@@ -16,7 +16,7 @@ import org.cmg.jresp.topology.Self;
 
 public class Day {
 
-	private int day, month, year, totalAttendees;
+	private int day, month, year, totalAttendees, price;
 	private String dayName;
 
 	public Day(int day, int month, int year) {
@@ -50,6 +50,7 @@ public class Day {
 		@Override
 		protected void doRun() throws Exception {
 			put(new Tuple("dayCreated"), Self.SELF);
+			put(new Tuple("price", price), Self.SELF);
 			while (true) {
 				try {
 					Tuple t = getp(cmdTemp);
@@ -65,7 +66,7 @@ public class Day {
 	private class DayAgent extends Agent {
 
 		private String cmd, userName, buyer, kitchenName;
-		private int attendees, price;
+		private int attendees;
 		private Tuple dataTuple;
 		private ArrayList<String> attendeesList;
 
@@ -108,7 +109,7 @@ public class Day {
 					break;
 
 				case "setPrice":
-					this.price = dataTuple.getElementAt(Integer.class, 0);
+					price = dataTuple.getElementAt(Integer.class, 0);
 					setPrice(price);
 					break;
 
@@ -170,7 +171,7 @@ public class Day {
 			String feedback = "getPriceFeedback";
 			Tuple t = queryp(new Template(new ActualTemplateField("price"), new FormalTemplateField(Integer.class)));
 			int price = t.getElementAt(Integer.class, 1);
-			feedback(feedback, true, "Currently the price is at " + price, null);
+			feedback(feedback, true, "" + price, null);
 
 		}
 
