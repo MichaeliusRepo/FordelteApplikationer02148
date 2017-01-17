@@ -229,7 +229,7 @@ public class DayController {
 			try {
 				dayController = loader.getController();
 				dayController.setUser(user);
-				dayController.updateTable(kitchenName, false);
+				dayController.updateTable(kitchenName, true);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

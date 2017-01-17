@@ -3,6 +3,9 @@ package application;
 import java.util.Calendar;
 import java.util.LinkedList;
 import classes.User;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.Button;
 
 public class DayTable {
 	private String date, chef, total, attend, kitchenName;
@@ -46,14 +49,52 @@ public class DayTable {
 		return user.getFeedbackMsg();
 	}
 
-	public String getAttend() throws InterruptedException {
-		user.setFeedbackMsg(null);
+	public Button getAttend() throws InterruptedException {
+		Button button = new Button();
+		user.command("getAttendees", kitchenName, day, month, year, 0);
+		while(user.getFeedbackMsg() == null) {
+			Thread.sleep(10);
+		}
+		System.out.println(user.getFeedbackMsg());
+		
+		if(user.getFeedbackMsg().contains(user.getUserName())){
+			button.setText("Unattend");
+		} else {
+			button.setText("Attend");
+		}
+		
+		button.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+            	if(button.getText().equals("Attend")){
+            		user.command("attendDay", kitchenName, day, month, year, 1);
+            		button.setText("Unattend");
+            	} else {
+            		user.command("unattendDay", kitchenName, day, month, year, 0);
+            		button.setText("Attend");
+            	}
+                
+        		while(user.getFeedbackMsg() == null) {
+        			try {
+						Thread.sleep(10);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+        		}
+        		System.out.println("attendens: "+user.getFeedbackMsg());
+            }
+        });
+			
+		/*user.setFeedbackMsg(null);
 		user.command("getAttendees", kitchenName, day, month, year, 0);
 		while(user.getFeedbackMsg() == null) {
 			Thread.sleep(10);
 		}
 		System.out.println(user.getFeedbackMsg());
 		return user.getFeedbackMsg();
+		*/
+		return button;
 	}
 
 	
