@@ -118,7 +118,7 @@ public class Server {
 
 					case "joinKitchen":
 						getObject = new Template(new ActualTemplateField(kitchenName),
-								new FormalTemplateField(Tuple.class));
+								new FormalTemplateField(Kitchen.class));
 						exists = (queryp(getObject) != null);
 
 						put(new Tuple(command, userName, kitchenName, true, new Tuple(exists)), Self.SELF);
