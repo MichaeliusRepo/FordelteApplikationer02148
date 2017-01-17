@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.DayController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.BudgetController">
    <children>
       <Label fx:id="titleLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="79.0" layoutY="85.0" text="Budget" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
          <font>
@@ -22,7 +22,10 @@
             <Font size="10.0" />
          </font>
       </Button>
-      <Button fx:id="budgetButton" layoutX="289.0" layoutY="349.0" mnemonicParsing="false" onAction="#bugdetButtonClicked" text="Budget" AnchorPane.rightAnchor="55.0" />
-      <Button fx:id="updateButton" layoutX="165.0" layoutY="11.0" mnemonicParsing="false" onAction="#updateButtonClicked" text="Update" AnchorPane.leftAnchor="215.0" AnchorPane.rightAnchor="214.0" />
+      <Label fx:id="balanceLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="233.0" layoutY="200.0" text="Price" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0">
+         <font>
+            <Font size="33.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

@@ -49,26 +49,25 @@ public class Server {
 				try {
 					t = get(commandTuples, Self.SELF);
 					String command = t.getElementAt(String.class, ECommand.COMMAND.getValue());
+					String userName = t.getElementAt(String.class, ECommand.USERNAME.getValue());
+					String kitchenName = t.getElementAt(String.class, ECommand.KITCHEN.getValue());
 					tupleData = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
-					
+
+					Template getObject;
+					boolean exists;
+
 					/*
 					 * Perhaps we should implement switch cases here, and create
 					 * methods for each case, instead of an if statement?
 					 */
-					
-					if (command.equals("addUser")) {
-						put(new Tuple(t.getElementAt(String.class, ECommand.USERNAME.getValue()),
-								t.getElementAt(String.class, ECommand.KITCHEN.getValue())), Self.SELF);
-						String kitchenName = t.getElementAt(String.class, ECommand.KITCHEN.getValue());
-						Template kitchenCheck = new Template(
-								new FormalTemplateField(String.class),
-								new ActualTemplateField(kitchenName)
-								);
-						if (queryp(kitchenCheck) != null)
-							new Kitchen(kitchenName);
-					}
-						
-					else {
+
+					// Perhaps you should make your own code work first.
+					// Then we'll talk business.
+
+					System.out.println(command);
+
+					switch (command) {
+					default:
 						System.out.println(
 								"Server Monitor was requested to " + t.getElementAt(ECommand.COMMAND.getValue()) + ", "
 										+ tupleData.getElementAt(Integer.class, EDayData.DAY.getValue()) + "/"
@@ -81,6 +80,52 @@ public class Server {
 						 * malicious
 						 */
 						exec(new ServerAgent(command, t));
+						break;
+
+					case "addUser":
+						getObject = new Template(new ActualTemplateField(userName),
+								new FormalTemplateField(Tuple.class));
+						exists = (queryp(getObject) != null);
+
+						if (!exists) // Put userData into Server if
+										// nonexistent
+							put(new Tuple(userName, new Tuple("","","","")), Self.SELF);
+
+						// Feedback for user if creation was successful.
+						put(new Tuple(command, userName, "", true, new Tuple(exists)), Self.SELF);
+						break;
+
+					case "getUser":
+						getObject = new Template(new ActualTemplateField(userName),
+								new FormalTemplateField(Tuple.class));
+						Tuple result = queryp(getObject);
+
+						exists = (result != null);
+
+						// Feedback for user if creation was successful.
+						put(new Tuple(command, userName, "", true, new Tuple(exists, result)), Self.SELF);
+						break;
+
+					case "createKitchen":
+						getObject = new Template(new ActualTemplateField(kitchenName),
+								new FormalTemplateField(Tuple.class));
+						exists = (queryp(getObject) != null);
+
+						if (!exists) // Put userData into Server if
+							// nonexistent
+							put(new Tuple(kitchenName, new Kitchen(kitchenName)), Self.SELF);
+						// Feedback for user if creation was successful.
+						put(new Tuple(command, userName, kitchenName, true, new Tuple(exists)), Self.SELF);
+						break;
+
+					case "joinKitchen":
+						getObject = new Template(new ActualTemplateField(kitchenName),
+								new FormalTemplateField(Tuple.class));
+						exists = (queryp(getObject) != null);
+						
+						if (exists)
+						
+						break;
 					}
 
 				} catch (Exception e) {
