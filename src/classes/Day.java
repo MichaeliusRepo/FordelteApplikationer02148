@@ -230,11 +230,13 @@ public class Day {
 		private void lockDay() {
 			String feedback = "lockDayFeedback";
 			try {
-				if (queryp(new Template(new ActualTemplateField("locked"))) == null) {
+				if (queryp(new Template(new ActualTemplateField("locked"))) == null && attendees > 0) {
 					put(new Tuple("locked"), Self.SELF);
 					feedback(feedback, true, dayName + " was locked.", null);
+				} else if(queryp(new Template(new ActualTemplateField("locked"))) != null && attendees > 0){
+					feedback(feedback, false, dayName + " was already locked.", null);
 				} else {
-					feedback(feedback, true, dayName + " was already locked.", null);
+					feedback(feedback, false, dayName + " has no attendees.", null);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
