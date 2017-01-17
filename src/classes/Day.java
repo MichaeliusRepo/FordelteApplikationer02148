@@ -65,7 +65,6 @@ public class Day {
 	private class DayAgent extends Agent {
 
 		private String cmd, userName, buyer, kitchenName;
-		@SuppressWarnings("unused")
 		private int attendees, price;
 		private Tuple dataTuple;
 		private ArrayList<String> attendeesList;
