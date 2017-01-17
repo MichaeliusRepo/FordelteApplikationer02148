@@ -16,7 +16,7 @@ import org.cmg.jresp.topology.Self;
 
 public class Day {
 
-	private int day, month, year, attendees;
+	private int day, month, year;
 	private String dayName;
 
 	public Day(int day, int month, int year) {
@@ -49,7 +49,6 @@ public class Day {
 
 		@Override
 		protected void doRun() throws Exception {
-			attendees = 0;
 			put(new Tuple("dayCreated"), Self.SELF);
 			while (true) {
 				try {
@@ -85,6 +84,7 @@ public class Day {
 
 				switch (cmd) {
 				case "attendDay":
+					this.attendees = dataTuple.getElementAt(Integer.class, 0);
 					attendDay(userName, attendees);
 					break;
 
@@ -230,10 +230,10 @@ public class Day {
 		private void lockDay() {
 			String feedback = "lockDayFeedback";
 			try {
-				if (queryp(new Template(new ActualTemplateField("locked"))) == null && attendees > 0) {
+				if (queryp(new Template(new ActualTemplateField("locked"))) == null && totalAttendees > 0) {
 					put(new Tuple("locked"), Self.SELF);
 					feedback(feedback, true, dayName + " was locked.", null);
-				} else if(queryp(new Template(new ActualTemplateField("locked"))) != null && attendees > 0){
+				} else if(queryp(new Template(new ActualTemplateField("locked"))) != null && totalAttendees > 0){
 					feedback(feedback, false, dayName + " was already locked.", null);
 				} else {
 					feedback(feedback, false, dayName + " has no attendees.", null);
