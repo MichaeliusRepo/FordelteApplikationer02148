@@ -46,6 +46,8 @@ public class User {
 		userSpace.start();
 		getUser(userName);
 	}
+	
+	
 
 	public LinkedList<String> getDays() {
 		return returnData;

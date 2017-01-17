@@ -26,6 +26,7 @@ public class KitchenController {
 	private User user;
 	
 	
+	
     ////////////////////////
     // Select kitchen
 	
