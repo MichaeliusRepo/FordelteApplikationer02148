@@ -26,7 +26,7 @@ public class Server {
 
 	private static SocketPort serverPort;
 	public final static VirtualPort vp = new VirtualPort(1337);
-	private Node server = new Node("Server", new TupleSpace());
+	private static Node server = new Node("Server", new TupleSpace());
 	private Tuple userTuple = null;
 
 	public Server() throws UnknownHostException, IOException {

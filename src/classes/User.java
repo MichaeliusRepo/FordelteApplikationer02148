@@ -25,8 +25,8 @@ import org.cmg.jresp.knowledge.Template;
 
 public class User {
 	private String userName = "";
+	//private static SocketPort userPort;
 	private Node userSpace;
-	private PointToPoint p = new PointToPoint("Server", new SocketPortAddress("10.16.129.214",8080));
 	private String command;
 	private String feedbackMsg = null;
 
@@ -39,7 +39,8 @@ public class User {
 
 	public User() throws UnknownHostException, IOException {
 		userSpace = new Node(userName, new TupleSpace());
-
+//		userPort = new SocketPort(InetAddress.getLocalHost().getHostAddress(),8080);
+//		userSpace.addPort(userPort);
 		try {
 			userSpace.addPort(new SocketPort(InetAddress.getLocalHost().getHostAddress(),8080));
 		} catch (Exception e) {
@@ -52,6 +53,8 @@ public class User {
 	public User(String userName) throws Exception {
 		this.userName = userName;
 		userSpace = new Node(userName, new TupleSpace());
+//		userPort = new SocketPort(InetAddress.getLocalHost().getHostAddress(),8080);
+//		userSpace.addPort(userPort);
 		try {
 			userSpace.addPort(new SocketPort(InetAddress.getLocalHost().getHostAddress(),8080));
 		} catch (Exception e) {
@@ -151,6 +154,7 @@ public class User {
 
 	private class UserAgent extends Agent {
 
+		public PointToPoint p = new PointToPoint("Server", new SocketPortAddress("10.16.107",8080));
 		private Tuple t;
 
 		private UserAgent(String who, Tuple t) {
@@ -287,6 +291,7 @@ public class User {
 
 			} catch (Exception e) {
 				e.printStackTrace();
+				System.out.println("DER FUCKING NOGET GLAT HER ");
 			}
 
 		}
