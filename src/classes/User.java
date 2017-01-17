@@ -26,7 +26,7 @@ import org.cmg.jresp.knowledge.Template;
 public class User {
 	private String userName = "";
 	private Node userSpace;
-	private SocketPort userPort;
+	private static SocketPort userPort;
 	private PointToPoint p = new PointToPoint("Server", new SocketPortAddress("10.16.129.214",8080));
 	private String command;
 	private String feedbackMsg = null;
