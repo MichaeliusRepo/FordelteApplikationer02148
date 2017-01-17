@@ -47,7 +47,8 @@ public class User {
 		getUser(userName);
 	}
 
-	public LinkedList<String> getDays() {
+	public LinkedList<String> getDays(String kitchenName) {
+		command("getDays", kitchenName,0,0,0,0 );
 		return returnData;
 	}
 

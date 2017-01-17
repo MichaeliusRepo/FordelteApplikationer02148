@@ -148,7 +148,8 @@ public class InitializationTest {
 		
 		user.addUser("Lenny Wolf");
 		Thread.sleep(milliseconds);
-		assertTrue(user.joinKitchen(kitchenName));
+		result = user.joinKitchen(kitchenName);
+		assertTrue(result);
 	}
 	
 	@Test
@@ -167,4 +168,5 @@ public class InitializationTest {
 		
 		assertEquals(user.getKitchenName(0), kitchenName);
 	}
+	
 }
