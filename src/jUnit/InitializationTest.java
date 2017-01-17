@@ -169,4 +169,27 @@ public class InitializationTest {
 		assertEquals(user.getKitchenName(0), kitchenName);
 	}
 	
+	@Test
+	public void getThemDays() throws Exception {
+		user.addUser(userName);
+		Thread.sleep(milliseconds);
+		
+		user.createKitchen(kitchenName);
+		Thread.sleep(milliseconds);
+		
+		user.command("addDay", kitchenName, 7, 8, 9, 0);
+		Thread.sleep(milliseconds);
+		user.command("addDay", kitchenName, 4, 5, 6, 0);
+		Thread.sleep(milliseconds);
+		user.command("addDay", kitchenName, 1, 2, 3, 0);
+		Thread.sleep(milliseconds);
+		
+		assertNotEquals(null, user.getDays(kitchenName));
+		Thread.sleep(milliseconds);
+		
+		assertNotEquals(null, user.getDays(kitchenName));
+		Thread.sleep(milliseconds);
+		
+	}
+	
 }

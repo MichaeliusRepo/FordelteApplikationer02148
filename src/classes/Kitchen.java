@@ -94,6 +94,7 @@ public class Kitchen {
 
 			case "getDays":
 				getDays(cmd, data);
+				break;
 
 			case "attendDay":
 			case "unattendDay":
