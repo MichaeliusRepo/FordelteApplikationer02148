@@ -170,8 +170,8 @@ public class User {
 					t = get(feedback, p);
 					dataTuple = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
 
-					if (t.getElementAt(String.class, ECommand.COMMAND.getValue()).equals("getDays")
-							|| t.getElementAt(String.class, ECommand.COMMAND.getValue()).equals("getAttendees")) {
+					if (t.getElementAt(String.class, ECommand.COMMAND.getValue()).contains("getDays")
+							|| t.getElementAt(String.class, ECommand.COMMAND.getValue()).contains("getAttendees")) {
 						@SuppressWarnings("unchecked")
 						LinkedList<String> list = dataTuple.getElementAt(LinkedList.class, 2);
 						returnData = list;
