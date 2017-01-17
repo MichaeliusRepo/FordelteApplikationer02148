@@ -28,19 +28,32 @@ public class DayTable {
 		return days.get(i);
 	}
 
-	public String getChef() {
+	public String getChef() throws InterruptedException {
+		user.setFeedbackMsg(null);
 		user.command("getChef", kitchenName, day, month, year, 0);
-		return "getting chef"+i;
+		while(user.getFeedbackMsg() == null) {
+			Thread.sleep(10);
+		}
+		return user.getFeedbackMsg();
 	}
 
-	public String getTotal() {
+	public String getTotal() throws InterruptedException {
+		user.setFeedbackMsg(null);
 		user.command("getPrice", kitchenName, day, month, year, 0);
-		return "getting total"+i;
+		while(user.getFeedbackMsg() == null) {
+			Thread.sleep(10);
+		}
+		return user.getFeedbackMsg();
 	}
 
-	public String getAttend() {
+	public String getAttend() throws InterruptedException {
+		user.setFeedbackMsg(null);
 		user.command("getAttendees", kitchenName, day, month, year, 0);
-		return "getting attend"+i;
+		while(user.getFeedbackMsg() == null) {
+			Thread.sleep(10);
+		}
+		System.out.println(user.getFeedbackMsg());
+		return user.getFeedbackMsg();
 	}
 
 	

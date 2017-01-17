@@ -88,30 +88,33 @@ public class DayController {
 
 	@FXML
 	void viewPreviousCheckBoxClicked(ActionEvent event) throws Exception {
-		System.out.println("box "+viewPreviousCheckBox.isSelected());
-		updateTabel(kitchenName, viewPreviousCheckBox.isSelected());
+		System.out.println("box " + viewPreviousCheckBox.isSelected());
+		updateTable(kitchenName, viewPreviousCheckBox.isSelected());
 	}
 
 	@FXML
 	void updateButtonClicked(ActionEvent event) throws Exception {
-		updateTabel(kitchenName, false);
+		updateTable(kitchenName, true);
 
 	}
 
-	public void updateTabel(String kitchenName, boolean previous) throws Exception {
+	public void updateTable(String kitchenName, boolean previous) throws Exception {
 		dayTableView.getItems().clear();
+		totalTableColumn.setStyle("-fx-alignment: CENTER;");
+		attendTableColumn.setStyle("-fx-alignment: CENTER;");
 		this.kitchenName = kitchenName;
 		titleLabel.setText(kitchenName);
 		DayTable dayTable = new DayTable(user, kitchenName, 0);
-		System.out.println("previous "+previous);
-		for(int i = 0; i<dayTable.daysSize();i++){
-			if(previous){
+		System.out.println("previous " + previous);
+		for (int i = 0; i < dayTable.daysSize(); i++) {
+			if (previous) {
 				dayTableView.getItems().add(new DayTable(user, kitchenName, i));
-			} else if(Calendar.getInstance().after(dayTable.getDate())) {
-				System.out.println("NOT previous "+dayTable.getDate()+" "+Calendar.getInstance().after(dayTable.getDate()));
+			} else if (Calendar.getInstance().after(dayTable.getDate())) {
+				System.out.println(
+						"NOT previous " + dayTable.getDate() + " " + Calendar.getInstance().after(dayTable.getDate()));
 				dayTableView.getItems().add(new DayTable(user, kitchenName, i));
 			}
-				
+			System.out.println(Calendar.getInstance().after(dayTable.getDate()));
 		}
 
 		dateTableColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
@@ -120,20 +123,20 @@ public class DayController {
 		attendTableColumn.setCellValueFactory(new PropertyValueFactory<>("attend"));
 
 		dayTableView.setOnMousePressed(new EventHandler<MouseEvent>() {
-		    private String daySelected;
+			private String daySelected;
 
-			@Override 
-		    public void handle(MouseEvent event) {
-		        if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
-		        	try {
-		        		daySelected = dayTableView.getSelectionModel().getSelectedItem().getDate();
-		        		System.out.println(daySelected);
+			@Override
+			public void handle(MouseEvent event) {
+				if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+					try {
+						daySelected = dayTableView.getSelectionModel().getSelectedItem().getDate();
+						System.out.println(daySelected);
 						newScene(event, "/application/DayWindow.fxml");
 					} catch (IOException e) {
 						e.printStackTrace();
-					}                   
-		        }
-		    }
+					}
+				}
+			}
 		});
 	}
 
@@ -159,14 +162,14 @@ public class DayController {
 
 	@FXML
 	void createDayButtonClicked(ActionEvent event) throws IOException {
-		
+
 		if (newDateDatePicker.getValue() != null) {
 			int day = newDateDatePicker.getValue().getDayOfMonth();
 			int month = newDateDatePicker.getValue().getMonthValue();
 			int year = newDateDatePicker.getValue().getYear();
 			System.out.println("Creating the day: " + newDateDatePicker.getValue().toString());
 			user.command("addDay", kitchenName, day, month, year, 0);
-			System.out.println("in add day: "+ user.getFeedbackMsg());
+			System.out.println("in add day: " + user.getFeedbackMsg());
 			newScene(event, "/application/DayOverview.fxml");
 		} else {
 			noDayLabel.setText("  Insert a date");
@@ -209,7 +212,6 @@ public class DayController {
 		DayController dayController;
 		int x = 400, y = 400;
 
-		
 		switch (path) {
 		case "/application/Login.fxml":
 			LoginController loginController = loader.getController();
@@ -227,12 +229,12 @@ public class DayController {
 			try {
 				dayController = loader.getController();
 				dayController.setUser(user);
-				dayController.updateTabel(kitchenName, false);
+				dayController.updateTable(kitchenName, false);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			break;
-			
+
 		case "/application/DayWindow.fxml":
 			x = 600;
 			y = 500;
@@ -254,14 +256,16 @@ public class DayController {
 		Scene scene = new Scene(root, x, y);
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		Stage stage = new Stage();
-			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-				public void handle(WindowEvent t) {
-					Platform.exit();
-					System.exit(0);
-				}
-			});
+		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+			public void handle(WindowEvent t) {
+				Platform.exit();
+				System.exit(0);
+			}
+		});
 		stage.setScene(scene);
 		stage.setTitle("Dinner Club");
+		if (path.equals("/application/DayWindow.fxml"))
+			stage.setResizable(false);
 		stage.show();
 	}
 

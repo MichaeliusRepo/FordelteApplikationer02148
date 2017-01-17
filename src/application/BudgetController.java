@@ -53,7 +53,7 @@ public class BudgetController {
     }
     
     public void setBalance(){
-    	
+    	user.setFeedbackMsg(null);
     	user.command("getBalance", kitchenName, 0, 0, 0, 0);
     	if(user.getFeedbackMsg() != null){
     		
@@ -86,7 +86,7 @@ public class BudgetController {
 			DayController dayController = loader.getController();
 			dayController.setUser(user);
 			try {
-				dayController.updateTabel(kitchenName, false);
+				dayController.updateTable(kitchenName, false);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

@@ -12,6 +12,11 @@
             <Font size="30.0" />
          </font>
       </Label>
+      <Label fx:id="titleLabel1" alignment="CENTER" contentDisplay="CENTER" layoutX="170.0" layoutY="135.0" text="Your balance is currently at:" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Label>
       <Button fx:id="logOutButton" layoutX="333.0" layoutY="14.0" mnemonicParsing="false" onAction="#logOutButtonClicked" prefHeight="18.0" prefWidth="53.0" text="Log out" AnchorPane.rightAnchor="20.0">
          <font>
             <Font size="10.0" />

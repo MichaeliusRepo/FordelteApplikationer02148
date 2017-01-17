@@ -49,7 +49,7 @@ public class User {
 
 	public LinkedList<String> getDays(String kitchenName) throws Exception {
 		feedbackMsg = null;
-		command("getDays", kitchenName,0,0,0,0 );
+		command("getDays", kitchenName, 0, 0, 0, 0);
 		while (feedbackMsg == null) {
 			Thread.sleep(10);
 		} // Wait for Server to return proper feedback.
@@ -121,6 +121,7 @@ public class User {
 		if (result)
 			updateUser(); // WARNING: Method doesn't wait for this to finish!
 		return result;
+
 	}
 
 	private void updateUser() throws Exception {
@@ -131,6 +132,7 @@ public class User {
 		Tuple data = new Tuple(userName, new Tuple(l.get(0), l.get(1), l.get(2), l.get(3)));
 		Tuple t = new Tuple("updateUser", userName, "", false, data);
 		userSpace.addAgent(new UserAgent(command, t));
+
 	}
 
 	private class UserAgent extends Agent {
@@ -179,7 +181,7 @@ public class User {
 							System.out.print(str + ", ");
 						System.out.println();
 					}
-					
+
 					feedbackMsg = dataTuple.getElementAt(String.class, 1);
 					System.out.println(userName + " got feedback: " + feedbackMsg);
 					break;
@@ -279,6 +281,10 @@ public class User {
 
 	public String getFeedbackMsg() {
 		return feedbackMsg;
+	}
+	
+	public void setFeedbackMsg(String feedback) {
+		feedbackMsg = feedback;
 	}
 
 	public String getUserName() {
