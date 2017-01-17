@@ -26,11 +26,6 @@ import org.cmg.jresp.knowledge.Template;
 public class User {
 	private String userName = "";
 	private Node userSpace;
-<<<<<<< HEAD
-	//private SocketPort userport;
-=======
-	private static SocketPort userPort;
->>>>>>> fa57aad4110341463608c90848c1ed580da16d54
 	private PointToPoint p = new PointToPoint("Server", new SocketPortAddress("10.16.129.214",8080));
 	private String command;
 	private String feedbackMsg = null;
@@ -44,32 +39,24 @@ public class User {
 
 	public User() throws UnknownHostException, IOException {
 		userSpace = new Node(userName, new TupleSpace());
-<<<<<<< HEAD
+
 		try {
 			userSpace.addPort(new SocketPort(InetAddress.getLocalHost().getHostAddress(),8080));
 		} catch (Exception e) {
 			System.out.println("Logout noget med port exception");
 		}
-=======
-		userPort = new SocketPort(InetAddress.getLocalHost().getHostAddress(),8080);
-		userSpace.addPort(userPort);
->>>>>>> fa57aad4110341463608c90848c1ed580da16d54
+
 		userSpace.start();
 	}
 
 	public User(String userName) throws Exception {
 		this.userName = userName;
 		userSpace = new Node(userName, new TupleSpace());
-<<<<<<< HEAD
 		try {
 			userSpace.addPort(new SocketPort(InetAddress.getLocalHost().getHostAddress(),8080));
 		} catch (Exception e) {
 			System.out.println("Logout noget med port exception");
 		}
-=======
-		userPort = new SocketPort(InetAddress.getLocalHost().getHostAddress(),8080);
-		userSpace.addPort(userPort);
->>>>>>> fa57aad4110341463608c90848c1ed580da16d54
 		userSpace.start();
 		getUser(userName);
 	}
