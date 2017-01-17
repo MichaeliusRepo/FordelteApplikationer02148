@@ -64,7 +64,7 @@ public class Main {
 
 				switch (dayCmd) {
 				case "attendDay":
-					System.out.print("Please enter how many guest you want to bring: (e.g. 0) ");
+					System.out.print("How many people will you bring? (including yourself) ");
 					int guest = Integer.parseInt(in.nextLine());
 					user.command(dayCmd, str, day, month, year, guest);
 					break;

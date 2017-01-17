@@ -177,6 +177,7 @@ public class User {
 						returnData = list;
 						for (String str : returnData)
 							System.out.print(str + ", ");
+						System.out.println();
 					}
 					
 					feedbackMsg = dataTuple.getElementAt(String.class, 1);
