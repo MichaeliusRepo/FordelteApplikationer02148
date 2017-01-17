@@ -75,7 +75,6 @@ public class User {
 		while (feedbackMsg == null) {
 			Thread.sleep(10);
 		} // Wait for Server to return proper feedback.
-		System.out.println(feedbackMsg.contains("was"));
 		return (feedbackMsg.contains(userName));
 	}
 
@@ -93,12 +92,40 @@ public class User {
 			Thread.sleep(10);
 		} // Wait for Server to return proper feedback.
 
-		return (feedbackMsg.contains("was created"));
+		boolean result = feedbackMsg.contains("was created");
+		if (result)
+			updateUser(); // WARNING: Method doesn't wait for this to finish!
+		return result;
 	}
 
 	public boolean joinKitchen(String kitchenName) throws Exception {
-		// TODO
-		return true;
+		feedbackMsg = null;
+		if (kitchens.size() == 4) {
+			feedbackMsg = "You may only be a member of up to 4 kitchens.";
+			System.out.println(userName + " got feedback: " + feedbackMsg);
+			return false;
+		}
+
+		Tuple t = new Tuple("joinKitchen", userName, kitchenName, false, new Tuple());
+		userSpace.addAgent(new UserAgent(command, t));
+		while (feedbackMsg == null) {
+			Thread.sleep(10);
+		} // Wait for Server to return proper feedback.
+
+		boolean result = feedbackMsg.contains("joined");
+		if (result)
+			updateUser(); // WARNING: Method doesn't wait for this to finish!
+		return result;
+	}
+
+	private void updateUser() throws Exception {
+		ArrayList<String> l = new ArrayList<String>(kitchens);
+		while (l.size() != 4)
+			l.add("");
+
+		Tuple data = new Tuple(userName, new Tuple(l.get(0), l.get(1), l.get(2), l.get(3)));
+		Tuple t = new Tuple("updateUser", userName, "", false, data);
+		userSpace.addAgent(new UserAgent(command, t));
 	}
 
 	private class UserAgent extends Agent {
@@ -213,13 +240,18 @@ public class User {
 					dataTuple = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
 					exists = dataTuple.getElementAt(Boolean.class, 0);
 
-					if (!exists) { // if doesn't exist, create
+					if (exists) { //
 						kitchens.add(kitchenName);
-						feedbackMsg = kitchenName + " was created.";
+						feedbackMsg = "You joined " + kitchenName;
 					} else
-						feedbackMsg = kitchenName + " already exists.";
+						feedbackMsg = kitchenName + " does not exist.";
 
 					System.out.println(userName + " got feedback: " + feedbackMsg);
+					break;
+
+				case "updateUser":
+					put(t, p);
+
 					break;
 				}
 

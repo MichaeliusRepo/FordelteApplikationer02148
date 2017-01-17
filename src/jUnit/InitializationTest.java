@@ -100,14 +100,35 @@ public class InitializationTest {
 	
 	@Test
 	public void massKitchenCreation() throws Exception {
+		System.out.println("---BEGIN---");
+		
 		result = user.addUser(userName);
 		Thread.sleep(milliseconds);
 		assertTrue(user.getFeedbackMsg().contains(userName));
 		assertTrue(result);
 		
-		user.createKitchen(kitchenName);
+		result = user.createKitchen(kitchenName);
 		Thread.sleep(milliseconds);
 		assertTrue(result);
 		
+		result = user.createKitchen(kitchenName);
+		Thread.sleep(milliseconds);
+		assertFalse(result);
+		
+		result = user.createKitchen("Get It On");
+		Thread.sleep(milliseconds);
+		assertTrue(result);
+		
+		result = user.createKitchen("What Love Can Be");
+		Thread.sleep(milliseconds);
+		assertTrue(result);
+		
+		result = user.createKitchen("I Don't Wanna Miss A Thing");
+		Thread.sleep(milliseconds);
+		assertTrue(result);
+		
+		result = user.createKitchen("Don't Know What You Got ('Till It's Gone)");
+		Thread.sleep(milliseconds);
+		assertFalse(result);
 	}
 }

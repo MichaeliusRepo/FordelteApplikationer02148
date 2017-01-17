@@ -64,8 +64,6 @@ public class Server {
 					// Perhaps you should make your own code work first.
 					// Then we'll talk business.
 
-					System.out.println(command);
-
 					switch (command) {
 					default:
 						System.out.println(
@@ -89,7 +87,7 @@ public class Server {
 
 						if (!exists) // Put userData into Server if
 										// nonexistent
-							put(new Tuple(userName, new Tuple("","","","")), Self.SELF);
+							put(new Tuple(userName, new Tuple("", "", "", "")), Self.SELF);
 
 						// Feedback for user if creation was successful.
 						put(new Tuple(command, userName, "", true, new Tuple(exists)), Self.SELF);
@@ -111,9 +109,9 @@ public class Server {
 								new FormalTemplateField(Kitchen.class));
 						exists = (queryp(getObject) != null);
 
-						if (!exists) // Put userData into Server if
-							// nonexistent
+						if (!exists) // put data in
 							put(new Tuple(kitchenName, new Kitchen(kitchenName)), Self.SELF);
+
 						// Feedback for user if creation was successful.
 						put(new Tuple(command, userName, kitchenName, true, new Tuple(exists)), Self.SELF);
 						break;
@@ -122,10 +120,16 @@ public class Server {
 						getObject = new Template(new ActualTemplateField(kitchenName),
 								new FormalTemplateField(Tuple.class));
 						exists = (queryp(getObject) != null);
-						
-						if (exists)
-						
+
+						put(new Tuple(command, userName, kitchenName, true, new Tuple(exists)), Self.SELF);
 						break;
+
+					case "updateUser":
+						getObject = new Template(new ActualTemplateField(userName),
+								new FormalTemplateField(Tuple.class));
+						get(getObject, Self.SELF); // Remove old data
+						put(tupleData, Self.SELF); // Insert new data
+
 					}
 
 				} catch (Exception e) {
