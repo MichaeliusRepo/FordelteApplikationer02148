@@ -66,15 +66,48 @@ public class InitializationTest {
 		result = user.addUser(userName);
 		Thread.sleep(milliseconds);
 		
-		// get user successfully
 		result = user.getUser(userName);
 		Thread.sleep(milliseconds);
 		assertTrue(result);
 		assertTrue(user.getFeedbackMsg().contains(userName));
+
+		// Test that two users can log in.
+		String userName2 = "Lenny Wolf";
+		result = user.addUser(userName2);
+		Thread.sleep(milliseconds);
+		
+		result = user.getUser(userName2);
+		Thread.sleep(milliseconds);
+		assertTrue(result);
+		assertTrue(user.getFeedbackMsg().contains(userName2));	
+		
+		// test alternating between usernames.
+		result = user.getUser(userName);
+		Thread.sleep(milliseconds);
+		assertTrue(result);
+		assertTrue(user.getFeedbackMsg().contains(userName));
+		
+		result = user.getUser(userName2);
+		Thread.sleep(milliseconds);
+		assertTrue(result);
+		assertTrue(user.getFeedbackMsg().contains(userName2));	
+		
+		// user doesn't exist.
+		result = user.getUser("Sir-not-appearing-in-this-movie.");
+		Thread.sleep(milliseconds);
+		assertFalse(result);
 	}
 	
 	@Test
 	public void massKitchenCreation() throws Exception {
-		fail();
+		result = user.addUser(userName);
+		Thread.sleep(milliseconds);
+		assertTrue(user.getFeedbackMsg().contains(userName));
+		assertTrue(result);
+		
+		user.createKitchen(kitchenName);
+		Thread.sleep(milliseconds);
+		assertTrue(result);
+		
 	}
 }

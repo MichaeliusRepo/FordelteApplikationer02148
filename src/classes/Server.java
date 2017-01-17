@@ -108,7 +108,7 @@ public class Server {
 
 					case "createKitchen":
 						getObject = new Template(new ActualTemplateField(kitchenName),
-								new FormalTemplateField(Tuple.class));
+								new FormalTemplateField(Kitchen.class));
 						exists = (queryp(getObject) != null);
 
 						if (!exists) // Put userData into Server if

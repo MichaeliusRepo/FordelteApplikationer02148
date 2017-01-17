@@ -29,7 +29,7 @@ public class User {
 	// private String[] kitchens = { null, null, null, null };
 	private ArrayList<String> kitchens = new ArrayList<String>();
 
-	//private int kitchenPointer;
+	// private int kitchenPointer;
 
 	private LinkedList<String> returnData;
 
@@ -81,7 +81,7 @@ public class User {
 
 	public boolean createKitchen(String kitchenName) throws Exception {
 		feedbackMsg = null;
-		if (kitchens.size() > 4) {
+		if (kitchens.size() == 4) {
 			feedbackMsg = "You may only be a member of up to 4 kitchens.";
 			System.out.println(userName + " got feedback: " + feedbackMsg);
 			return false;
@@ -95,7 +95,7 @@ public class User {
 
 		return (feedbackMsg.contains("was created"));
 	}
-	
+
 	public boolean joinKitchen(String kitchenName) throws Exception {
 		// TODO
 		return true;
@@ -180,8 +180,9 @@ public class User {
 						feedbackMsg = userName + " was retrieved.";
 						kitchens.clear();
 						t = dataTuple.getElementAt(Tuple.class, 1).getElementAt(Tuple.class, 1);
-						for (int i = 0; i < 4; i++)
-							kitchens.add(t.getElementAt(String.class, i));
+						for (int i = 0; i < kitchens.size(); i++)
+							if (t.getElementAt(String.class, i) != null)
+								kitchens.add(t.getElementAt(String.class, i));
 					} else {
 						userName = null;
 						feedbackMsg = "Username not found.";
@@ -238,12 +239,10 @@ public class User {
 	}
 
 	public String getKitchenName(int i) {
-		if(i<kitchens.size()){
+		if (i < kitchens.size()) {
 			return kitchens.get(i);
 		}
 		return "";
 	}
-	
-	
 
 }
