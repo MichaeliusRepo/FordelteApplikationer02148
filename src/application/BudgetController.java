@@ -18,7 +18,7 @@ import javafx.stage.WindowEvent;
 
 public class BudgetController {
 	private User user;
-	
+	private String kitchenName;
 	
 
     @FXML
@@ -34,17 +34,14 @@ public class BudgetController {
     private Label balanceLabel;
 
 
-
-	private String kitchenName;
-
     @FXML
     void backButtonClicked(ActionEvent event) throws IOException {
     	newScene(event,"/application/DayOverview.fxml");
     }
 
     @FXML
-    void logOutButtonClicked(ActionEvent event) {
-
+    void logOutButtonClicked(ActionEvent event) throws IOException {
+    	newScene(event,"/application/Login.fxml");
     }
 	
 	
@@ -56,16 +53,14 @@ public class BudgetController {
     }
     
     public void setBalance(){
-    	balanceLabel.setText("test");
     	
     	user.command("getBalance", kitchenName, 0, 0, 0, 0);
     	if(user.getFeedbackMsg() != null){
     		
     		balanceLabel.setText(user.getFeedbackMsg());
     	} else {
-    		balanceLabel.setText("none");
+    		balanceLabel.setText("-");
     	}
-    	balanceLabel.setText("test");
     }
     
     
@@ -80,7 +75,6 @@ public class BudgetController {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
 		Parent root = loader.load();
 		int x = 400;
-		System.out.println("budgetController: "+user.getUserName());
 		
 		switch (path){
 		case "/application/Login.fxml":
@@ -91,7 +85,12 @@ public class BudgetController {
 		case "/application/DayOverview.fxml":
 			DayController dayController = loader.getController();
 			dayController.setUser(user);
-			x = 500;
+			try {
+				dayController.updateTabel(kitchenName, false);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			x = 600;
 			break;
 		
 		}

@@ -2,7 +2,6 @@ package application;
 
 import java.io.IOException;
 
-import classes.Server;
 import classes.User;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -21,7 +20,6 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 public class KitchenController {
-	//private Server dinnerClub;
 	private String username;
 	private User user;
 	
@@ -77,7 +75,6 @@ public class KitchenController {
     void selectDinnerClubButtonClicked(ActionEvent event) throws IOException {
     	
     	if(((RadioButton) toggleGroup.getSelectedToggle()).getText().length() > 0){
-    		System.out.println(((RadioButton)toggleGroup.getSelectedToggle()).getText());
         	newScene(event,"/application/DayOverview.fxml");
     	} else {
     		noKitchenLabel.setText("Please select a dinner club");
@@ -112,7 +109,6 @@ public class KitchenController {
     	if(!newKitchenTextField.getText().equals("")){
         	
     		if(user.createKitchen(newKitchenTextField.getText())){
-        		System.out.println("A new kitchen has been created: "+newKitchenTextField.getText());
         		newScene(event,"/application/SelectKitchen.fxml");
         	} else {
         		emptyLabel.setText(user.getFeedbackMsg());
@@ -144,7 +140,6 @@ public class KitchenController {
     	if(!joinKitchenTextField.getText().equals("")){
 
     		if(user.joinKitchen(joinKitchenTextField.getText())){
-        		System.out.println("You have joined: "+joinKitchenTextField.getText());
         		newScene(event,"/application/SelectKitchen.fxml");
         	} else {
         		emptyLabel.setText(user.getFeedbackMsg());
@@ -172,7 +167,6 @@ public class KitchenController {
     }
     
     private void setRadioButtons(RadioButton kitchen, int i){
-    	System.out.println(user.getKitchenName(i));
     	if(user.getKitchenName(i) != ""){
     		kitchen.setText(user.getKitchenName(i));
     		kitchen.setVisible(true);
@@ -211,7 +205,7 @@ public class KitchenController {
 			DayController dayController = loader.getController();
 			dayController.setUser(user);
 			try {
-				dayController.updateTabel(((RadioButton)toggleGroup.getSelectedToggle()).getText());
+				dayController.updateTabel(((RadioButton)toggleGroup.getSelectedToggle()).getText(), false);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

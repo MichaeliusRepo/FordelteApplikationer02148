@@ -22,9 +22,9 @@
             <Font size="10.0" />
          </font>
       </Button>
-      <Label fx:id="balanceLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="233.0" layoutY="200.0" text="Price" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0">
+      <Label fx:id="balanceLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="199.0" layoutY="163.0" text="price" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
          <font>
-            <Font size="33.0" />
+            <Font size="30.0" />
          </font>
       </Label>
    </children>

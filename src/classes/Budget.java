@@ -111,7 +111,7 @@ public class Budget {
 					balance = t.getElementAt(Double.class, 2);
 					feedback(feedback, true, "" + balance);
 				} else 
-					feedback(feedback, false, userName + " could not be found.");
+					feedback(feedback, false, userName + " has no balance.");
 				
 			} catch (Exception e) {
 				e.printStackTrace();

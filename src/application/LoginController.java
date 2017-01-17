@@ -51,7 +51,6 @@ public class LoginController {
 			newScene(event, "/application/SelectKitchen.fxml");
 		} else {
 			wrongUsernameLabel.setText("  Unknown username");
-			System.out.println("wrong");
 		}
 
 	}

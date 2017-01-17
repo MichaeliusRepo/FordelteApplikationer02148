@@ -1,6 +1,7 @@
 package application;
 
 import java.io.IOException;
+import java.util.Calendar;
 
 import classes.User;
 import javafx.application.Platform;
@@ -86,27 +87,32 @@ public class DayController {
 	}
 
 	@FXML
-	void viewPreviousCheckBoxClicked(ActionEvent event) {
-
+	void viewPreviousCheckBoxClicked(ActionEvent event) throws Exception {
+		System.out.println("box "+viewPreviousCheckBox.isSelected());
+		updateTabel(kitchenName, viewPreviousCheckBox.isSelected());
 	}
 
 	@FXML
 	void updateButtonClicked(ActionEvent event) throws Exception {
-
-		updateTabel(titleLabel.getText());
+		updateTabel(kitchenName, false);
 
 	}
 
-	public void updateTabel(String kitchenName) throws Exception {
+	public void updateTabel(String kitchenName, boolean previous) throws Exception {
+		dayTableView.getItems().clear();
 		this.kitchenName = kitchenName;
 		titleLabel.setText(kitchenName);
-		int i = 0;
+		DayTable dayTable = new DayTable(user, kitchenName, 0);
 
-		DayTable dayTable = new DayTable(user, kitchenName, i);
-
-		while (dayTable.haveNextDay()) {
-			dayTableView.getItems().add(new DayTable(user, kitchenName, i));
-			i++;
+		for(int i = 0; i<dayTable.daysSize();i++){
+			if(previous){
+				System.out.println("previous "+dayTable.getDate());
+				dayTableView.getItems().add(new DayTable(user, kitchenName, i));
+			} else if(Calendar.getInstance().after(dayTable.getDate())) {
+				System.out.println("NOT previous "+dayTable.getDate()+" "+Calendar.getInstance().after(dayTable.getDate()));
+				dayTableView.getItems().add(new DayTable(user, kitchenName, i));
+			}
+				
 		}
 
 		dateTableColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
@@ -154,12 +160,14 @@ public class DayController {
 
 	@FXML
 	void createDayButtonClicked(ActionEvent event) throws IOException {
+		
 		if (newDateDatePicker.getValue() != null) {
 			int day = newDateDatePicker.getValue().getDayOfMonth();
 			int month = newDateDatePicker.getValue().getMonthValue();
 			int year = newDateDatePicker.getValue().getYear();
 			System.out.println("Creating the day: " + newDateDatePicker.getValue().toString());
 			user.command("addDay", kitchenName, day, month, year, 0);
+			System.out.println("in add day: "+ user.getFeedbackMsg());
 			newScene(event, "/application/DayOverview.fxml");
 		} else {
 			noDayLabel.setText("  Insert a date");
@@ -199,8 +207,10 @@ public class DayController {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
 		Parent root = loader.load();
 		KitchenController kitchenController;
+		DayController dayController;
 		int x = 400, y = 400;
 
+		
 		switch (path) {
 		case "/application/Login.fxml":
 			LoginController loginController = loader.getController();
@@ -212,21 +222,31 @@ public class DayController {
 			kitchenController.findUsersKitchens(user);
 			break;
 
-		case "/application/DayWindow.fxml":
-			y = 500;
 		case "/application/DayOverview.fxml":
 			x = 600;
+			y = 500;
+			try {
+				dayController = loader.getController();
+				dayController.setUser(user);
+				dayController.updateTabel(kitchenName, false);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			break;
+			
+		case "/application/DayWindow.fxml":
+			y = 500;
 		case "/application/AddDay.fxml":
-			DayController dayController = loader.getController();
-			dayController.setKitchenName(kitchenName);
+			dayController = loader.getController();
 			dayController.setUser(user);
+			dayController.setKitchenName(kitchenName);
 			break;
 
 		case "/application/Budget.fxml":
 			BudgetController budgetController = loader.getController();
 			budgetController.setUser(user);
-			budgetController.setBalance();
 			budgetController.setKitchenName(kitchenName);
+			budgetController.setBalance();
 			break;
 
 		}
