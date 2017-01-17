@@ -47,7 +47,12 @@ public class User {
 		getUser(userName);
 	}
 
-	public LinkedList<String> getDays() {
+	public LinkedList<String> getDays(String kitchenName) throws Exception {
+		feedbackMsg = null;
+		command("getDays", kitchenName,0,0,0,0 );
+		while (feedbackMsg == null) {
+			Thread.sleep(10);
+		} // Wait for Server to return proper feedback.
 		return returnData;
 	}
 
@@ -165,9 +170,6 @@ public class User {
 					t = get(feedback, p);
 					dataTuple = t.getElementAt(Tuple.class, ECommand.DATA.getValue());
 
-					feedbackMsg = dataTuple.getElementAt(String.class, 1);
-					System.out.println(userName + " got feedback: " + feedbackMsg);
-
 					if (t.getElementAt(String.class, ECommand.COMMAND.getValue()).equals("getDays")
 							|| t.getElementAt(String.class, ECommand.COMMAND.getValue()).equals("getAttendees")) {
 						@SuppressWarnings("unchecked")
@@ -176,6 +178,9 @@ public class User {
 						for (String str : returnData)
 							System.out.print(str + ", ");
 					}
+					
+					feedbackMsg = dataTuple.getElementAt(String.class, 1);
+					System.out.println(userName + " got feedback: " + feedbackMsg);
 					break;
 
 				case "addUser":
