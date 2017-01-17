@@ -4,6 +4,7 @@ import classes.User;
 import classes.Kitchen;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -28,7 +29,7 @@ public class Server {
 	private Tuple userTuple = null;
 
 	public Server() throws IOException {
-		serverPort = new SocketPort("10.16.164.253", 8080);
+		serverPort = new SocketPort(InetAddress.getLocalHost().getHostAddress(), 8080);
 		server.addPort(serverPort);
 		server.addPort(vp);
 		Agent monitor = new Monitor("Monitor");

@@ -49,7 +49,7 @@ public class User {
 	public User(String userName) throws Exception {
 		this.userName = userName;
 		userPort = new SocketPort(InetAddress.getLocalHost().getHostAddress(), 8080);
-		p  = new PointToPoint("Server", new SocketPortAddress("10.16.164.253", 8080));
+		p  = new PointToPoint("Server", new SocketPortAddress("10.16.129.214", 8080));
 		userSpace = new Node(userName, new TupleSpace());
 		userSpace.addPort(userPort);
 		userSpace.start();
