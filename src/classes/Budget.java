@@ -109,7 +109,7 @@ public class Budget {
 				if (queryp(temp) != null) {
 					Tuple t = query(temp, Self.SELF);
 					balance = t.getElementAt(Double.class, 2);
-					feedback(feedback, true, "Balance for " + userName + ": " + balance + "kr");
+					feedback(feedback, true, "" + balance);
 				} else 
 					feedback(feedback, false, userName + " could not be found.");
 				

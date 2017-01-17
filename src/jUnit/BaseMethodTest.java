@@ -185,13 +185,20 @@ public class BaseMethodTest {
 //		assertTrue(user.getFeedbackMsg().contains("balance"));
 //	}
 //
-//	@Test
-//	public void getBalance() throws Exception {
-//		user.command("getBalance",kitchenName, day, month, year, 0);
-//		Thread.sleep(milliseconds);
-//		assertNotEquals(user.getFeedbackMsg(),"Day created.");
-//		assertTrue(user.getFeedbackMsg().contains("Balance"));
-//	}
+	@Test
+	public void getBalance() throws Exception {
+		
+		user.command("attendDay", kitchenName, day, month, year, 1);
+		Thread.sleep(milliseconds);
+		user.command("lockDay", kitchenName, day, month, year, 0);
+		Thread.sleep(milliseconds);
+		user.command("setPrice", kitchenName, day, month, year, 200);
+		Thread.sleep(milliseconds);
+		user.command("getBalance",kitchenName, day, month, year, 0);
+		Thread.sleep(milliseconds);
+		assertNotEquals(user.getFeedbackMsg(),"Day created.");
+		assertTrue(user.getFeedbackMsg().contains("0.0kr"));
+	}
 
 }
 
