@@ -2,6 +2,8 @@ package classes;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,6 +14,8 @@ import org.cmg.jresp.knowledge.Tuple;
 import org.cmg.jresp.knowledge.ts.TupleSpace;
 import org.cmg.jresp.topology.PointToPoint;
 import org.cmg.jresp.topology.Self;
+import org.cmg.jresp.topology.SocketPort;
+import org.cmg.jresp.topology.SocketPortAddress;
 import org.cmg.jresp.topology.VirtualPort;
 import org.cmg.jresp.knowledge.ActualTemplateField;
 import org.cmg.jresp.knowledge.FormalTemplateField;
@@ -22,7 +26,8 @@ import org.cmg.jresp.knowledge.Template;
 public class User {
 	private String userName = "";
 	private Node userSpace;
-	private PointToPoint p = new PointToPoint("Server", Server.vp.getAddress());
+	private SocketPort userPort;
+	private PointToPoint p = new PointToPoint("Server", new SocketPortAddress("10.16.129.214",8080));
 	private String command;
 	private String feedbackMsg = null;
 
@@ -33,16 +38,18 @@ public class User {
 
 	private LinkedList<String> returnData;
 
-	public User() {
+	public User() throws UnknownHostException, IOException {
 		userSpace = new Node(userName, new TupleSpace());
-		userSpace.addPort(Server.vp);
+		userPort = new SocketPort(InetAddress.getLocalHost().getHostAddress(),8080);
+		userSpace.addPort(userPort);
 		userSpace.start();
 	}
 
 	public User(String userName) throws Exception {
 		this.userName = userName;
 		userSpace = new Node(userName, new TupleSpace());
-		userSpace.addPort(Server.vp);
+		userPort = new SocketPort(InetAddress.getLocalHost().getHostAddress(),8080);
+		userSpace.addPort(userPort);
 		userSpace.start();
 		getUser(userName);
 	}
