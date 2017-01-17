@@ -32,14 +32,17 @@ public class CaseMethodTest {
 		user.addUser(userName);
 		Thread.sleep(milliseconds);
 
+		user.createKitchen(kitchenName);
+
 		user.command("addDay", kitchenName, day, month, year, 0);
+		Thread.sleep(milliseconds);
+		
+		user.command("attendDay", kitchenName, day, month, year, 1);
 		Thread.sleep(milliseconds);
 	}
 
 	@Test
 	public void lockThenSetPrice() throws Exception {
-		assertEquals(user.getFeedbackMsg(), userName + " added with 0 attendees.");
-
 		user.command("lockDay", kitchenName, day, month, year, 0);
 		Thread.sleep(100);
 		assertNotEquals(user.getFeedbackMsg(), "Dagen findes allerede");

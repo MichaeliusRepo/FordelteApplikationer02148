@@ -182,29 +182,38 @@ public class BaseMethodTest {
 		assertTrue(user.getFeedbackMsg().contains(userName));
 	}
 
+	// TODO
+	
 	@Test
 	public void resetBalance() throws Exception {
-		user.command("attendDay", kitchenName, day, month, year, 1);
+		getBalance();
+		
+		user.getUser("Lenny Wolf");
 		Thread.sleep(milliseconds);
-		user.command("lockDay", kitchenName, day, month, year, 0);
+		assertEquals("Lenny Wolf",user.getUserName());
+		
+		user.command("resetUserBalance", kitchenName, day, month, year, 0);
 		Thread.sleep(milliseconds);
-		user.command("setPrice", kitchenName, day, month, year, 200);
-		Thread.sleep(milliseconds);
-		user.command("getBalance", kitchenName, day, month, year, 0);
-		Thread.sleep(milliseconds);
-		assertNotEquals(user.getFeedbackMsg(), "Day created.");
+		System.out.println("---" + user.getFeedbackMsg());
+		assertFalse(user.getFeedbackMsg().contains("100.0"));
 		assertTrue(user.getFeedbackMsg().contains("0.0"));
-
-		user.command("resetBalance", kitchenName, day, month, year, 0);
-		Thread.sleep(milliseconds);
-
 	}
 
 	@Test
 	public void getBalance() throws Exception {
-
 		user.command("attendDay", kitchenName, day, month, year, 1);
 		Thread.sleep(milliseconds);
+
+		// Switch to another user
+		user.addUser("Lenny Wolf");
+		Thread.sleep(milliseconds);
+		user.command("attendDay", kitchenName, day, month, year, 1);
+		Thread.sleep(milliseconds);
+		
+		// Switch back to default user
+		user.getUser(userName);
+		Thread.sleep(milliseconds);
+		
 		user.command("lockDay", kitchenName, day, month, year, 0);
 		Thread.sleep(milliseconds);
 		user.command("setPrice", kitchenName, day, month, year, 200);
@@ -212,7 +221,14 @@ public class BaseMethodTest {
 		user.command("getBalance", kitchenName, day, month, year, 0);
 		Thread.sleep(milliseconds);
 		assertNotEquals(user.getFeedbackMsg(), "Day created.");
-		assertTrue(user.getFeedbackMsg().contains("0.0"));
+		assertTrue(user.getFeedbackMsg().contains("-100.0"));
+		
+		user.getUser("Lenny Wolf");
+		Thread.sleep(milliseconds);
+		user.command("getBalance", kitchenName, day, month, year, 0);
+		Thread.sleep(milliseconds);
+		assertNotEquals(user.getFeedbackMsg(), "Day created.");
+		assertTrue(user.getFeedbackMsg().contains("100.0"));
 	}
 
 }

@@ -71,7 +71,7 @@ public class Budget {
 					dayBudget(data);
 					break;
 
-				case "resetBalance":
+				case "resetUserBalance":
 					resetBalance(userName);
 					break;
 				}

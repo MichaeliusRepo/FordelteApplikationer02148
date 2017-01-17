@@ -177,7 +177,7 @@ public class InitializationTest {
 		user.createKitchen(kitchenName);
 		Thread.sleep(milliseconds);
 		
-		assertEquals(null, user.getDays(kitchenName));
+		assertTrue(user.getDays(kitchenName).isEmpty());
 		Thread.sleep(milliseconds);
 		
 		user.command("addDay", kitchenName, 7, 8, 9, 0);
@@ -185,6 +185,9 @@ public class InitializationTest {
 		user.command("addDay", kitchenName, 4, 5, 6, 0);
 		Thread.sleep(milliseconds);
 		user.command("addDay", kitchenName, 1, 2, 3, 0);
+		Thread.sleep(milliseconds);
+		
+		assertFalse(user.getDays(kitchenName).isEmpty());
 		Thread.sleep(milliseconds);
 		
 		assertNotEquals(null, user.getDays(kitchenName));
