@@ -208,7 +208,7 @@ public class User {
 						kitchens.clear();
 						t = dataTuple.getElementAt(Tuple.class, 1).getElementAt(Tuple.class, 1);
 						for (int i = 0; i < kitchens.size(); i++)
-							if (t.getElementAt(String.class, i) != null)
+							if (t.getElementAt(String.class, i) != "")
 								kitchens.add(t.getElementAt(String.class, i));
 					} else {
 						userName = null;
