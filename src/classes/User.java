@@ -154,7 +154,7 @@ public class User {
 
 	private class UserAgent extends Agent {
 
-		public PointToPoint p = new PointToPoint("Server", new SocketPortAddress("10.16.107",8080));
+		public PointToPoint p = new PointToPoint("Server", new SocketPortAddress("10.16.143.162",8080));
 		private Tuple t;
 
 		private UserAgent(String who, Tuple t) {
