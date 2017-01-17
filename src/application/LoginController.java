@@ -21,6 +21,7 @@ import javafx.stage.WindowEvent;
 
 public class LoginController {
 	private User user;
+	private String tempName;
 
 	///////////////////////////////////
 	// Login Scene
@@ -39,13 +40,14 @@ public class LoginController {
 
 	@FXML
 	void newUserButtonClicked(ActionEvent event) throws IOException {
+		this.tempName = usernameTextField.getText();
 		newScene(event, "/application/NewUser.fxml");
 	}
 
 	@FXML
 	void loginButtonClicked(ActionEvent event) throws Exception {
 		String username = usernameTextField.getText();
-		
+
 		if (user.getUser(username)) {
 			wrongUsernameLabel.setText("");
 			newScene(event, "/application/SelectKitchen.fxml");
@@ -98,13 +100,14 @@ public class LoginController {
 	@FXML
 	void createNewUserButtonClicked(ActionEvent event) throws Exception {
 		String username = newUserNameTextField.getText();
-		
-		if (username.equals("")  ) {
+
+		if (username.equals("")) {
 			newUserLabel.setText("Please enter a username");
-		} else if (user.addUser(username)){
+		} else if (user.addUser(username)) {
+			this.tempName = username;
 			newScene(event, "/application/Login.fxml");
 		} else {
-			newUserLabel.setText("Please enter another username, "+username+" already excist");
+			newUserLabel.setText("Please enter another username, " + username + " already exist");
 		}
 	}
 
@@ -116,13 +119,21 @@ public class LoginController {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
 		Parent root = loader.load();
 
-		if (path.equals("/application/Login.fxml") || path.equals("/application/NewUser.fxml")) {
+		if (path.equals("/application/Login.fxml")) {
 			LoginController controller = loader.getController();
 			controller.setUser(user);
+			controller.usernameTextField.setText(tempName);
+		} else if (path.equals("/application/NewUser.fxml")) {
+			LoginController controller = loader.getController();
+			controller.setUser(user);
+			controller.newUserNameTextField.setText(tempName);
+
 		} else if (path.equals("/application/SelectKitchen.fxml")) {
+
 			KitchenController controller = loader.getController();
 			controller.findUsersKitchens(user);
 			controller.titleLabel.setText("Hi " + usernameTextField.getText() + "!");
+
 		}
 
 		Scene scene = new Scene(root, 400, 400);

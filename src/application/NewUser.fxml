@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
@@ -11,7 +12,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.LoginController">
    <children>
-      <Label contentDisplay="CENTER" layoutX="84.0" layoutY="84.0" text="Create new user">
+      <Label contentDisplay="CENTER" layoutX="84.0" layoutY="84.0" text="Create New User">
          <font>
             <Font size="30.0" />
          </font>
@@ -36,8 +37,14 @@
                   <Font size="15.0" />
                </font>
             </TextField>
-            <Button fx:id="createNewUserButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#createNewUserButtonClicked" prefHeight="27.0" prefWidth="150.0" text="Create new user" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <Button fx:id="backButton" mnemonicParsing="false" onAction="#backButtonClicked" prefWidth="150.0" text="Back" GridPane.rowIndex="4" />
+            <Button fx:id="createNewUserButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#createNewUserButtonClicked" prefHeight="25.0" prefWidth="152.0" text="Create new user" GridPane.columnIndex="1" GridPane.rowIndex="4">
+               <GridPane.margin>
+                  <Insets left="10.0" />
+               </GridPane.margin></Button>
+            <Button fx:id="backButton" mnemonicParsing="false" onAction="#backButtonClicked" prefHeight="25.0" prefWidth="152.0" text="Back" GridPane.rowIndex="4">
+               <GridPane.margin>
+                  <Insets right="10.0" />
+               </GridPane.margin></Button>
          </children>
       </GridPane>
    </children>
