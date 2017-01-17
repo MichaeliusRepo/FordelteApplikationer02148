@@ -18,6 +18,7 @@ public class Main {
 		user.createKitchen(str);
 		runApplication();
 	}
+	
 
 	private static void logIn() throws Exception {
 		while (user.getUserName().equals("")) {

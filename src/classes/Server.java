@@ -23,15 +23,24 @@ import org.cmg.jresp.topology.VirtualPort;
 
 @SuppressWarnings("unused")
 public class Server {
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> fa57aad4110341463608c90848c1ed580da16d54
 	private static SocketPort serverPort;
 	public final static VirtualPort vp = new VirtualPort(1337);
 	private Node server = new Node("Server", new TupleSpace());
 	private Tuple userTuple = null;
 
 	public Server() throws UnknownHostException, IOException {
+<<<<<<< HEAD
 		serverPort = new SocketPort(InetAddress.getLocalHost().getHostAddress());
+=======
+>>>>>>> fa57aad4110341463608c90848c1ed580da16d54
 		server.addPort(vp);
+		serverPort = new SocketPort(InetAddress.getLocalHost().getHostAddress(),8080);
+		server.addPort(serverPort);
 		Agent monitor = new Monitor("Monitor");
 		server.addAgent(monitor);
 		server.start();
@@ -48,6 +57,7 @@ public class Server {
 		private Monitor(String who) {
 			super(who);
 		}
+		
 
 		@Override
 		protected void doRun() {
