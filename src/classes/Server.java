@@ -3,6 +3,9 @@ package classes;
 import classes.User;
 import classes.Kitchen;
 
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -15,16 +18,19 @@ import org.cmg.jresp.knowledge.Tuple;
 import org.cmg.jresp.knowledge.ts.TupleSpace;
 import org.cmg.jresp.topology.PointToPoint;
 import org.cmg.jresp.topology.Self;
+import org.cmg.jresp.topology.SocketPort;
 import org.cmg.jresp.topology.VirtualPort;
 
 @SuppressWarnings("unused")
 public class Server {
 
+	private static SocketPort serverPort;
 	public final static VirtualPort vp = new VirtualPort(1337);
 	private Node server = new Node("Server", new TupleSpace());
 	private Tuple userTuple = null;
 
-	public Server() {
+	public Server() throws UnknownHostException, IOException {
+		serverPort = new SocketPort(InetAddress.getLocalHost().getHostAddress());
 		server.addPort(vp);
 		Agent monitor = new Monitor("Monitor");
 		server.addAgent(monitor);
