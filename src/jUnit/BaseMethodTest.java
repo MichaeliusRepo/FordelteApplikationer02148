@@ -197,7 +197,7 @@ public class BaseMethodTest {
 		user.command("getBalance",kitchenName, day, month, year, 0);
 		Thread.sleep(milliseconds);
 		assertNotEquals(user.getFeedbackMsg(),"Day created.");
-		assertTrue(user.getFeedbackMsg().contains("0.0kr"));
+		assertTrue(user.getFeedbackMsg().contains("0.0"));
 	}
 
 }
