@@ -16,7 +16,7 @@ import org.cmg.jresp.topology.Self;
 
 public class Day {
 
-	private int day, month, year;
+	private int day, month, year, totalAttendees;
 	private String dayName;
 
 	public Day(int day, int month, int year) {
@@ -66,7 +66,7 @@ public class Day {
 
 		private String cmd, userName, buyer, kitchenName;
 		@SuppressWarnings("unused")
-		private int attendees, price, totalAttendees;
+		private int attendees, price;
 		private Tuple dataTuple;
 		private ArrayList<String> attendeesList;
 
