@@ -65,14 +65,14 @@ public class BaseMethodTest {
 
 		user.command("attendDay", kitchenName, day, month, year, 5);
 		Thread.sleep(milliseconds);
-		assertEquals(user.getFeedbackMsg(), userName + " added with 5 attendees.");
+		assertEquals(user.getFeedbackMsg(), userName + " was already set to attend. Day has been updated with any guests added.");
 	}
 
 	@Test
 	public void unattendDay() throws Exception {
-		user.command("attendDay", kitchenName, day, month, year, 0);
+		user.command("attendDay", kitchenName, day, month, year, 1);
 		Thread.sleep(milliseconds);
-		assertEquals(user.getFeedbackMsg(), userName + " added with 0 attendees.");
+		assertEquals(user.getFeedbackMsg(), userName + " added with 1 attendees.");
 
 		user.command("unattendDay", kitchenName, day, month, year, 0);
 		Thread.sleep(milliseconds);
@@ -121,7 +121,7 @@ public class BaseMethodTest {
 	public void getChef() throws Exception {
 		user.command("getChef", kitchenName, day, month, year, 0);
 		Thread.sleep(milliseconds);
-		assertEquals(user.getFeedbackMsg(), "Nobody as of yet is added as chef to this date.");
+		assertEquals(user.getFeedbackMsg(), "No chefs assigned");
 
 		user.command("addChef", kitchenName, day, month, year, 0);
 		Thread.sleep(milliseconds);
@@ -129,7 +129,7 @@ public class BaseMethodTest {
 
 		user.command("getChef", kitchenName, day, month, year, 0);
 		Thread.sleep(milliseconds);
-		assertEquals(user.getFeedbackMsg(), userName + " is today's cook.");
+		assertEquals(user.getFeedbackMsg(), userName);
 	}
 
 	@Test
@@ -143,7 +143,11 @@ public class BaseMethodTest {
 
 		user.command("setPrice", kitchenName, day, month, year, 200);
 		Thread.sleep(milliseconds);
-		assertEquals(user.getFeedbackMsg(), "The price was set to 200");
+		assertEquals(user.getFeedbackMsg(), "The price was already set to 0, but has been replaced.");
+		
+		user.command("setPrice", kitchenName, day, month, year, 300);
+		Thread.sleep(milliseconds);
+		assertEquals(user.getFeedbackMsg(), "The price was already set to 200, but has been replaced.");
 	}
 
 	@Test
@@ -157,28 +161,26 @@ public class BaseMethodTest {
 
 		user.command("setPrice", kitchenName, day, month, year, 200);
 		Thread.sleep(milliseconds);
-		assertEquals(user.getFeedbackMsg(), "The price was set to 200");
+		assertEquals(user.getFeedbackMsg(), "The price was already set to 0, but has been replaced.");
 
 		user.command("getPrice", kitchenName, day, month, year, 0);
 		Thread.sleep(milliseconds);
-		assertEquals(user.getFeedbackMsg(), "Currently the price is at 200");
+		assertTrue(user.getFeedbackMsg().contains("200"));
 	}
 
 	@Test
 	public void getAttendees() throws Exception {
-		user.command("getAttendees", kitchenName, day, month, year, 0);
+		user.command("getAttendees", kitchenName, day, month, year, 1);
 		Thread.sleep(milliseconds);
 		assertNotEquals(user.getFeedbackMsg(), "Day created.");
-		assertTrue(user.getFeedbackMsg().contains("Attendees:"));
-
+		assertFalse(user.getFeedbackMsg().contains("Attendees:"));
+		
 		user.command("attendDay", kitchenName, day, month, year, 2);
 		Thread.sleep(milliseconds);
 		assertEquals(user.getFeedbackMsg(), userName + " added with 2 attendees.");
 
 		user.command("getAttendees", kitchenName, day, month, year, 0);
 		Thread.sleep(milliseconds);
-
-		System.out.println("-----" + user.getFeedbackMsg());
 		assertTrue(user.getFeedbackMsg().contains(userName));
 	}
 
@@ -194,7 +196,8 @@ public class BaseMethodTest {
 		
 		user.command("resetUserBalance", kitchenName, day, month, year, 0);
 		Thread.sleep(milliseconds);
-		System.out.println("---" + user.getFeedbackMsg());
+		user.command("getBalance", kitchenName, day, month, year, 0);
+		Thread.sleep(milliseconds);
 		assertFalse(user.getFeedbackMsg().contains("100.0"));
 		assertTrue(user.getFeedbackMsg().contains("0.0"));
 	}

@@ -82,7 +82,7 @@ public class Budget {
 		}
 
 		private void resetBalance(String userName) {
-			String feedback = "resetBalanceFeedback";
+			String feedback = "resetUserBalanceFeedback";
 			try {
 				Template temp = new Template(new ActualTemplateField("user"), new ActualTemplateField(userName),
 						new FormalTemplateField(Double.class));
