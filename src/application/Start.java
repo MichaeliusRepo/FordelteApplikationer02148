@@ -41,7 +41,7 @@ public class Start extends Application {
 	}
 	
 	public static void main(String[] args) {
-		new Server();
+		//new Server();
 		launch(args);
 	}
 }
