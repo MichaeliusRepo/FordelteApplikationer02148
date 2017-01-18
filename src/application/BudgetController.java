@@ -51,20 +51,20 @@ public class BudgetController {
 		
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Pay Your Balance");
-		alert.setHeaderText("You are about to reset your balance.");
+		alert.setHeaderText("You are about to reset your balance");
 		alert.setContentText("Once this is done it cannot be undone! \n Are you sure you want to continue?");
 
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == ButtonType.OK) {
-			user.command("resetBalance", kitchenName, 0, 0, 0, 0);
+			user.command("resetUserBalance", kitchenName, 0, 0, 0, 0);
 
 			while (user.getFeedbackMsg() == null) {
+				System.out.println("budget: "+user.getFeedbackMsg());
 				Thread.sleep(10);
 			}
 
-			if (result.isPresent()) {
-				feedbackMessage("Reset Balance", user.getFeedbackMsg());
-			}
+			feedbackMessage("Reset Balance", user.getFeedbackMsg());
+			
 
 		} else {
 			feedbackMessage("Balance", "Balance was not reset.");
