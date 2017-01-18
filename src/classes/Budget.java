@@ -174,11 +174,13 @@ public class Budget {
 					int oldPrice = oldData.getElementAt(Integer.class, 3);
 					// String oldBuyer = oldData.getElementAt(String.class, 2);
 					ArrayList<String> oldAttendees = oldData.getElementAt(ArrayList.class, 4);
-
+					String oldBuyer = oldData.getElementAt(String.class, 2);
 					double oldPerPrice = oldPrice / oldAttendees.size();
 
 					for (String attendee : oldAttendees) 
 						addBalance(attendee, -oldPerPrice);
+					
+					addBalance(oldBuyer, oldPrice);
 
 					/*
 					 * Recursion can now be called with the new Tuple since the
