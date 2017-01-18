@@ -249,41 +249,57 @@ public class DayController {
 		TextInputDialog dialog = new TextInputDialog("No. of attendees");
 		dialog.setTitle("Attend Day");
 		dialog.setHeaderText("How many people should be expected?");
-		dialog.setContentText(
-				"Type 1 if you're coming alone, \n 2 if you're bringing a guest etc. \n If you no longer wish to attend type 0.");
+		String contentText = "Type 1 if you're coming alone, \n 2 if you're bringing a guest etc. \n If you no longer wish to attend type 0.";
+		dialog.setContentText(contentText);
 		Optional<String> result = dialog.showAndWait();
-		user.command("attendDay", kitchenName, day, month, year, Integer.parseInt(result.get()));
-
-		while (user.getFeedbackMsg() == null) {
-			Thread.sleep(10);
-		}
-
 		if (result.isPresent()) {
-			feedbackMessage("Attend Day", user.getFeedbackMsg());
+			while (!isNumeric(result.get())) {
+				dialog.setContentText(contentText + "\nplease enter a no.");
+				result = dialog.showAndWait();
+			}
+
+			user.command("attendDay", kitchenName, day, month, year, Integer.parseInt(result.get()));
+
+			while (user.getFeedbackMsg() == null) {
+				Thread.sleep(10);
+			}
+
+			if (result.isPresent()) {
+				feedbackMessage("Attend Day", user.getFeedbackMsg());
+			}
+
+			updateDay();
 		}
-		updateDay();
 	}
 
 	@FXML
 	void setPriceButtonClicked(ActionEvent event) throws InterruptedException {
 		user.setFeedbackMsg(null);
 
-		TextInputDialog dialog = new TextInputDialog("No. of attendees");
+		TextInputDialog dialog = new TextInputDialog("Total price $$");
 		dialog.setTitle("Set Price");
 		dialog.setHeaderText("How much did the meal cost in total?");
-		dialog.setContentText("Total price: ");
+		String contentText = "Total price: ";
+		dialog.setContentText(contentText);
 		Optional<String> result = dialog.showAndWait();
-
-		user.command("setPrice", kitchenName, day, month, year, Integer.parseInt(result.get()));
-
-		while (user.getFeedbackMsg() == null) {
-			Thread.sleep(10);
-		}
-
 		if (result.isPresent()) {
-			feedbackMessage("Set Price", user.getFeedbackMsg());
+			while (!isNumeric(result.get())) {
+				dialog.setContentText(contentText + "\nPlease enter a no.");
+			}
+			user.command("setPrice", kitchenName, day, month, year, Integer.parseInt(result.get()));
+
+			while (user.getFeedbackMsg() == null) {
+				Thread.sleep(10);
+			}
+
+			if (result.isPresent()) {
+				feedbackMessage("Set Price", user.getFeedbackMsg());
+			}
+
+			updateDay();
+		} else {
+			
 		}
-		updateDay();
 	}
 
 	@FXML
@@ -385,6 +401,14 @@ public class DayController {
 	//////////////////////////////
 	// controller methods
 
+	public static boolean isNumeric(String str) {
+		for (char c : str.toCharArray()) {
+			if (!Character.isDigit(c))
+				return false;
+		}
+		return true;
+	}
+
 	public void setUser(User user) {
 		this.user = user;
 	}
@@ -427,8 +451,8 @@ public class DayController {
 			break;
 
 		case "/application/DayWindow.fxml":
-			x = 590;
-			y = 490;
+			x = 600;
+			y = 500;
 			try {
 				dayController = loader.getController();
 				dayController.setUser(user);

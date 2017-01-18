@@ -18,7 +18,7 @@ public class DayTable {
 		this.kitchenName = kitchenName;
 		this.i = i;
 		
-		System.out.println("dayTable: " + user.getDays(kitchenName));
+		//System.out.println("dayTable: " + user.getDays(kitchenName));
 		this.days = user.getDays(kitchenName);
 		
 		if (days != null) {
@@ -51,11 +51,11 @@ public class DayTable {
 
 	public Button getAttend() throws InterruptedException {
 		Button button = new Button();
-		user.command("getAttendees", kitchenName, day, month, year, 0);
+		user.getAttendees(kitchenName, day, month, year);
 		while(user.getFeedbackMsg() == null) {
 			Thread.sleep(10);
 		}
-		System.out.println(user.getFeedbackMsg());
+		//System.out.println(user.getFeedbackMsg());
 		
 		if(user.getFeedbackMsg().contains(user.getUserName())){
 			button.setText("Unattend");
@@ -70,7 +70,7 @@ public class DayTable {
             		user.command("attendDay", kitchenName, day, month, year, 1);
             		button.setText("Unattend");
             	} else {
-            		user.command("unattendDay", kitchenName, day, month, year, 0);
+            		user.command("attendDay", kitchenName, day, month, year, 0);
             		button.setText("Attend");
             	}
                 
@@ -82,7 +82,7 @@ public class DayTable {
 						e.printStackTrace();
 					}
         		}
-        		System.out.println("attendens: "+user.getFeedbackMsg());
+        		//System.out.println("attendens: "+user.getFeedbackMsg());
             }
         });
 			
