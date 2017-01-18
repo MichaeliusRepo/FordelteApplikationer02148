@@ -26,7 +26,7 @@ public class Server {
 
 	public static SocketPort serverPort;
 	public final static VirtualPort vp = new VirtualPort(1337);
-	private Node server = new Node("Server", new TupleSpace());
+	private static Node server = new Node("Server", new TupleSpace());
 	private Tuple userTuple = null;
 
 	public Server() {
@@ -37,6 +37,7 @@ public class Server {
 		} 
 		server.addPort(serverPort);
 		server.addPort(vp);
+		server.addPort(serverPort);
 		Agent monitor = new Monitor("Monitor");
 		server.addAgent(monitor);
 		server.start();
@@ -53,6 +54,7 @@ public class Server {
 		private Monitor(String who) {
 			super(who);
 		}
+		
 
 		@Override
 		protected void doRun() {

@@ -31,6 +31,7 @@ public class Day {
 		daySpace.addAgent(dayAgent);
 		daySpace.start();
 	}
+	
 
 	public String getDate() {
 		return day + "/" + month + "/" + year;

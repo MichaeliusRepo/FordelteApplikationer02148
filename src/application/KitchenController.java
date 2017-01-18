@@ -23,9 +23,6 @@ public class KitchenController {
 	private String username, kitchenName;
 	private User user;
 
-	////////////////////////
-	// Select kitchen
-
 	@FXML
 	public Label titleLabel;
 

@@ -12,6 +12,7 @@ import org.cmg.jresp.knowledge.ts.TupleSpace;
 import org.cmg.jresp.topology.PointToPoint;
 import org.cmg.jresp.topology.Self;
 
+
 public class Kitchen {
 	private String kitchenName;
 	private Node kitchenSpace;
