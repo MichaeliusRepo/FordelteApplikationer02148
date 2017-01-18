@@ -27,7 +27,7 @@ public class User {
 	private String userName = "";
 	//private static SocketPort userPort;
 	private Node userSpace;
-	private PointToPoint p;
+	private static PointToPoint p;
 	private SocketPort userPort;
 	private String command;
 	private String feedbackMsg = null;
