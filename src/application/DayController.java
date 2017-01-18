@@ -3,8 +3,6 @@ package application;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.LinkedList;
-import java.util.ListIterator;
 import java.util.Optional;
 
 import classes.User;
@@ -31,6 +29,7 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 
 public class DayController {
@@ -127,7 +126,6 @@ public class DayController {
 			} else if (!current.after(dinnerDay)) {
 				dayTableView.getItems().add(dayTable);
 			}
-			
 		}
 
 		dateTableColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
@@ -250,6 +248,7 @@ public class DayController {
 		user.setFeedbackMsg(null);
 
 		TextInputDialog dialog = new TextInputDialog("No. of attendees");
+		dialog.initStyle(StageStyle.UNDECORATED);
 		dialog.setTitle("Attend Day");
 		dialog.setHeaderText("How many people should be expected?");
 		String contentText = "Type 1 if you're coming alone, \n 2 if you're bringing a guest etc. \n If you no longer wish to attend type 0.";
@@ -259,18 +258,17 @@ public class DayController {
 			while (!isNumeric(result.get())) {
 				dialog.setContentText(contentText + "\nplease enter a no.");
 				result = dialog.showAndWait();
+				if(!result.isPresent())
+					break;
 			}
-
+			if (result.isPresent()) {
 			user.command("attendDay", kitchenName, day, month, year, Integer.parseInt(result.get()));
 
 			while (user.getFeedbackMsg() == null) {
 				Thread.sleep(10);
 			}
-
-			if (result.isPresent()) {
 				feedbackMessage("Attend Day", user.getFeedbackMsg());
 			}
-
 			updateDay();
 		}
 	}
@@ -282,26 +280,28 @@ public class DayController {
 		TextInputDialog dialog = new TextInputDialog("Total price $$");
 		dialog.setTitle("Set Price");
 		dialog.setHeaderText("How much did the meal cost in total?");
+		dialog.initStyle(StageStyle.UNDECORATED);
 		String contentText = "Total price: ";
 		dialog.setContentText(contentText);
+		
 		Optional<String> result = dialog.showAndWait();
+		
 		if (result.isPresent()) {
 			while (!isNumeric(result.get())) {
 				dialog.setContentText(contentText + "\nPlease enter a no.");
+				result = dialog.showAndWait();
+				if(!result.isPresent())
+					break;
 			}
+			if (result.isPresent()) {
 			user.command("setPrice", kitchenName, day, month, year, Integer.parseInt(result.get()));
 
 			while (user.getFeedbackMsg() == null) {
 				Thread.sleep(10);
 			}
-
-			if (result.isPresent()) {
 				feedbackMessage("Set Price", user.getFeedbackMsg());
 			}
-
 			updateDay();
-		} else {
-			
 		}
 	}
 
@@ -310,6 +310,7 @@ public class DayController {
 		user.setFeedbackMsg(null);
 
 		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.initStyle(StageStyle.UNDECORATED);
 		alert.setTitle("Lock Day");
 		alert.setHeaderText("You are about to lock this day.");
 		alert.setContentText("Once this is done it cannot be undone! \n Are you sure you want to continue?");
@@ -335,7 +336,6 @@ public class DayController {
 
 	@FXML
 	void setNoteButtonClicked(ActionEvent event) {
-
 	}
 
 	public void updateDay() throws InterruptedException {
@@ -394,6 +394,7 @@ public class DayController {
 
 	public void feedbackMessage(String cmd, String message) {
 		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.initStyle(StageStyle.UNDECORATED);
 		alert.setTitle(cmd);
 		alert.setHeaderText(null);
 		alert.setContentText(message);

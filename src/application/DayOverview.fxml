@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.DayController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.DayController">
    <children>
       <Label fx:id="titleLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="79.0" layoutY="85.0" text="Days with Dinner" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
          <font>
@@ -33,10 +33,10 @@
       <Button fx:id="updateButton" layoutX="165.0" layoutY="11.0" mnemonicParsing="false" onAction="#updateButtonClicked" text="Update" AnchorPane.leftAnchor="215.0" AnchorPane.rightAnchor="214.0" AnchorPane.topAnchor="20.0" />
       <TableView fx:id="dayTableView" prefWidth="418.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="130.0">
         <columns>
-          <TableColumn id="date" fx:id="dateTableColumn" prefWidth="100.0" text="Date" />
-          <TableColumn fx:id="chefTableColumn" prefWidth="100.0" text="Chef" />
-            <TableColumn fx:id="totalTableColumn" prefWidth="100.0" text="Total nr." />
-            <TableColumn fx:id="attendTableColumn" prefWidth="100.0" text="Attend" />
+          <TableColumn id="date" fx:id="dateTableColumn" maxWidth="130.0" minWidth="100.0" prefWidth="128.0" text="Date" />
+          <TableColumn fx:id="chefTableColumn" maxWidth="130.0" minWidth="100.0" prefWidth="128.0" text="Chef" />
+            <TableColumn fx:id="totalTableColumn" maxWidth="130.0" minWidth="100.0" prefWidth="128.0" text="Total nr." />
+            <TableColumn fx:id="attendTableColumn" maxWidth="130.0" minWidth="100.0" prefWidth="128.0" text="Attend" />
         </columns>
       </TableView>
    </children>

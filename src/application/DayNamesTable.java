@@ -1,12 +1,8 @@
 package application;
 
 import java.util.LinkedList;
-import java.util.ListIterator;
 
 import classes.User;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.control.Button;
 
 public class DayNamesTable {
 	private User user;

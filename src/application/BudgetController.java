@@ -16,9 +16,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 
 public class BudgetController {
@@ -50,6 +50,7 @@ public class BudgetController {
 		user.setFeedbackMsg(null);
 
 		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.initStyle(StageStyle.UNDECORATED);
 		alert.setTitle("Pay Your Balance");
 		alert.setHeaderText("You are about to reset your balance");
 		alert.setContentText("Once this is done it cannot be undone! \n Are you sure you want to continue?");
@@ -59,10 +60,9 @@ public class BudgetController {
 			user.command("resetUserBalance", kitchenName, 0, 0, 0, 0);
 
 			while (user.getFeedbackMsg() == null) {
-				System.out.println("budget: " + user.getFeedbackMsg());
 				Thread.sleep(10);
 			}
-
+			setBalance();
 			feedbackMessage("Reset Balance", user.getFeedbackMsg());
 
 		} else {
@@ -81,6 +81,7 @@ public class BudgetController {
 
 	public void feedbackMessage(String cmd, String message) {
 		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.initStyle(StageStyle.UNDECORATED);
 		alert.setTitle(cmd);
 		alert.setHeaderText(null);
 		alert.setContentText(message);
