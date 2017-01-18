@@ -73,7 +73,7 @@
          </children>
       </GridPane>
       <Button fx:id="setChefsButton" layoutX="125.0" layoutY="455.0" mnemonicParsing="false" onAction="#setChefsButtonClicked" prefHeight="25.0" prefWidth="146.0" text="Set Chefs" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="165.0" AnchorPane.rightAnchor="310.0" AnchorPane.topAnchor="455.0" />
-      <Button fx:id="attendDayButton" layoutX="330.0" layoutY="455.0" mnemonicParsing="false" onAction="#attendDayButtonClicked" prefHeight="25.0" prefWidth="170.0" text="Attend Day" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="310.0" AnchorPane.rightAnchor="165.0" AnchorPane.topAnchor="455.0" />
+      <Button fx:id="attendDayButton" layoutX="330.0" layoutY="455.0" mnemonicParsing="false" onAction="#attendDayButtonClicked" prefHeight="25.0" prefWidth="170.0" text="Attend/Unattend" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="310.0" AnchorPane.rightAnchor="165.0" AnchorPane.topAnchor="455.0" />
       <Button fx:id="setPrice" layoutX="10.0" layoutY="455.0" mnemonicParsing="false" onAction="#setPriceButtonClicked" prefHeight="25.0" prefWidth="146.0" text="Set Price" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="455.0" AnchorPane.topAnchor="455.0" />
       <Button fx:id="lockDayButton" layoutX="274.0" layoutY="423.0" mnemonicParsing="false" onAction="#lockDayButtonClicked" text="Lock Day" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="310.0" AnchorPane.topAnchor="410.0" />
    </children>
