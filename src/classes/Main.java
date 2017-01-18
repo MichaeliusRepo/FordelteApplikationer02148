@@ -15,6 +15,7 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 		user = new User();
 		user.setServerIP("10.16.129.214");
+		user.setSocetPort();
 		logIn();
 		user.createKitchen(str);
 		runApplication();
