@@ -297,6 +297,8 @@ public class DayController {
 			}
 
 			updateDay();
+		} else {
+			
 		}
 	}
 
