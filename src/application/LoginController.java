@@ -64,7 +64,6 @@ public class LoginController {
 			public void handle(KeyEvent ke) {
 
 				if (ke.getCode().equals(KeyCode.ENTER)) {
-
 					try {
 						loginButtonClicked(event);
 					} catch (Exception e) {

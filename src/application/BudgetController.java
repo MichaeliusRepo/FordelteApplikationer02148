@@ -125,7 +125,7 @@ public class BudgetController {
 			DayController dayController = loader.getController();
 			dayController.setUser(user);
 			try {
-				dayController.updateTable(kitchenName, true);
+				dayController.updateTable(kitchenName, false);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
