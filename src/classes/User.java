@@ -79,7 +79,7 @@ public class User {
 		while (feedbackMsg == null) {
 			Thread.sleep(10);
 		} // Wait for Server to return proper feedback.
-		return (feedbackMsg.contains(userName));
+		return (feedbackMsg.equals(userName + " was retrieved."));
 	}
 
 	public boolean getUser(String userName) throws Exception {
@@ -106,7 +106,7 @@ public class User {
 			Thread.sleep(10);
 		} // Wait for Server to return proper feedback.
 
-		boolean result = feedbackMsg.contains("was created");
+		boolean result = feedbackMsg.equals(kitchenName + " was created.");
 		if (result)
 			updateUser(); // WARNING: Method doesn't wait for this to finish!
 		return result;
@@ -126,7 +126,7 @@ public class User {
 			Thread.sleep(10);
 		} // Wait for Server to return proper feedback.
 
-		boolean result = feedbackMsg.contains("joined");
+		boolean result = feedbackMsg.equals(kitchenName + " does not exist.");
 		if (result)
 			updateUser(); // WARNING: Method doesn't wait for this to finish!
 		return result;
