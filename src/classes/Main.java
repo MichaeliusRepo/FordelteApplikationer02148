@@ -6,13 +6,15 @@ public class Main {
 
 	static Server dinnerClub = new Server();
 	static String str = "What Love Can Be";
-	static User user = new User();
+	static User user;
 	static Scanner in = new Scanner(System.in);
 	static int day;
 	static int month;
 	static int year;
 
 	public static void main(String[] args) throws Exception {
+		user = new User();
+		user.setServerIP("10.16.129.214");
 		logIn();
 		user.createKitchen(str);
 		runApplication();
