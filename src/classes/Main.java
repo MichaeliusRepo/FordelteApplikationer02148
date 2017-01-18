@@ -4,9 +4,9 @@ import java.util.Scanner;
 
 public class Main {
 
-	static Server dinnerClub = new Server();
+	//static Server dinnerClub = new Server();
 	static String str = "What Love Can Be";
-	static User user;
+	 static User user;
 	static Scanner in = new Scanner(System.in);
 	static int day;
 	static int month;

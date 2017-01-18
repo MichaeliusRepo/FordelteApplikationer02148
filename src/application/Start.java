@@ -29,6 +29,7 @@ public class Start extends Application {
 			Optional<String> result = dialog.showAndWait();
 			if (result.isPresent()) {
 				user.setServerIP(result.get());
+				user.setSocetPort();
 
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/Login.fxml"));
 			Parent root = loader.load();
@@ -56,7 +57,7 @@ public class Start extends Application {
 	}
 	
 	public static void main(String[] args) {
-		new Server();
+		//new Server();
 		launch(args);
 	}
 }

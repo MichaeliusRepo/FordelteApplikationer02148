@@ -25,8 +25,8 @@ import org.cmg.jresp.knowledge.Template;
 public class User {
 	private String userName = "";
 	private Node userSpace;
-	private PointToPoint p;
-	public SocketPort userPort;
+	 PointToPoint p;
+	 SocketPort userPort;
 	private String command;
 	private String feedbackMsg = null;
 
@@ -38,18 +38,13 @@ public class User {
 	private LinkedList<String> returnData;
 
 	public User() {
-		try{
-			userPort = new SocketPort(InetAddress.getLocalHost().getHostAddress(),8080);
-		}catch(Exception e){
-			e.printStackTrace();
-		}
 		userSpace = new Node(userName, new TupleSpace());
 		userSpace.addPort(userPort);
 		
 		userSpace.start();
 	}
 
-	public User(String userName) throws Exception {
+/*	public User(String userName) throws Exception {
 		this.userName = userName;
 		try{
 			userPort = new SocketPort(InetAddress.getLocalHost().getHostAddress(),8080);
@@ -60,10 +55,20 @@ public class User {
 		userSpace.addPort(userPort);
 		userSpace.start();
 		getUser(userName);
-	}
+	}*/
 	
 	public void setServerIP(String ip){
 		p = new PointToPoint("Server", new SocketPortAddress(ip,8080));
+	}
+	
+	public void setSocetPort(){
+		try{
+			System.out.println(InetAddress.getLocalHost().getHostAddress());
+			userPort = new SocketPort(InetAddress.getLocalHost().getHostAddress(),8080);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 
 	public LinkedList<String> getDays(String kitchenName) throws Exception {
