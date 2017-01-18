@@ -89,7 +89,7 @@ public class User {
 		while (feedbackMsg == null) {
 			Thread.sleep(10);
 		} // Wait for Server to return proper feedback.
-		return (feedbackMsg.contains(userName));
+		return (feedbackMsg.equals(userName + " was retrieved."));
 	}
 
 	public boolean createKitchen(String kitchenName) throws Exception {
