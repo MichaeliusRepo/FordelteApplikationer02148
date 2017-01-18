@@ -126,7 +126,7 @@ public class User {
 			Thread.sleep(10);
 		} // Wait for Server to return proper feedback.
 
-		boolean result = feedbackMsg.equals(kitchenName + " does not exist.");
+		boolean result = feedbackMsg.equals("You joined " + kitchenName);
 		if (result)
 			updateUser(); // WARNING: Method doesn't wait for this to finish!
 		return result;
