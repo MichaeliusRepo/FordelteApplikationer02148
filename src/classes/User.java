@@ -39,7 +39,7 @@ public class User {
 
 	public User() {
 		userSpace = new Node(userName, new TupleSpace());
-		userSpace.addPort(userPort);
+		
 		
 		userSpace.start();
 	}
@@ -69,6 +69,7 @@ public class User {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
+		userSpace.addPort(userPort);
 	}
 
 	public LinkedList<String> getDays(String kitchenName) throws Exception {
