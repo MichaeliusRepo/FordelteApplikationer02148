@@ -1,6 +1,7 @@
 package application;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import classes.User;
 import javafx.application.Platform;
@@ -11,8 +12,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -28,6 +33,9 @@ public class BudgetController {
 
 	@FXML
 	private Button backButton;
+	
+	@FXML
+	private Button resetButton;
 
 	@FXML
 	private Label balanceLabel;
@@ -35,6 +43,33 @@ public class BudgetController {
 	@FXML
 	void backButtonClicked(ActionEvent event) throws IOException {
 		newScene(event, "/application/DayOverview.fxml");
+	}
+	
+	@FXML
+	void resetButtonClicked(ActionEvent event) throws InterruptedException{
+		user.setFeedbackMsg(null);
+		
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Pay Your Balance");
+		alert.setHeaderText("You are about to reset your balance.");
+		alert.setContentText("Once this is done it cannot be undone! \n Are you sure you want to continue?");
+
+		Optional<ButtonType> result = alert.showAndWait();
+		if (result.get() == ButtonType.OK) {
+			user.command("resetBalance", kitchenName, 0, 0, 0, 0);
+
+			while (user.getFeedbackMsg() == null) {
+				Thread.sleep(10);
+			}
+
+			if (result.isPresent()) {
+				feedbackMessage("Reset Balance", user.getFeedbackMsg());
+			}
+
+		} else {
+			feedbackMessage("Balance", "Balance was not reset.");
+		}
+
 	}
 
 	@FXML
@@ -45,6 +80,15 @@ public class BudgetController {
 	//////////////////////////////
 	// controller methods
 
+	public void feedbackMessage(String cmd, String message) {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle(cmd);
+		alert.setHeaderText(null);
+		alert.setContentText(message);
+
+		alert.showAndWait();
+	}
+	
 	public void setKitchenName(String kitchenName) {
 		this.kitchenName = kitchenName;
 	}
