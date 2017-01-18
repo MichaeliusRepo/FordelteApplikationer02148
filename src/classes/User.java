@@ -25,10 +25,10 @@ import org.cmg.jresp.knowledge.Template;
 
 public class User {
 	private String userName = "";
-	//private static SocketPort userPort;
+	// private static SocketPort userPort;
 	private Node userSpace;
 	private static PointToPoint p;
-	private SocketPort userPort;
+	private static SocketPort userPort;
 	private String command;
 	private String feedbackMsg = null;
 
@@ -41,11 +41,13 @@ public class User {
 
 	public User() throws UnknownHostException, IOException {
 		userSpace = new Node(userName, new TupleSpace());
-		try {
-			userPort = new SocketPort(InetAddress.getLocalHost().getHostAddress(),8080);
-		} catch (Exception e) {
-			e.printStackTrace();
-		} 
+		if (userPort == null) {
+			try {
+				userPort = new SocketPort(InetAddress.getLocalHost().getHostAddress(), 8080);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		userSpace.addPort(userPort);
 		userSpace.start();
 	}
@@ -54,21 +56,19 @@ public class User {
 		this.userName = userName;
 		userSpace = new Node(userName, new TupleSpace());
 		try {
-			userPort = new SocketPort(InetAddress.getLocalHost().getHostAddress(),8080);
+			userPort = new SocketPort(InetAddress.getLocalHost().getHostAddress(), 8080);
 		} catch (Exception e) {
 			e.printStackTrace();
-		} 
+		}
 		userSpace.addPort(userPort);
 		userSpace.start();
 		getUser(userName);
 	}
-	
-	
 
-	public void setServerIP(String ip){
+	public void setServerIP(String ip) {
 		p = new PointToPoint("Server", new SocketPortAddress(ip, 8080));
 	}
-	
+
 	public LinkedList<String> getDays(String kitchenName) throws Exception {
 		feedbackMsg = null;
 		command("getDays", kitchenName, 0, 0, 0, 0);
@@ -77,8 +77,9 @@ public class User {
 		} // Wait for Server to return proper feedback.
 		return returnData;
 	}
-	
-	public LinkedList<String> getAttendees(String kitchenName, int day, int month, int year) throws InterruptedException {
+
+	public LinkedList<String> getAttendees(String kitchenName, int day, int month, int year)
+			throws InterruptedException {
 		feedbackMsg = null;
 		command("getAttendees", kitchenName, day, month, year, 0);
 		while (feedbackMsg == null) {
@@ -168,7 +169,7 @@ public class User {
 
 	private class UserAgent extends Agent {
 
-		public PointToPoint p = new PointToPoint("Server", new SocketPortAddress("10.16.143.162",8080));
+		public PointToPoint p = new PointToPoint("Server", new SocketPortAddress("10.16.143.162", 8080));
 		private Tuple t;
 
 		private UserAgent(String who, Tuple t) {
@@ -315,7 +316,7 @@ public class User {
 	public String getFeedbackMsg() {
 		return feedbackMsg;
 	}
-	
+
 	public void setFeedbackMsg(String feedback) {
 		feedbackMsg = feedback;
 	}
@@ -330,11 +331,11 @@ public class User {
 		}
 		return "";
 	}
-	
+
 	public LinkedList<String> getReturnData() {
 		return returnData;
 	}
-	
+
 	public void setReturnData(LinkedList<String> list) {
 		this.returnData = list;
 	}

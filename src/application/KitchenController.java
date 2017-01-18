@@ -101,14 +101,13 @@ public class KitchenController {
 	@FXML
 	void createKitchenButtonClicked(ActionEvent event) throws Exception {
 
+		if (user.createKitchen(newKitchenTextField.getText())) {
+			newScene(event, "/application/SelectKitchen.fxml");
+		} else {
+			emptyLabel.setText(user.getFeedbackMsg());
+		}
+		
 		if (!newKitchenTextField.getText().equals("")) {
-
-			if (user.createKitchen(newKitchenTextField.getText())) {
-				newScene(event, "/application/SelectKitchen.fxml");
-			} else {
-				emptyLabel.setText(user.getFeedbackMsg());
-			}
-
 		} else {
 			emptyLabel.setText("not valid: Remember to write a name");
 		}

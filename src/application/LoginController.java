@@ -47,7 +47,10 @@ public class LoginController {
 	@FXML
 	void loginButtonClicked(ActionEvent event) throws Exception {
 		String username = usernameTextField.getText();
-		if (user.getUser(username)) {
+		System.out.println("1 noget?  __"+username+" __ ");
+		boolean noget = user.getUser(username);
+		System.out.println("2 noget?  __"+username+" __ "+  noget);
+		if (noget) {
 			wrongUsernameLabel.setText("");
 			newScene(event, "/application/SelectKitchen.fxml");
 		} else {
