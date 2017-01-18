@@ -1,6 +1,7 @@
 package application;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -95,33 +96,38 @@ public class DayController {
 
 	@FXML
 	void viewPreviousCheckBoxClicked(ActionEvent event) throws Exception {
-		System.out.println("box " + viewPreviousCheckBox.isSelected());
 		updateTable(kitchenName, viewPreviousCheckBox.isSelected());
 	}
 
 	@FXML
 	void updateButtonClicked(ActionEvent event) throws Exception {
-		updateTable(kitchenName, true);
+		updateTable(kitchenName, viewPreviousCheckBox.isSelected());
 
 	}
 
 	public void updateTable(String kitchenName, boolean previous) throws Exception {
+		this.kitchenName = kitchenName;
+		titleLabel.setText(kitchenName);
+		
 		dayTableView.getItems().clear();
 		totalTableColumn.setStyle("-fx-alignment: CENTER;");
 		attendTableColumn.setStyle("-fx-alignment: CENTER;");
-		this.kitchenName = kitchenName;
-		titleLabel.setText(kitchenName);
+
 		DayTable dayTable = new DayTable(user, kitchenName, 0);
-		System.out.println("previous " + previous);
+		
+		Calendar current = Calendar.getInstance();
+		Calendar dinnerDay = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		
 		for (int i = 0; i < dayTable.daysSize(); i++) {
+			dayTable = new DayTable(user, kitchenName, i);
+			dinnerDay.setTime(sdf.parse(dayTable.getDate()+" 23:59:59"));
 			if (previous) {
-				dayTableView.getItems().add(new DayTable(user, kitchenName, i));
-			} else if (Calendar.getInstance().after(dayTable.getDate())) {
-				System.out.println(
-						"NOT previous " + dayTable.getDate() + " " + Calendar.getInstance().after(dayTable.getDate()));
-				dayTableView.getItems().add(new DayTable(user, kitchenName, i));
+				dayTableView.getItems().add(dayTable);
+			} else if (!current.after(dinnerDay)) {
+				dayTableView.getItems().add(dayTable);
 			}
-			System.out.println(Calendar.getInstance().after(dayTable.getDate()));
+			
 		}
 
 		dateTableColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
@@ -136,7 +142,6 @@ public class DayController {
 				if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
 					try {
 						daySelected = dayTableView.getSelectionModel().getSelectedItem().getDate();
-						System.out.println(daySelected);
 						newScene(event, "/application/DayWindow.fxml");
 					} catch (IOException e) {
 						e.printStackTrace();
@@ -173,9 +178,7 @@ public class DayController {
 			int day = newDateDatePicker.getValue().getDayOfMonth();
 			int month = newDateDatePicker.getValue().getMonthValue();
 			int year = newDateDatePicker.getValue().getYear();
-			System.out.println("Creating the day: " + newDateDatePicker.getValue().toString());
 			user.command("addDay", kitchenName, day, month, year, 0);
-			System.out.println("in add day: " + user.getFeedbackMsg());
 			newScene(event, "/application/DayOverview.fxml");
 		} else {
 			noDayLabel.setText("  Insert a date");
@@ -336,7 +339,6 @@ public class DayController {
 	}
 
 	public void updateDay() throws InterruptedException {
-		System.out.println(daySelected);
 		setValues(daySelected);
 		dateLabel.setText(daySelected);
 		chefsLabel.setText(getChef());
@@ -444,7 +446,7 @@ public class DayController {
 			try {
 				dayController = loader.getController();
 				dayController.setUser(user);
-				dayController.updateTable(kitchenName, true);
+				dayController.updateTable(kitchenName, false);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

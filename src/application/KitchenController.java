@@ -200,7 +200,7 @@ public class KitchenController {
 			DayController dayController = loader.getController();
 			dayController.setUser(user);
 			try {
-				dayController.updateTable(((RadioButton) toggleGroup.getSelectedToggle()).getText(), true);
+				dayController.updateTable(((RadioButton) toggleGroup.getSelectedToggle()).getText(), false);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
