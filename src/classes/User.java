@@ -55,6 +55,15 @@ public class User {
 		} // Wait for Server to return proper feedback.
 		return returnData;
 	}
+	
+	public LinkedList<String> getAttendees(String kitchenName, int day, int month, int year) throws InterruptedException {
+		feedbackMsg = null;
+		command("getAttendees", kitchenName, day, month, year, 0);
+		while (feedbackMsg == null) {
+			Thread.sleep(10);
+		} // Wait for Server to return proper feedback.
+		return returnData;
+	}
 
 	public void command(String command, String kitchenName, int day, int month, int year, int extra) {
 		this.command = command;
@@ -296,6 +305,14 @@ public class User {
 			return kitchens.get(i);
 		}
 		return "";
+	}
+	
+	public LinkedList<String> getReturnData() {
+		return returnData;
+	}
+	
+	public void setReturnData(LinkedList<String> list) {
+		this.returnData = list;
 	}
 
 }

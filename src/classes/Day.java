@@ -17,6 +17,7 @@ import org.cmg.jresp.topology.Self;
 public class Day {
 
 	private int day, month, year, totalAttendees, price;
+	private double pricePer;
 	private String dayName;
 
 	public Day(int day, int month, int year) {
@@ -50,7 +51,7 @@ public class Day {
 		@Override
 		protected void doRun() throws Exception {
 			put(new Tuple("dayCreated"), Self.SELF);
-			put(new Tuple("price", price), Self.SELF);
+			put(new Tuple("price", 0), Self.SELF);
 			while (true) {
 				try {
 					Tuple t = getp(cmdTemp);
@@ -113,8 +114,16 @@ public class Day {
 					setPrice(price);
 					break;
 
+				case "getShopper":
+					getShopper();
+					break;
+
 				case "getPrice":
 					getPrice();
+					break;
+
+				case "getPricePer":
+					getPricePer();
 					break;
 				}
 			} catch (Exception e) {
@@ -150,17 +159,33 @@ public class Day {
 
 					put(new Tuple("price", price), Self.SELF);
 					this.buyer = userName;
+					put(new Tuple("shopper", userName), Self.SELF);
 
 					if (t == null)
 						feedback(feedback, true, "The price was set to " + price, null);
 					else
 						feedback(feedback, false, "The price was already set to " + t.getElementAt(Integer.class, 1)
 								+ ", but has been replaced.", null);
-					System.out.println("DayAddBalanceBefore");
+					pricePer = (double) price / totalAttendees;
 					addBalance();
-					System.out.println("DayAddBalanceAfter");
 				} else {
+					pricePer = 0;
 					feedback(feedback, false, "Day hasn't been locked yet.", null);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		private void getShopper() {
+			String feedback = "getShopperFeedback";
+			try {
+				Tuple t = queryp(
+						new Template(new ActualTemplateField("shopper"), new FormalTemplateField(String.class)));
+				if (t != null) {
+					feedback(feedback, true, userName, null);
+				} else {
+					feedback(feedback, false, "No shopper yet", null);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -172,6 +197,12 @@ public class Day {
 			Tuple t = queryp(new Template(new ActualTemplateField("price"), new FormalTemplateField(Integer.class)));
 			int price = t.getElementAt(Integer.class, 1);
 			feedback(feedback, true, "" + price, null);
+
+		}
+
+		private void getPricePer() {
+			String feedback = "getPricePerFeedback";
+			feedback(feedback, true, "" + pricePer, null);
 
 		}
 
@@ -208,14 +239,14 @@ public class Day {
 						new Template(new ActualTemplateField("chef"), new FormalTemplateField(String.class)));
 				switch (chefs.size()) {
 				case 0:
-					msg = "Nobody as of yet is added as chef to this date.";
+					msg = "No chefs assigned";
 					break;
 				case 1:
-					msg = chefs.get(0).getElementAt(String.class, 1) + " is today's cook.";
+					msg = chefs.get(0).getElementAt(String.class, 1);
 					break;
 				case 2:
-					msg = chefs.get(0).getElementAt(String.class, 1) + " and "
-							+ chefs.get(1).getElementAt(String.class, 1) + " are cooks today.";
+					msg = chefs.get(0).getElementAt(String.class, 1) + " & "
+							+ chefs.get(1).getElementAt(String.class, 1);
 					break;
 				default:
 					throw new Exception();
@@ -234,7 +265,7 @@ public class Day {
 				if (queryp(new Template(new ActualTemplateField("locked"))) == null && totalAttendees > 0) {
 					put(new Tuple("locked"), Self.SELF);
 					feedback(feedback, true, dayName + " was locked.", null);
-				} else if(queryp(new Template(new ActualTemplateField("locked"))) != null && totalAttendees > 0){
+				} else if (queryp(new Template(new ActualTemplateField("locked"))) != null && totalAttendees > 0) {
 					feedback(feedback, false, dayName + " was already locked.", null);
 				} else {
 					feedback(feedback, false, dayName + " has no attendees.", null);
@@ -252,15 +283,18 @@ public class Day {
 							new FormalTemplateField(Integer.class));
 					Tuple t = getp(temp);
 
-					if (t == null)
+					if (t == null) {
 						put(new Tuple("attendee", userName, attendees), Self.SELF);
-					else {
+						feedback(feedback, true, userName + " added with " + attendees + " attendees.", null);
+					} else {
 						put(new Tuple("attendee", userName, attendees), Self.SELF);
 						totalAttendees -= t.getElementAt(Integer.class, 2);
+						feedback(feedback, false,
+								userName + " was already set to attend. Day has been updated with any guests added.",
+								null);
 					}
 					totalAttendees += attendees;
 					System.out.println(totalAttendees);
-					feedback(feedback, true, userName + " added with " + attendees + " attendees.", null);
 
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -276,7 +310,7 @@ public class Day {
 				LinkedList<Tuple> attendeesTupleList = queryAll(new Template(new ActualTemplateField("attendee"),
 						new FormalTemplateField(String.class), new FormalTemplateField(Integer.class)));
 				LinkedList<String> list = new LinkedList<String>();
-				String attendees = "Attendees:\n";
+				String attendees = "";
 
 				ListIterator<Tuple> iterator = attendeesTupleList.listIterator();
 				while (iterator.hasNext()) {

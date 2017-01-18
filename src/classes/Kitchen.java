@@ -103,6 +103,8 @@ public class Kitchen {
 			case "lockDay":
 			case "getAttendees":
 			case "getPrice":
+			case "getShopper":
+			case "getPricePer":
 				executeDayCmd(cmd, data);
 				break;
 

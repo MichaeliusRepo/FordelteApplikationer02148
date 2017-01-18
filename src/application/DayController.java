@@ -2,6 +2,9 @@ package application;
 
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.LinkedList;
+import java.util.ListIterator;
+import java.util.Optional;
 
 import classes.User;
 import javafx.application.Platform;
@@ -13,22 +16,26 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 
 public class DayController {
 	private User user;
-	private String kitchenName;
+	private String kitchenName, daySelected;
+	private int day, month, year;
 
 	@FXML
 	private Label titleLabel;
@@ -123,7 +130,6 @@ public class DayController {
 		attendTableColumn.setCellValueFactory(new PropertyValueFactory<>("attend"));
 
 		dayTableView.setOnMousePressed(new EventHandler<MouseEvent>() {
-			private String daySelected;
 
 			@Override
 			public void handle(MouseEvent event) {
@@ -183,24 +189,208 @@ public class DayController {
 	private Button dayUpdateButton;
 
 	@FXML
-	private TableColumn<?, ?> dayNameColumn;
+	private TableView<DayNamesTable> dayNamesTable;
 
 	@FXML
-	private TableColumn<?, ?> dayAttendingColumn;
+	private TableColumn<DayNamesTable, String> dayNameColumn;
 
 	@FXML
 	private TextArea dayNote;
 
 	@FXML
-	void dayUpdateButtonClicked(ActionEvent event) {
+	private Label dateLabel;
+
+	@FXML
+	private Label chefsLabel;
+
+	@FXML
+	private Label shopperLabel;
+
+	@FXML
+	private Label priceLabel;
+
+	@FXML
+	private Label perPriceLabel;
+
+	@FXML
+	void dayUpdateButtonClicked(ActionEvent event) throws Exception {
+		updateDay();
+		updateDayTable();
+	}
+
+	@FXML
+	void updateDayTable() throws InterruptedException {
+		dayNamesTable.getItems().clear();
+		DayNamesTable nameTable = new DayNamesTable(user, kitchenName, day, month, year, 0);
+
+		for (int i = 0; i < nameTable.listSize(); i++) {
+			dayNamesTable.getItems().add(new DayNamesTable(user, kitchenName, day, month, year, i));
+		}
+
+		dayNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+	}
+
+	@FXML
+	void setChefsButtonClicked(ActionEvent event) throws Exception {
+		user.setFeedbackMsg(null);
+		user.command("addChef", kitchenName, day, month, year, 0);
+		while (user.getFeedbackMsg() == null) {
+			Thread.sleep(10);
+		}
+		feedbackMessage("Add Chef", user.getFeedbackMsg());
+		updateDay();
 
 	}
 
+	@FXML
+	void attendDayButtonClicked(ActionEvent event) throws InterruptedException {
+		user.setFeedbackMsg(null);
+
+		TextInputDialog dialog = new TextInputDialog("No. of attendees");
+		dialog.setTitle("Attend Day");
+		dialog.setHeaderText("How many people should be expected?");
+		dialog.setContentText(
+				"Type 1 if you're coming alone, \n 2 if you're bringing a guest etc. \n If you no longer wish to attend type 0.");
+		Optional<String> result = dialog.showAndWait();
+		user.command("attendDay", kitchenName, day, month, year, Integer.parseInt(result.get()));
+
+		while (user.getFeedbackMsg() == null) {
+			Thread.sleep(10);
+		}
+
+		if (result.isPresent()) {
+			feedbackMessage("Attend Day", user.getFeedbackMsg());
+		}
+		updateDay();
+	}
+
+	@FXML
+	void setPriceButtonClicked(ActionEvent event) throws InterruptedException {
+		user.setFeedbackMsg(null);
+
+		TextInputDialog dialog = new TextInputDialog("No. of attendees");
+		dialog.setTitle("Set Price");
+		dialog.setHeaderText("How much did the meal cost in total?");
+		dialog.setContentText("Total price: ");
+		Optional<String> result = dialog.showAndWait();
+
+		user.command("setPrice", kitchenName, day, month, year, Integer.parseInt(result.get()));
+
+		while (user.getFeedbackMsg() == null) {
+			Thread.sleep(10);
+		}
+
+		if (result.isPresent()) {
+			feedbackMessage("Set Price", user.getFeedbackMsg());
+		}
+		updateDay();
+	}
+
+	@FXML
+	void lockDayButtonClicked(ActionEvent event) throws InterruptedException {
+		user.setFeedbackMsg(null);
+
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Lock Day");
+		alert.setHeaderText("You are about to lock this day.");
+		alert.setContentText("Once this is done it cannot be undone! \n Are you sure you want to continue?");
+
+		Optional<ButtonType> result = alert.showAndWait();
+		if (result.get() == ButtonType.OK) {
+			user.command("lockDay", kitchenName, day, month, year, 0);
+
+			while (user.getFeedbackMsg() == null) {
+				Thread.sleep(10);
+			}
+
+			if (result.isPresent()) {
+				feedbackMessage("Lock Day", user.getFeedbackMsg());
+			}
+
+		} else {
+			feedbackMessage("Lock Day", "Day was not locked.");
+		}
+
+		updateDay();
+	}
+
+	@FXML
+	void setNoteButtonClicked(ActionEvent event) {
+
+	}
+
+	public void updateDay() throws InterruptedException {
+		System.out.println(daySelected);
+		setValues(daySelected);
+		dateLabel.setText(daySelected);
+		chefsLabel.setText(getChef());
+		priceLabel.setText(getPrice());
+		shopperLabel.setText(getShopper());
+		perPriceLabel.setText(getPricePer());
+
+	}
+
+	public String getChef() throws InterruptedException {
+		user.setFeedbackMsg(null);
+		user.command("getChef", kitchenName, day, month, year, 0);
+		while (user.getFeedbackMsg() == null) {
+			Thread.sleep(10);
+		}
+		return user.getFeedbackMsg();
+	}
+
+	public String getPrice() throws InterruptedException {
+		user.setFeedbackMsg(null);
+		user.command("getPrice", kitchenName, day, month, year, 0);
+		while (user.getFeedbackMsg() == null) {
+			Thread.sleep(10);
+		}
+		return user.getFeedbackMsg();
+	}
+
+	public String getPricePer() throws InterruptedException {
+		user.setFeedbackMsg(null);
+		user.command("getPricePer", kitchenName, day, month, year, 0);
+		while (user.getFeedbackMsg() == null) {
+			Thread.sleep(10);
+		}
+		return user.getFeedbackMsg();
+	}
+
+	public String getShopper() throws InterruptedException {
+		user.setFeedbackMsg(null);
+		user.command("getShopper", kitchenName, day, month, year, 0);
+		while (user.getFeedbackMsg() == null) {
+			Thread.sleep(10);
+		}
+		return user.getFeedbackMsg();
+	}
+
+	public void setValues(String date) {
+		day = Integer.parseInt(date.substring(0, date.indexOf("/")));
+		String str = date.substring(date.indexOf("/") + 1, date.length());
+		month = Integer.parseInt(str.substring(0, str.indexOf("/")));
+		str = str.substring(str.indexOf("/") + 1, str.length());
+		year = Integer.parseInt(str);
+	}
+
+	public void feedbackMessage(String cmd, String message) {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle(cmd);
+		alert.setHeaderText(null);
+		alert.setContentText(message);
+
+		alert.showAndWait();
+	}
 	//////////////////////////////
 	// controller methods
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public void setDay(String date) {
+		this.daySelected = date;
 	}
 
 	private void newScene(Event event, String path) throws IOException {
@@ -210,6 +400,7 @@ public class DayController {
 		Parent root = loader.load();
 		KitchenController kitchenController;
 		DayController dayController;
+
 		int x = 400, y = 400;
 
 		switch (path) {
@@ -224,8 +415,8 @@ public class DayController {
 			break;
 
 		case "/application/DayOverview.fxml":
-			x = 600;
-			y = 500;
+			x = 590;
+			y = 490;
 			try {
 				dayController = loader.getController();
 				dayController.setUser(user);
@@ -236,8 +427,19 @@ public class DayController {
 			break;
 
 		case "/application/DayWindow.fxml":
-			x = 600;
-			y = 500;
+			x = 590;
+			y = 490;
+			try {
+				dayController = loader.getController();
+				dayController.setUser(user);
+				dayController.setKitchenName(kitchenName);
+				dayController.setDay(daySelected);
+				dayController.updateDay();
+				dayController.updateDayTable();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
 		case "/application/AddDay.fxml":
 			dayController = loader.getController();
 			dayController.setUser(user);
@@ -248,7 +450,11 @@ public class DayController {
 			BudgetController budgetController = loader.getController();
 			budgetController.setUser(user);
 			budgetController.setKitchenName(kitchenName);
-			budgetController.setBalance();
+			try {
+				budgetController.setBalance();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			break;
 
 		}

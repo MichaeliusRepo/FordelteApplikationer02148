@@ -20,7 +20,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 public class KitchenController {
-	private String username;
+	private String username, kitchenName;
 	private User user;
 
 	////////////////////////
@@ -73,6 +73,7 @@ public class KitchenController {
 	void selectDinnerClubButtonClicked(ActionEvent event) throws IOException {
 
 		if (((RadioButton) toggleGroup.getSelectedToggle()).getText().length() > 0) {
+			kitchenName = ((RadioButton) toggleGroup.getSelectedToggle()).getText();
 			newScene(event, "/application/DayOverview.fxml");
 		} else {
 			noKitchenLabel.setText("Please select a dinner club");
@@ -171,6 +172,7 @@ public class KitchenController {
 
 	private void newScene(ActionEvent event, String path) throws IOException {
 		int x = 400;
+		int y = 400;
 		((Node) event.getSource()).getScene().getWindow().hide();
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
 		Parent root = loader.load();
@@ -198,16 +200,17 @@ public class KitchenController {
 			DayController dayController = loader.getController();
 			dayController.setUser(user);
 			try {
-				dayController.updateTable(((RadioButton) toggleGroup.getSelectedToggle()).getText(), false);
+				dayController.updateTable(((RadioButton) toggleGroup.getSelectedToggle()).getText(), true);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			x = 500;
+			x = 590;
+			y = 490;
 			break;
 
 		}
 
-		Scene scene = new Scene(root, x, 400);
+		Scene scene = new Scene(root, x, y);
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		Stage stage = new Stage();
 		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
