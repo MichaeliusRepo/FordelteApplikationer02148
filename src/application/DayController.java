@@ -107,20 +107,20 @@ public class DayController {
 	public void updateTable(String kitchenName, boolean previous) throws Exception {
 		this.kitchenName = kitchenName;
 		titleLabel.setText(kitchenName);
-		
+
 		dayTableView.getItems().clear();
 		totalTableColumn.setStyle("-fx-alignment: CENTER;");
 		attendTableColumn.setStyle("-fx-alignment: CENTER;");
 
 		DayTable dayTable = new DayTable(user, kitchenName, 0);
-		
+
 		Calendar current = Calendar.getInstance();
 		Calendar dinnerDay = Calendar.getInstance();
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-		
+
 		for (int i = 0; i < dayTable.daysSize(); i++) {
 			dayTable = new DayTable(user, kitchenName, i);
-			dinnerDay.setTime(sdf.parse(dayTable.getDate()+" 23:59:59"));
+			dinnerDay.setTime(sdf.parse(dayTable.getDate() + " 23:59:59"));
 			if (previous) {
 				dayTableView.getItems().add(dayTable);
 			} else if (!current.after(dinnerDay)) {
@@ -138,11 +138,13 @@ public class DayController {
 			@Override
 			public void handle(MouseEvent event) {
 				if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
-					try {
-						daySelected = dayTableView.getSelectionModel().getSelectedItem().getDate();
-						newScene(event, "/application/DayWindow.fxml");
-					} catch (IOException e) {
-						e.printStackTrace();
+					if (dayTableView.getSelectionModel().getSelectedItem() != null) {
+						try {
+							daySelected = dayTableView.getSelectionModel().getSelectedItem().getDate();
+							newScene(event, "/application/DayWindow.fxml");
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
 					}
 				}
 			}
@@ -258,15 +260,15 @@ public class DayController {
 			while (!isNumeric(result.get())) {
 				dialog.setContentText(contentText + "\nplease enter a no.");
 				result = dialog.showAndWait();
-				if(!result.isPresent())
+				if (!result.isPresent())
 					break;
 			}
 			if (result.isPresent()) {
-			user.command("attendDay", kitchenName, day, month, year, Integer.parseInt(result.get()));
+				user.command("attendDay", kitchenName, day, month, year, Integer.parseInt(result.get()));
 
-			while (user.getFeedbackMsg() == null) {
-				Thread.sleep(10);
-			}
+				while (user.getFeedbackMsg() == null) {
+					Thread.sleep(10);
+				}
 				feedbackMessage("Attend Day", user.getFeedbackMsg());
 			}
 			updateDay();
@@ -283,22 +285,22 @@ public class DayController {
 		dialog.initStyle(StageStyle.UNDECORATED);
 		String contentText = "Total price: ";
 		dialog.setContentText(contentText);
-		
+
 		Optional<String> result = dialog.showAndWait();
-		
+
 		if (result.isPresent()) {
 			while (!isNumeric(result.get())) {
 				dialog.setContentText(contentText + "\nPlease enter a no.");
 				result = dialog.showAndWait();
-				if(!result.isPresent())
+				if (!result.isPresent())
 					break;
 			}
 			if (result.isPresent()) {
-			user.command("setPrice", kitchenName, day, month, year, Integer.parseInt(result.get()));
+				user.command("setPrice", kitchenName, day, month, year, Integer.parseInt(result.get()));
 
-			while (user.getFeedbackMsg() == null) {
-				Thread.sleep(10);
-			}
+				while (user.getFeedbackMsg() == null) {
+					Thread.sleep(10);
+				}
 				feedbackMessage("Set Price", user.getFeedbackMsg());
 			}
 			updateDay();
