@@ -33,7 +33,7 @@ public class BudgetController {
 
 	@FXML
 	private Button backButton;
-	
+
 	@FXML
 	private Button resetButton;
 
@@ -44,11 +44,11 @@ public class BudgetController {
 	void backButtonClicked(ActionEvent event) throws IOException {
 		newScene(event, "/application/DayOverview.fxml");
 	}
-	
+
 	@FXML
-	void resetButtonClicked(ActionEvent event) throws InterruptedException{
+	void resetButtonClicked(ActionEvent event) throws InterruptedException {
 		user.setFeedbackMsg(null);
-		
+
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Pay Your Balance");
 		alert.setHeaderText("You are about to reset your balance");
@@ -59,12 +59,11 @@ public class BudgetController {
 			user.command("resetUserBalance", kitchenName, 0, 0, 0, 0);
 
 			while (user.getFeedbackMsg() == null) {
-				System.out.println("budget: "+user.getFeedbackMsg());
+				System.out.println("budget: " + user.getFeedbackMsg());
 				Thread.sleep(10);
 			}
 
 			feedbackMessage("Reset Balance", user.getFeedbackMsg());
-			
 
 		} else {
 			feedbackMessage("Balance", "Balance was not reset.");
@@ -88,7 +87,7 @@ public class BudgetController {
 
 		alert.showAndWait();
 	}
-	
+
 	public void setKitchenName(String kitchenName) {
 		this.kitchenName = kitchenName;
 	}

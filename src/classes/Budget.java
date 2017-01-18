@@ -72,7 +72,7 @@ public class Budget {
 					break;
 
 				case "resetUserBalance":
-					resetBalance(userName);
+					resetUserBalance();
 					break;
 				}
 
@@ -81,7 +81,7 @@ public class Budget {
 			}
 		}
 
-		private void resetBalance(String userName) {
+		private void resetUserBalance() {
 			String feedback = "resetUserBalanceFeedback";
 			try {
 				Template temp = new Template(new ActualTemplateField("user"), new ActualTemplateField(userName),

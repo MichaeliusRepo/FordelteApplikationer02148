@@ -213,7 +213,7 @@ public class Kitchen {
 
 		private void resetUserBalance(Tuple data) {
 			try {
-				put(new Tuple("resetUserBalance", data), budgetPointer);
+				put(new Tuple("resetUserBalance", userName, kitchenName, false, data), budgetPointer);
 				sendFeedback("resetUserBalanceFeedback", recieveFeedback("Budget" + kitchenName, "resetUserBalanceFeedback"));
 			} catch (Exception e) {
 				e.printStackTrace();
