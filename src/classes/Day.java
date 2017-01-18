@@ -54,7 +54,7 @@ public class Day {
 			put(new Tuple("price", 0), Self.SELF);
 			while (true) {
 				try {
-					Tuple t = getp(cmdTemp);
+					Tuple t = get(cmdTemp, Self.SELF);
 					if (t != null)
 						exec(new DayAgent(t));
 				} catch (Exception e) {
