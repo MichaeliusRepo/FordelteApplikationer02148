@@ -1,7 +1,7 @@
 package application;
 
 // 02148 Introduction to Coordination in Distributed Applications
-// 20. Januar 2017
+// 19. Januar 2017
 // Team 9 - Dinner Club
 // 	- Alexander Kristian Armstrong, s154302
 //	- Michael Atchapero,  s143049

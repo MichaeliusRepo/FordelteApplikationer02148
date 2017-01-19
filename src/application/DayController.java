@@ -1,7 +1,7 @@
 package application;
 
 // 02148 Introduction to Coordination in Distributed Applications
-// 20. Januar 2017
+// 19. Januar 2017
 // Team 9 - Dinner Club
 //	- Alexander Kristian Armstrong, s154302
 //	- Michael Atchapero,  s143049
@@ -407,6 +407,10 @@ public class DayController {
 	public void setDay(String date) {
 		this.daySelected = date;
 	}
+	
+	private void setKitchenName(String kitchenName) {
+		this.kitchenName = kitchenName;
+	}
 
 	// Changing the display window
 	private void newScene(Event event, String path) throws IOException {
@@ -494,10 +498,4 @@ public class DayController {
 			stage.setResizable(false);
 		stage.show();
 	}
-
-	private void setKitchenName(String kitchenName) {
-		this.kitchenName = kitchenName;
-
-	}
-
 }
