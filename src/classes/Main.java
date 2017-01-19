@@ -1,9 +1,18 @@
 package classes;
 
+// 02148 Introduction to Coordination in Distributed Applications
+// 19. Januar 2017
+// Team 9 - Dinner Club
+//	- Alexander Kristian Armstrong, s154302
+//	- Michael Atchapero,  s143049
+//	- Mathias Ennegaard Asmussen, s154219
+//	- Emilie Isabella Dahl, s153762
+//	- Jon Ravn Nielsen, s136448
+
 import java.util.Scanner;
 
 public class Main {
-
+	// Creating a server so the user can communicate with the other classes
 	static Server dinnerClub = new Server();
 	static String str = "What Love Can Be";
 	static User user = new User();
@@ -19,11 +28,11 @@ public class Main {
 	}
 
 	private static void logIn() throws Exception {
+		
 		while (user.getUserName().equals("")) {
 			System.out.print("Write 'addUser' to create a new user, or 'getUser' to log in to an existing account.");
 			String cmd = in.nextLine();
 			String userName;
-			// String kitchenName;
 
 			System.out.print("Please enter an user name: ");
 			userName = in.nextLine();
@@ -52,6 +61,7 @@ public class Main {
 
 			case "day":
 			case "Day":
+				// Does not check for wrong inputs, but mainly intended for own testing
 				System.out.print("Enter day: (e.g. 01) ");
 				day = Integer.parseInt(in.nextLine());
 				System.out.print("Enter month: (e.g. 01) ");
@@ -96,9 +106,9 @@ public class Main {
 			case "Help":
 				System.out.println("Valid commands:");
 				System.out.println("day/Day");
-				System.out.println("Reset Balance");
-				System.out.println("Get Balance");
-				System.out.println("Get Days");
+				System.out.println("resetUserBalance");
+				System.out.println("getBalance");
+				System.out.println("getDays");
 				System.out.println("exit/Log Out/logout");
 				break;
 

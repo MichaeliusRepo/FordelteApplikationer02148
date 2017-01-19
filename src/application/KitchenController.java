@@ -1,5 +1,14 @@
 package application;
 
+// 02148 Introduction to Coordination in Distributed Applications
+// 19. Januar 2017
+// Team 9 - Dinner Club
+//	- Alexander Kristian Armstrong, s154302
+//	- Michael Atchapero,  s143049
+//	- Mathias Ennegaard Asmussen, s154219
+//	- Emilie Isabella Dahl, s153762
+//	- Jon Ravn Nielsen, s136448
+
 import java.io.IOException;
 
 import classes.User;
@@ -20,7 +29,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 public class KitchenController {
-	private String username, kitchenName;
+	private String kitchenName;
 	private User user;
 
 	////////////////////////
@@ -71,7 +80,7 @@ public class KitchenController {
 
 	@FXML
 	void selectDinnerClubButtonClicked(ActionEvent event) throws IOException {
-
+		// Making sure there is a dinner club available
 		if (((RadioButton) toggleGroup.getSelectedToggle()).getText().length() > 0) {
 			kitchenName = ((RadioButton) toggleGroup.getSelectedToggle()).getText();
 			newScene(event, "/application/DayOverview.fxml");
@@ -103,7 +112,7 @@ public class KitchenController {
 
 	@FXML
 	void createKitchenButtonClicked(ActionEvent event) throws Exception {
-
+		// Checking the input
 		if (!newKitchenTextField.getText().equals("")) {
 
 			if (user.createKitchen(newKitchenTextField.getText())) {
@@ -120,7 +129,6 @@ public class KitchenController {
 	@FXML
 	void backButtonClicked(ActionEvent event) throws IOException {
 		newScene(event, "/application/SelectKitchen.fxml");
-
 	}
 
 	////////////////////////
@@ -135,7 +143,6 @@ public class KitchenController {
 	@FXML
 	void joinExcistingKitchenButtonClicked(ActionEvent event) throws Exception {
 		if (!joinKitchenTextField.getText().equals("")) {
-
 			if (user.joinKitchen(joinKitchenTextField.getText())) {
 				newScene(event, "/application/SelectKitchen.fxml");
 			} else {
@@ -171,17 +178,16 @@ public class KitchenController {
 	}
 
 	private void newScene(ActionEvent event, String path) throws IOException {
-		int x = 400;
-		int y = 400;
 		((Node) event.getSource()).getScene().getWindow().hide();
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
 		Parent root = loader.load();
-
+		int x = 400, y = 400;
 		KitchenController kitchenController;
 
 		switch (path) {
 		case "/application/Login.fxml":
 			LoginController loginController = loader.getController();
+			// Setting the user to a new user, so all the information is reset.
 			loginController.setUser(new User());
 			break;
 
@@ -200,14 +206,13 @@ public class KitchenController {
 			DayController dayController = loader.getController();
 			dayController.setUser(user);
 			try {
-				dayController.updateTable(((RadioButton) toggleGroup.getSelectedToggle()).getText(), false);
+				dayController.updateTable(kitchenName, false);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			x = 590;
 			y = 490;
 			break;
-
 		}
 
 		Scene scene = new Scene(root, x, y);

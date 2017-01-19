@@ -28,10 +28,12 @@ public class Kitchen {
 	public String getKitchenName() {
 		return kitchenName;
 	}
-
+	
+	//Class used for continuously fetching and assigning new agents to execute the command tuples
 	private class KitchenMonitor extends Agent {
 
 		private Tuple t;
+		//Fetching command tuples <command, username, kitchenname, feedback, datatuple>
 		private Template kitchenTemplate = new Template(new FormalTemplateField(String.class),
 				new FormalTemplateField(String.class), new FormalTemplateField(String.class),
 				new ActualTemplateField(false), new FormalTemplateField(Tuple.class));
@@ -43,9 +45,11 @@ public class Kitchen {
 		@Override
 		protected void doRun() {
 			try {
+				//Creation of the kitchen budget
 				put(new Tuple("Budget" + kitchenName, new Budget(kitchenName)), Self.SELF);
 				while (true) {
 					t = get(kitchenTemplate, Self.SELF);
+					//Creation of new agent to execute command to support multiple users, by multithreading
 					exec(new KitchenAgent(t));
 				}
 			} catch (Exception e) {
@@ -55,6 +59,7 @@ public class Kitchen {
 		}
 	}
 
+	//Agent class used for executing command in the kitchen class
 	private class KitchenAgent extends Agent {
 
 		private PointToPoint pointer, serverPointer, budgetPointer;
@@ -84,7 +89,7 @@ public class Kitchen {
 
 		@Override
 		protected void doRun() {
-
+			//Used to interpretate the command of a command tuple
 			switch (cmd) {
 
 			case "addDay":
@@ -169,6 +174,7 @@ public class Kitchen {
 
 		}
 
+		//Used for sending and receiving command/feedback tuples to day tuplespaces
 		private void executeDayCmd(String cmd, Tuple data) {
 			try {
 				if (checkDayExists(dayTarget)) {
@@ -183,6 +189,8 @@ public class Kitchen {
 			}
 		}
 
+		//Used for putting a command tuple including a price into a day's tuplespace and then receiving the feedback
+		//and then sending a command tuple to the budget's tuplespace to update the balance
 		private void setPrice(Tuple data) {
 			double price = (double) data.getElementAt(Integer.class, 0);
 			System.out.println(price);
@@ -203,6 +211,7 @@ public class Kitchen {
 
 		}
 
+		//Used by set price
 		private void addBalance(Tuple data) {
 			try {
 				put(new Tuple("addBalance", userName, kitchenName, false, data), budgetPointer);
@@ -211,6 +220,8 @@ public class Kitchen {
 			}
 		}
 
+		//Sends a command tuple to the budget and then recevies a feedback tuple
+		//which contains the current balance of a user
 		private void getBalance(Tuple data) {
 			try {
 				put(new Tuple("getBalance", userName, kitchenName, false, data), budgetPointer);
@@ -220,6 +231,7 @@ public class Kitchen {
 			}
 		}
 		
+		//Sends a command tuple to the budget and then recevies a feedback tuple
 		private void addUserBalance(Tuple data) {
 			try {
 				put(new Tuple("addUserBalance", userName, kitchenName, false, data), budgetPointer);
@@ -229,6 +241,7 @@ public class Kitchen {
 			}
 		}
 
+		//Sends a command tuple to the budget and then recevies a feedback tuple
 		private void resetUserBalance(Tuple data) {
 			try {
 				put(new Tuple("resetUserBalance", userName, kitchenName, false, data), budgetPointer);
@@ -238,6 +251,7 @@ public class Kitchen {
 			}
 		}
 
+		//Used to retrieve feedback tuples
 		private Tuple recieveFeedback(String target, String feedbackCmd) {
 			try {
 				PointToPoint p = new PointToPoint(target, Server.vp.getAddress());
@@ -249,6 +263,7 @@ public class Kitchen {
 			return null;
 		}
 
+		//Used to send feedback tupels to the server
 		private void sendFeedback(String cmd, Tuple result) {
 			try {
 				put(new Tuple(cmd, userName, kitchenName, true, result), serverPointer);
@@ -264,6 +279,8 @@ public class Kitchen {
 			return (queryp(checkDayTemplate) == null) ? false : true;
 		}
 
+		//Used by the recieveFeedback method to create a feedback template
+		//<command, username, kitchenname, feedback, datatuple>
 		private Template feedbackTemplate(String command) {
 			Template feedbackTemplate = new Template(new ActualTemplateField(command),
 					new ActualTemplateField(userName), new ActualTemplateField(kitchenName),

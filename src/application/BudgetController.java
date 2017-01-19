@@ -1,7 +1,7 @@
 package application;
 
 // 02148 Introduction to Coordination in Distributed Applications
-// 20. Januar 2017
+// 19. Januar 2017
 // Team 9 - Dinner Club
 // 	- Alexander Kristian Armstrong, s154302
 //	- Michael Atchapero,  s143049
@@ -177,6 +177,7 @@ public class BudgetController {
 		switch (path) {
 		case "/application/Login.fxml":
 			LoginController loginController = loader.getController();
+			// Setting the user to a new user, so all the information is reset.
 			loginController.setUser(new User());
 			break;
 
@@ -184,6 +185,7 @@ public class BudgetController {
 			DayController dayController = loader.getController();
 			dayController.setUser(user);
 			try {
+				// The boolean is added so the previous dinner days aren't shown
 				dayController.updateTable(kitchenName, false);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -197,7 +199,6 @@ public class BudgetController {
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		Stage stage = new Stage();
 		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-
 			public void handle(WindowEvent t) {
 				Platform.exit();
 				System.exit(0);

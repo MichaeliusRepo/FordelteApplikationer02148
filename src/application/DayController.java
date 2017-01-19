@@ -1,8 +1,8 @@
 package application;
 
-//02148 Introduction to Coordination in Distributed Applications
-//20. Januar 2017
-//Team 9 - Dinner Club
+// 02148 Introduction to Coordination in Distributed Applications
+// 19. Januar 2017
+// Team 9 - Dinner Club
 //	- Alexander Kristian Armstrong, s154302
 //	- Michael Atchapero,  s143049
 //	- Mathias Ennegaard Asmussen, s154219
@@ -195,7 +195,7 @@ public class DayController {
 
 	@FXML
 	void createDayButtonClicked(ActionEvent event) throws IOException, InterruptedException {
-
+		// Checkin for input
 		if (newDateDatePicker.getValue() != null) {
 			int day = newDateDatePicker.getValue().getDayOfMonth();
 			int month = newDateDatePicker.getValue().getMonthValue();
@@ -407,14 +407,23 @@ public class DayController {
 	public void setDay(String date) {
 		this.daySelected = date;
 	}
+	
+	private void setKitchenName(String kitchenName) {
+		this.kitchenName = kitchenName;
+	}
 
+	// Changing the display window
 	private void newScene(Event event, String path) throws IOException {
+		// Hiding the displayed window
 		((Node) event.getSource()).getScene().getWindow().hide();
+		
+		// Creating the new
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
 		Parent root = loader.load();
 		KitchenController kitchenController;
 		DayController dayController;
 
+		// Setting the windows size
 		int x = 400, y = 400;
 
 		switch (path) {
@@ -425,6 +434,7 @@ public class DayController {
 
 		case ("/application/SelectKitchen.fxml"):
 			kitchenController = loader.getController();
+			// updating the radio buttons in the SelectKitchen display
 			kitchenController.findUsersKitchens(user);
 			break;
 
@@ -470,12 +480,12 @@ public class DayController {
 				e.printStackTrace();
 			}
 			break;
-
 		}
 
 		Scene scene = new Scene(root, x, y);
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		Stage stage = new Stage();
+		// terminate on exit
 		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 			public void handle(WindowEvent t) {
 				Platform.exit();
@@ -488,10 +498,4 @@ public class DayController {
 			stage.setResizable(false);
 		stage.show();
 	}
-
-	private void setKitchenName(String kitchenName) {
-		this.kitchenName = kitchenName;
-
-	}
-
 }
