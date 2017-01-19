@@ -35,11 +35,7 @@ public class DayTable {
 	}
 
 	public String getChef() throws InterruptedException {
-		user.setFeedbackMsg(null);
 		user.command("getChef", kitchenName, day, month, year, 0);
-		while (user.getFeedbackMsg() == null) {
-			Thread.sleep(10);
-		}
 		return user.getFeedbackMsg();
 	}
 
@@ -59,21 +55,21 @@ public class DayTable {
 		button.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				user.setFeedbackMsg(null);
 				String str = "";
 				if (button.getText().equals("Attend")) {
-					user.command("attendDay", kitchenName, day, month, year, 1);
-					str = "Unattend";
-				} else {
-					user.command("attendDay", kitchenName, day, month, year, 0);
-					str = "Attend";
-				}
-				while (user.getFeedbackMsg() == null) {
 					try {
-						Thread.sleep(10);
+						user.command("attendDay", kitchenName, day, month, year, 1);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
+					str = "Unattend";
+				} else {
+					try {
+						user.command("attendDay", kitchenName, day, month, year, 0);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					str = "Attend";
 				}
 				if (user.getFeedbackMsg().contains("Day is locked")) {
 					feedbackMessage("Attend Day", "Sorry, the day has been locked");

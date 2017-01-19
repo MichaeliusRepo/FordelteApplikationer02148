@@ -65,10 +65,14 @@ public class User {
 		return returnData;
 	}
 
-	public void command(String command, String kitchenName, int day, int month, int year, int extra) {
+	public void command(String command, String kitchenName, int day, int month, int year, int extra) throws InterruptedException {
+		setFeedbackMsg(null);
 		this.command = command;
 		Tuple t = new Tuple(command, userName, kitchenName, false, new Tuple(day, month, year, extra));
 		userSpace.addAgent(new UserAgent(command, t));
+		while (getFeedbackMsg() == null) {
+			Thread.sleep(10);
+		}
 	}
 
 	public boolean addUser(String userName) throws Exception {

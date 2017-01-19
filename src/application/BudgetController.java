@@ -1,8 +1,16 @@
 package application;
 
+// 02148 Introduction to Coordination in Distributed Applications
+// 20. Januar 2017
+// Team 9 - Dinner Club
+// 	- Alexander Kristian Armstrong, s154302
+//	- Michael Atchapero,  s143049
+//	- Mathias Ennegaard Asmussen, s154219
+//	- Emilie Isabella Dahl, s153762
+//	- Jon Ravn Nielsen, s136448
+
 import java.io.IOException;
 import java.util.Optional;
-
 import classes.User;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -28,6 +36,9 @@ public class BudgetController {
 
 	@FXML
 	private Label titleLabel;
+	
+	@FXML
+	private Label balanceLabel;
 
 	@FXML
 	private Button logOutButton;
@@ -45,33 +56,28 @@ public class BudgetController {
 	private Button payButton;
 
 	@FXML
-	private Label balanceLabel;
-
-	@FXML
 	void backButtonClicked(ActionEvent event) throws IOException {
+		// Changing the scene to DayOverviw
 		newScene(event, "/application/DayOverview.fxml");
 	}
 
 	@FXML
 	void resetButtonClicked(ActionEvent event) throws InterruptedException {
-		user.setFeedbackMsg(null);
 
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.initStyle(StageStyle.UNDECORATED);
 		alert.setTitle("Pay Your Balance");
 		alert.setHeaderText("You are about to reset your balance");
 		alert.setContentText("Once this is done it cannot be undone! \n Are you sure you want to continue?");
-
+		
+		// Waiting for a response from the user
 		Optional<ButtonType> result = alert.showAndWait();
+		
 		if (result.get() == ButtonType.OK) {
 			user.command("resetUserBalance", kitchenName, 0, 0, 0, 0);
 
-			while (user.getFeedbackMsg() == null) {
-				Thread.sleep(10);
-			}
 			setBalance();
 			feedbackMessage("Reset Balance", user.getFeedbackMsg());
-
 		} else {
 			feedbackMessage("Balance", "Balance was not reset.");
 		}
@@ -79,23 +85,25 @@ public class BudgetController {
 
 	@FXML
 	void logOutButtonClicked(ActionEvent event) throws IOException {
+		// Changing the scene to Login
 		newScene(event, "/application/Login.fxml");
 	}
 	
 	@FXML
 	void payButtonClicked(ActionEvent event) throws InterruptedException{
+		// Creating a text input dialog
 		buttonClicked("amount $$", "How much are you paying?", "Total amount: ", true);
 	}
 	
 	@FXML
 	void getPaymentButtonClicked(ActionEvent event) throws InterruptedException{
+		// Creating a text input dialog
 		buttonClicked("amount $$", "How much are you receiving?", "Total amount: ", false);
 	}
 
 	
 	
 	private void buttonClicked(String textInput, String headText, String contentText, boolean pay) throws InterruptedException{
-		user.setFeedbackMsg(null);
 
 		TextInputDialog dialog = new TextInputDialog(textInput);
 		dialog.setHeaderText(headText);
@@ -111,14 +119,12 @@ public class BudgetController {
 				if (!result.isPresent())
 					break;
 			}
+			// Checking that the new result isn't cancel
 			if (result.isPresent()) {
 				int payment = Integer.parseInt(result.get());
 				if(pay)
 					payment = payment-(2*payment);
 				user.command("addUserBalance", kitchenName, 0, 0, 0, payment);
-				while (user.getFeedbackMsg() == null) {
-					Thread.sleep(10);
-				}
 				feedbackMessage("Update balance", user.getFeedbackMsg());
 				setBalance();
 			}
@@ -136,6 +142,7 @@ public class BudgetController {
 		return true;
 	}
 
+	// Alert template to display feedback
 	public void feedbackMessage(String cmd, String message) {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.initStyle(StageStyle.UNDECORATED);
@@ -149,25 +156,19 @@ public class BudgetController {
 	public void setKitchenName(String kitchenName) {
 		this.kitchenName = kitchenName;
 	}
-
-	public void setBalance() throws InterruptedException {
-		user.setFeedbackMsg(null);
-		user.command("getBalance", kitchenName, 0, 0, 0, 0);
-
-		while (user.getFeedbackMsg() == null) {
-			Thread.sleep(10);
-		}
-
-		balanceLabel.setText(user.getFeedbackMsg());
-
-	}
-
+	
 	public void setUser(User user) {
 		this.user = user;
 	}
 
-	@SuppressWarnings("unused")
+	// updating the balance label
+	public void setBalance() throws InterruptedException {
+		user.command("getBalance", kitchenName, 0, 0, 0, 0);
+		balanceLabel.setText(user.getFeedbackMsg());
+	}
+
 	private void newScene(ActionEvent event, String path) throws IOException {
+		// Hiding the displayed window
 		((Node) event.getSource()).getScene().getWindow().hide();
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
 		Parent root = loader.load();
