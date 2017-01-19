@@ -212,7 +212,7 @@ public class Day {
 				LinkedList<Tuple> chefs = queryAll(
 						new Template(new ActualTemplateField("chef"), new FormalTemplateField(String.class)));
 				if (queryp(new Template(new ActualTemplateField("locked"))) == null) {
-					if (chefs.size() <= 2) {
+					if (chefs.size() < 2) {
 						if (queryp(new Template(new ActualTemplateField("chef"),
 								new ActualTemplateField(userName))) == null) {
 							put(new Tuple("chef", userName), Self.SELF);
@@ -249,7 +249,8 @@ public class Day {
 							+ chefs.get(1).getElementAt(String.class, 1);
 					break;
 				default:
-					msg = "There can only be 2 chefs";
+					msg = chefs.get(0).getElementAt(String.class, 1) + " & "
+							+ chefs.get(1).getElementAt(String.class, 1);
 				}
 				feedback(feedback, true, msg, null);
 
