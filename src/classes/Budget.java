@@ -109,6 +109,8 @@ public class Budget {
 				if (queryp(temp) != null) {
 					Tuple t = query(temp, Self.SELF);
 					balance = t.getElementAt(Double.class, 2);
+					if(balance < 0.01)
+						balance = 0.0;
 					feedback(feedback, true, "" + balance);
 				} else
 					feedback(feedback, false, userName + " has no balance.");

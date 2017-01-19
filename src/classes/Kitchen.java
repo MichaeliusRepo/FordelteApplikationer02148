@@ -177,6 +177,7 @@ public class Kitchen {
 
 		private void setPrice(Tuple data) {
 			double price = (double) data.getElementAt(Integer.class, 0);
+			System.out.println(price);
 			try {
 				if (checkDayExists(dayTarget)) {
 					put(new Tuple("setPrice", userName, kitchenName, false, new Tuple(price)), pointer);
