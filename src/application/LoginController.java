@@ -1,5 +1,14 @@
 package application;
 
+// 02148 Introduction to Coordination in Distributed Applications
+// 20. Januar 2017
+// Team 9 - Dinner Club
+//	- Alexander Kristian Armstrong, s154302
+//	- Michael Atchapero,  s143049
+//	- Mathias Ennegaard Asmussen, s154219
+//	- Emilie Isabella Dahl, s153762
+//	- Jon Ravn Nielsen, s136448
+
 import java.io.IOException;
 
 import classes.User;
@@ -76,7 +85,7 @@ public class LoginController {
 	}
 
 	///////////////////////////////////
-	// new user
+	// new user window
 
 	@FXML
 	private TextField newUserNameTextField;
@@ -102,6 +111,7 @@ public class LoginController {
 		if (username.equals("")) {
 			newUserLabel.setText("Please enter a username");
 		} else if (user.addUser(username)) {
+			// Saving the name written in the textField
 			this.tempName = username;
 			newScene(event, "/application/Login.fxml");
 		} else {
@@ -111,27 +121,36 @@ public class LoginController {
 
 	//////////////////////////////
 	// controller methods
+	
+	public void setUser(User user) {
+		this.user = user;
+	}
 
 	private void newScene(ActionEvent event, String path) throws IOException {
 		((Node) event.getSource()).getScene().getWindow().hide();
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
 		Parent root = loader.load();
+		LoginController loginontroller;
 
-		if (path.equals("/application/Login.fxml")) {
-			LoginController controller = loader.getController();
-			controller.setUser(user);
-			controller.usernameTextField.setText(tempName);
-		} else if (path.equals("/application/NewUser.fxml")) {
-			LoginController controller = loader.getController();
-			controller.setUser(user);
-			controller.newUserNameTextField.setText(tempName);
-
-		} else if (path.equals("/application/SelectKitchen.fxml")) {
-
-			KitchenController controller = loader.getController();
-			controller.findUsersKitchens(user);
-			controller.titleLabel.setText("Hi " + usernameTextField.getText() + "!");
-
+		switch(path){
+		case "/application/Login.fxml":
+			loginontroller = loader.getController();
+			loginontroller.setUser(user);
+			// Sending the tempName so it can be displayed as input
+			loginontroller.usernameTextField.setText(tempName);
+			break;
+			
+		case "/application/NewUser.fxml":
+			loginontroller = loader.getController();
+			loginontroller.setUser(user);
+			loginontroller.newUserNameTextField.setText(tempName);
+			break;
+			
+		case "/application/SelectKitchen.fxml":
+			KitchenController kitchenController = loader.getController();
+			kitchenController.findUsersKitchens(user);
+			kitchenController.titleLabel.setText("Hi " + usernameTextField.getText() + "!");
+			break;
 		}
 
 		Scene scene = new Scene(root, 400, 400);
@@ -148,10 +167,5 @@ public class LoginController {
 		stage.setScene(scene);
 		stage.setTitle("Dinner Club");
 		stage.show();
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-
 	}
 }

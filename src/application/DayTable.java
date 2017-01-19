@@ -1,5 +1,14 @@
 package application;
 
+// 02148 Introduction to Coordination in Distributed Applications
+// 20. Januar 2017
+// Team 9 - Dinner Club
+//	- Alexander Kristian Armstrong, s154302
+//	- Michael Atchapero,  s143049
+//	- Mathias Ennegaard Asmussen, s154219
+//	- Emilie Isabella Dahl, s153762
+//	- Jon Ravn Nielsen, s136448
+
 import java.util.LinkedList;
 import classes.User;
 import javafx.event.ActionEvent;
@@ -10,11 +19,12 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.stage.StageStyle;
 
 public class DayTable {
-	private String date, chef, total, attend, kitchenName;
+	private String kitchenName;
 	private User user;
-	private LinkedList<String> days, attendees = new LinkedList();
+	private LinkedList<String> days, attendees;
 	private int i, day, month, year;
 
+	// This class is created to show the rows in the table
 	public DayTable(User user, String kitchenName, int i) throws Exception {
 		this.user = user;
 		this.kitchenName = kitchenName;
@@ -27,7 +37,6 @@ public class DayTable {
 				attendees = user.getAttendees(kitchenName, day, month, year);
 			}
 		}
-
 	}
 
 	public String getDate() {
@@ -52,10 +61,13 @@ public class DayTable {
 			button.setText("Attend");
 		}
 
+		// Adding an action to the button in the table
 		button.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				String str = "";
+				
+				// Changing the method call and setting the buttons text
 				if (button.getText().equals("Attend")) {
 					try {
 						user.command("attendDay", kitchenName, day, month, year, 1);
@@ -71,6 +83,7 @@ public class DayTable {
 					}
 					str = "Attend";
 				}
+				// Letting the user know if the day is locked
 				if (user.getFeedbackMsg().contains("Day is locked")) {
 					feedbackMessage("Attend Day", "Sorry, the day has been locked");
 					str = "Locked";
@@ -86,6 +99,7 @@ public class DayTable {
 		return days.size();
 	}
 
+	// Changing the day-string to integers
 	public void setValues(String date) {
 		day = Integer.parseInt(date.substring(0, date.indexOf("/")));
 		String str = date.substring(date.indexOf("/") + 1, date.length());
