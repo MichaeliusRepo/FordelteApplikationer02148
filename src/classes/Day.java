@@ -51,7 +51,7 @@ public class Day {
 		@Override
 		protected void doRun() throws Exception {
 			put(new Tuple("dayCreated"), Self.SELF);
-			put(new Tuple("price", 0), Self.SELF);
+			put(new Tuple("price", 0.0), Self.SELF);
 			while (true) {
 				try {
 					Tuple t = get(cmdTemp, Self.SELF);
@@ -249,7 +249,7 @@ public class Day {
 							+ chefs.get(1).getElementAt(String.class, 1);
 					break;
 				default:
-					throw new Exception();
+					msg = "There can only be 2 chefs";
 				}
 				feedback(feedback, true, msg, null);
 
