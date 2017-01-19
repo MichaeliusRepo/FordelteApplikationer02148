@@ -153,7 +153,7 @@ public class Budget {
 
 				// <day, kitchen, buyer, price, attendees>
 				Template temp = new Template(new ActualTemplateField(dayName), new ActualTemplateField(kitchenName),
-						new FormalTemplateField(String.class), new FormalTemplateField(Integer.class),
+						new FormalTemplateField(String.class), new FormalTemplateField(Double.class),
 						new FormalTemplateField(ArrayList.class));
 
 				/*
@@ -189,7 +189,6 @@ public class Budget {
 
 				} else {
 					double oldPrice = oldData.getElementAt(Double.class, 3);
-					// String oldBuyer = oldData.getElementAt(String.class, 2);
 					ArrayList<String> oldAttendees = oldData.getElementAt(ArrayList.class, 4);
 					String oldBuyer = oldData.getElementAt(String.class, 2);
 					double oldPerPrice = oldPrice / oldAttendees.size();
@@ -198,7 +197,7 @@ public class Budget {
 						addBalance(attendee, -oldPerPrice);
 
 					addBalance(oldBuyer, oldPrice);
-
+			
 					/*
 					 * Recursion can now be called with the new Tuple since the
 					 * old tuple has been removed and the prices have been reset
