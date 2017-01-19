@@ -150,7 +150,7 @@ public class Budget {
 
 				if (oldData == null) {
 					put(data, Self.SELF);
-					int price = data.getElementAt(Integer.class, 3);
+					double price = data.getElementAt(Double.class, 3);
 					String buyer = data.getElementAt(String.class, 2);
 					ArrayList<String> attendees = data.getElementAt(ArrayList.class, 4);
 
@@ -171,7 +171,7 @@ public class Budget {
 					feedback(feedback, true, "Budget has been updated.");
 
 				} else {
-					int oldPrice = oldData.getElementAt(Integer.class, 3);
+					double oldPrice = oldData.getElementAt(Double.class, 3);
 					// String oldBuyer = oldData.getElementAt(String.class, 2);
 					ArrayList<String> oldAttendees = oldData.getElementAt(ArrayList.class, 4);
 					String oldBuyer = oldData.getElementAt(String.class, 2);
