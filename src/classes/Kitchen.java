@@ -138,8 +138,11 @@ public class Kitchen {
 				list.add(t.getElementAt(Day.class, 1).getDate());
 			sendFeedback(cmd + "Feedback", new Tuple(true, "Here they are!", list));
 		}
-
+		
 		private void setDay(String cmd, Tuple data) {
+			
+			// This method is used to create and remove days.
+			
 			boolean dayExists = checkDayExists(dayTarget);
 			try {
 				if (cmd.equals("addDay")) {

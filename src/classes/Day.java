@@ -14,6 +14,8 @@ import org.cmg.jresp.knowledge.Tuple;
 import org.cmg.jresp.knowledge.ts.TupleSpace;
 import org.cmg.jresp.topology.Self;
 
+// This class is used to handle any day where a dinner club has been organized.
+
 public class Day {
 
 	private int day, month, year, totalAttendees;
@@ -50,6 +52,8 @@ public class Day {
 
 		@Override
 		protected void doRun() throws Exception {
+			// This tuple is created as feedback for the kitchen, to ensure that
+			// the day was created properly.
 			put(new Tuple("dayCreated"), Self.SELF);
 			put(new Tuple("price", 0.0), Self.SELF);
 			while (true) {
@@ -135,6 +139,7 @@ public class Day {
 			String feedback = "unattendDayFeedback";
 			try {
 				if (queryp(new Template(new ActualTemplateField("locked"))) == null) {
+					// <ATTENDEE TAG, USERNAME, NUMBER OF ATTENDEES>
 					if (getp(new Template(new ActualTemplateField("attendee"), new ActualTemplateField(userName),
 							new FormalTemplateField(Integer.class))) == null)
 						feedback(feedback, false, userName + " isn't set to attend that day.", null);
@@ -283,7 +288,7 @@ public class Day {
 					Template temp = new Template(new ActualTemplateField("attendee"), new ActualTemplateField(userName),
 							new FormalTemplateField(Integer.class));
 					Tuple t = getp(temp);
-
+					// Checks whether the user is already attending the day
 					if (t == null) {
 						put(new Tuple("attendee", userName, attendees), Self.SELF);
 						feedback(feedback, true, userName + " added with " + attendees + " attendees.", null);

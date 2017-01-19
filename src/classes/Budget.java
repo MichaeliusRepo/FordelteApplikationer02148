@@ -110,8 +110,7 @@ public class Budget {
 			int payment = data.getElementAt(Integer.class, 0);
 
 			addBalance(userName, payment);
-			feedback(feedback, true,
-					userName + "'s balance has been updated with " + payment + ".");
+			feedback(feedback, true, userName + "'s balance has been updated with " + payment + ".");
 
 		}
 
@@ -121,6 +120,8 @@ public class Budget {
 					new FormalTemplateField(Double.class));
 			double balance;
 			try {
+				// This is used to make sure the program doesn't print the
+				// entire double, but rounds it down to two decimals.
 				if (queryp(temp) != null) {
 					Tuple t = query(temp, Self.SELF);
 					balance = t.getElementAt(Double.class, 2);
@@ -197,7 +198,7 @@ public class Budget {
 						addBalance(attendee, -oldPerPrice);
 
 					addBalance(oldBuyer, oldPrice);
-			
+
 					/*
 					 * Recursion can now be called with the new Tuple since the
 					 * old tuple has been removed and the prices have been reset
@@ -216,6 +217,10 @@ public class Budget {
 				Template temp = new Template(new ActualTemplateField("user"), new ActualTemplateField(attendee),
 						new FormalTemplateField(Double.class));
 				Tuple user = getp(temp);
+
+				// Need to check whether or not the user already has a balance.
+				// In that case the new price needs to be added.
+
 				if (user == null)
 					put(new Tuple("user", attendee, perPrice), Self.SELF);
 				else {
