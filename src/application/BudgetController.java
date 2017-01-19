@@ -16,6 +16,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -36,6 +37,12 @@ public class BudgetController {
 
 	@FXML
 	private Button resetButton;
+	
+	@FXML
+	private Button getPaymentButton;
+	
+	@FXML
+	private Button payButton;
 
 	@FXML
 	private Label balanceLabel;
@@ -68,16 +75,66 @@ public class BudgetController {
 		} else {
 			feedbackMessage("Balance", "Balance was not reset.");
 		}
-
 	}
 
 	@FXML
 	void logOutButtonClicked(ActionEvent event) throws IOException {
 		newScene(event, "/application/Login.fxml");
 	}
+	
+	@FXML
+	void payButtonClicked(ActionEvent event) throws InterruptedException{
+		buttonClicked("amount $$", "How much are you paying?", "Total amount: ", true);
+	}
+	
+	@FXML
+	void getPaymentButtonClicked(ActionEvent event) throws InterruptedException{
+		buttonClicked("amount $$", "How much are you receiving?", "Total amount: ", false);
+	}
 
+	
+	
+	private void buttonClicked(String textInput, String headText, String contentText, boolean pay) throws InterruptedException{
+		user.setFeedbackMsg(null);
+
+		TextInputDialog dialog = new TextInputDialog(textInput);
+		dialog.setHeaderText(headText);
+		dialog.initStyle(StageStyle.UNDECORATED);
+		dialog.setContentText(contentText);
+
+		Optional<String> result = dialog.showAndWait();
+
+		if (result.isPresent()) {
+			while (!isNumeric(result.get())) {
+				dialog.setContentText(contentText + "\nPlease enter a number");
+				result = dialog.showAndWait();
+				if (!result.isPresent())
+					break;
+			}
+			if (result.isPresent()) {
+				int payment = Integer.parseInt(result.get());
+				if(pay)
+					payment = payment-(2*payment);
+				user.command("addUserBalance", kitchenName, 0, 0, 0, payment);
+				while (user.getFeedbackMsg() == null) {
+					Thread.sleep(10);
+				}
+				feedbackMessage("Update balance", user.getFeedbackMsg());
+				setBalance();
+			}
+		}
+	}
+	
 	//////////////////////////////
 	// controller methods
+	
+	public static boolean isNumeric(String str) {
+		for (char c : str.toCharArray()) {
+			if (!Character.isDigit(c))
+				return false;
+		}
+		return true;
+	}
 
 	public void feedbackMessage(String cmd, String message) {
 		Alert alert = new Alert(AlertType.INFORMATION);

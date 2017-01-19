@@ -119,6 +119,11 @@ public class Kitchen {
 			case "getBalance":
 				getBalance(data);
 				break;
+				
+			case "addUserBalance":
+				addUserBalance(data);
+				break;
+				
 			case "resetUserBalance":
 				resetUserBalance(data);
 				break;
@@ -207,6 +212,15 @@ public class Kitchen {
 			try {
 				put(new Tuple("getBalance", userName, kitchenName, false, data), budgetPointer);
 				sendFeedback("getBalanceFeedback", recieveFeedback("Budget" + kitchenName, "getBalanceFeedback"));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		private void addUserBalance(Tuple data) {
+			try {
+				put(new Tuple("addUserBalance", userName, kitchenName, false, data), budgetPointer);
+				sendFeedback("addUserBalanceFeedback", recieveFeedback("Budget" + kitchenName, "addUserBalanceFeedback"));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

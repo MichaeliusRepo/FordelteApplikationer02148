@@ -1,5 +1,6 @@
 package classes;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -71,6 +72,10 @@ public class Budget {
 					dayBudget(data);
 					break;
 
+				case "addUserBalance":
+					addUserBalance(data);
+					break;
+
 				case "resetUserBalance":
 					resetUserBalance();
 					break;
@@ -100,6 +105,16 @@ public class Budget {
 			}
 		}
 
+		private void addUserBalance(Tuple data) {
+			String feedback = "addUserBalanceFeedback";
+			int payment = data.getElementAt(Integer.class, 0);
+
+			addBalance(userName, payment);
+			feedback(feedback, true,
+					userName + "'s balance has been updated with " + payment + ".");
+
+		}
+
 		public void getBalance() {
 			String feedback = "getBalanceFeedback";
 			Template temp = new Template(new ActualTemplateField("user"), new ActualTemplateField(userName),
@@ -110,7 +125,7 @@ public class Budget {
 					Tuple t = query(temp, Self.SELF);
 					balance = t.getElementAt(Double.class, 2);
 					balance = Math.round(balance * 100);
-					balance = balance/100;
+					balance = balance / 100;
 					feedback(feedback, true, "" + balance);
 				} else
 					feedback(feedback, false, userName + " has no balance.");
