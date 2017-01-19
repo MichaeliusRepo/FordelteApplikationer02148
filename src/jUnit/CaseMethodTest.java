@@ -33,6 +33,7 @@ public class CaseMethodTest {
 		Thread.sleep(milliseconds);
 
 		user.createKitchen(kitchenName);
+		Thread.sleep(milliseconds);
 
 		user.command("addDay", kitchenName, day, month, year, 0);
 		Thread.sleep(milliseconds);
@@ -44,13 +45,14 @@ public class CaseMethodTest {
 	@Test
 	public void lockThenSetPrice() throws Exception {
 		user.command("lockDay", kitchenName, day, month, year, 0);
-		Thread.sleep(100);
+		Thread.sleep(milliseconds);
 		assertNotEquals(user.getFeedbackMsg(), "Dagen findes allerede");
-
+		assertTrue(user.getFeedbackMsg().contains("was locked"));
+		
 		String feedback = null;
 
 		user.command("setPrice", kitchenName, day, month, year, 200);
-		Thread.sleep(100);
+		Thread.sleep(milliseconds);
 		feedback = user.getFeedbackMsg();
 		assertNotEquals(feedback, null);
 	}
@@ -65,52 +67,33 @@ public class CaseMethodTest {
 		Thread.sleep(milliseconds);
 		assertEquals(user.getFeedbackMsg(), userName + " is already a chef.");
 
-		User user2 = new User();
-		String str2 = "Mathias";
-		user2.addUser(str2);
+		user.addUser("Mathias");
 		Thread.sleep(milliseconds);
+		user.command("attendDay", kitchenName, day, month, year, 1);
+		Thread.sleep(milliseconds);
+		user.command("addChef", kitchenName, day, month, year, 0);
+		Thread.sleep(milliseconds);
+		assertNotEquals(user.getFeedbackMsg(), null);
+		assertNotEquals(user.getFeedbackMsg(), "Den valgte dag findes ikke");
+		assertEquals(user.getFeedbackMsg(), "Mathias was added as a chef.");
 
-		user2.command("addChef", kitchenName, day, month, year, 0);
+		user.addUser("Emilie");
 		Thread.sleep(milliseconds);
-		String user2Feedback = user.getFeedbackMsg();
-		assertNotEquals(user2Feedback, null);
-		assertNotEquals(user2Feedback, "Den valgte dag findes ikke");
-		assertEquals(user2.getFeedbackMsg(), "Mathias was added as a chef.");
-
-		User user3 = new User();
-		String str3 = "Emilie";
-		user3.addUser(str3);
+		user.command("attendDay", kitchenName, day, month, year, 1);
 		Thread.sleep(milliseconds);
-
-		user3.command("addChef", kitchenName, day, month, year, 0);
+		user.command("addChef", kitchenName, day, month, year, 0);
 		Thread.sleep(milliseconds);
-		String user3Feedback = user.getFeedbackMsg();
-		assertEquals(user3Feedback, "There are already two chefs.");
+		assertFalse(user.getFeedbackMsg().contains("Emilie"));
 	}
 
 	@Test
 	public void getTwoChefs() throws Exception {
-		user.command("addChef", kitchenName, day, month, year, 0);
-		Thread.sleep(milliseconds);
-		assertEquals(user.getFeedbackMsg(), userName + " was added as a chef.");
+		setTwoChefs();
 
-		User user2 = new User();
-		String str2 = "Mathias";
-		user2.addUser(str2);
+		user.command("getChef", kitchenName, day, month, year, 0);
 		Thread.sleep(milliseconds);
-
-		user2.command("addChef", kitchenName, day, month, year, 0);
-		Thread.sleep(milliseconds);
-		String user2Feedback = user.getFeedbackMsg();
-		assertNotEquals(user2Feedback, null);
-		assertNotEquals(user2Feedback, "Den valgte dag findes ikke");
-		assertEquals(user2.getFeedbackMsg(), "Mathias was added as a chef.");
-
-		user2.command("getChef", kitchenName, day, month, year, 0);
-		Thread.sleep(milliseconds);
-		user2Feedback = user.getFeedbackMsg();
-		assertTrue(user2Feedback.contains(userName));
-		assertTrue(user2Feedback.contains(str2));
+		assertTrue(user.getFeedbackMsg().contains(userName));
+		assertTrue(user.getFeedbackMsg().contains("Mathias"));
 	}
 
 }
