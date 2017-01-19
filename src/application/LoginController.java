@@ -1,13 +1,14 @@
 package application;
 
-// 02148 Introduction to Coordination in Distributed Applications
-// 19. Januar 2017
-// Team 9 - Dinner Club
-//	- Alexander Kristian Armstrong, s154302
-//	- Michael Atchapero,  s143049
-//	- Mathias Ennegaard Asmussen, s154219
-//	- Emilie Isabella Dahl, s153762
-//	- Jon Ravn Nielsen, s136448
+/* 02148 Introduction to Coordination in Distributed Applications
+*  19. Januar 2017
+*  Team 9 - Dinner Club
+*	- Alexander Kristian Armstrong, s154302
+*	- Michael Atchapero,  s143049
+*	- Mathias Ennegaard Asmussen, s154219
+*	- Emilie Isabella Dahl, s153762
+*	- Jon Ravn Nielsen, s136448
+*/
 
 import java.io.IOException;
 
@@ -121,7 +122,7 @@ public class LoginController {
 
 	//////////////////////////////
 	// controller methods
-	
+
 	public void setUser(User user) {
 		this.user = user;
 	}
@@ -132,20 +133,20 @@ public class LoginController {
 		Parent root = loader.load();
 		LoginController loginontroller;
 
-		switch(path){
+		switch (path) {
 		case "/application/Login.fxml":
 			loginontroller = loader.getController();
 			loginontroller.setUser(user);
 			// Sending the tempName so it can be displayed as input
 			loginontroller.usernameTextField.setText(tempName);
 			break;
-			
+
 		case "/application/NewUser.fxml":
 			loginontroller = loader.getController();
 			loginontroller.setUser(user);
 			loginontroller.newUserNameTextField.setText(tempName);
 			break;
-			
+
 		case "/application/SelectKitchen.fxml":
 			KitchenController kitchenController = loader.getController();
 			kitchenController.findUsersKitchens(user);
