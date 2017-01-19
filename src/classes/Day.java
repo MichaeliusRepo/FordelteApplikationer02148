@@ -16,8 +16,8 @@ import org.cmg.jresp.topology.Self;
 
 public class Day {
 
-	private int day, month, year, totalAttendees, price;
-	private double pricePer;
+	private int day, month, year, totalAttendees;
+	private double pricePer, price;
 	private String dayName;
 
 	public Day(int day, int month, int year) {
@@ -110,7 +110,7 @@ public class Day {
 					break;
 
 				case "setPrice":
-					price = dataTuple.getElementAt(Integer.class, 0);
+					price = dataTuple.getElementAt(Double.class, 0);
 					setPrice(price);
 					break;
 
@@ -150,12 +150,12 @@ public class Day {
 			}
 		}
 
-		private void setPrice(int price) {
+		private void setPrice(double price) {
 			String feedback = "setPriceFeedback";
 			try {
 				if (queryp(new Template(new ActualTemplateField("locked"))) != null) {
 					Tuple t = getp(
-							new Template(new ActualTemplateField("price"), new FormalTemplateField(Integer.class)));
+							new Template(new ActualTemplateField("price"), new FormalTemplateField(Double.class)));
 
 					put(new Tuple("price", price), Self.SELF);
 					this.buyer = userName;
@@ -164,9 +164,9 @@ public class Day {
 					if (t == null)
 						feedback(feedback, true, "The price was set to " + price, null);
 					else
-						feedback(feedback, false, "The price was already set to " + t.getElementAt(Integer.class, 1)
+						feedback(feedback, false, "The price was already set to " + t.getElementAt(Double.class, 1)
 								+ ", but has been replaced.", null);
-					pricePer = (double) price / totalAttendees;
+					pricePer = price / totalAttendees;
 					addBalance();
 				} else {
 					pricePer = 0;
@@ -194,8 +194,8 @@ public class Day {
 
 		private void getPrice() {
 			String feedback = "getPriceFeedback";
-			Tuple t = queryp(new Template(new ActualTemplateField("price"), new FormalTemplateField(Integer.class)));
-			int price = t.getElementAt(Integer.class, 1);
+			Tuple t = queryp(new Template(new ActualTemplateField("price"), new FormalTemplateField(Double.class)));
+			double price = t.getElementAt(Double.class, 1);
 			feedback(feedback, true, "" + price, null);
 
 		}

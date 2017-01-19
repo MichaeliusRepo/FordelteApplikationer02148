@@ -88,9 +88,9 @@ public class Budget {
 						new FormalTemplateField(Double.class));
 				Tuple t = getp(temp);
 
-				if (t == null) 
+				if (t == null)
 					feedback(feedback, false, userName + " has no balance set.");
-				 else {
+				else {
 					put(new Tuple("user", userName, 0.0), Self.SELF);
 					feedback(feedback, true, userName + "'s balance has been reset.");
 				}
@@ -110,9 +110,9 @@ public class Budget {
 					Tuple t = query(temp, Self.SELF);
 					balance = t.getElementAt(Double.class, 2);
 					feedback(feedback, true, "" + balance);
-				} else 
+				} else
 					feedback(feedback, false, userName + " has no balance.");
-				
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -177,9 +177,9 @@ public class Budget {
 					String oldBuyer = oldData.getElementAt(String.class, 2);
 					double oldPerPrice = oldPrice / oldAttendees.size();
 
-					for (String attendee : oldAttendees) 
+					for (String attendee : oldAttendees)
 						addBalance(attendee, -oldPerPrice);
-					
+
 					addBalance(oldBuyer, oldPrice);
 
 					/*
@@ -200,9 +200,9 @@ public class Budget {
 				Template temp = new Template(new ActualTemplateField("user"), new ActualTemplateField(attendee),
 						new FormalTemplateField(Double.class));
 				Tuple user = getp(temp);
-				if (user == null) 
+				if (user == null)
 					put(new Tuple("user", attendee, perPrice), Self.SELF);
-				 else {
+				else {
 					double newPrice = perPrice + user.getElementAt(Double.class, 2);
 					put(new Tuple("user", attendee, newPrice), Self.SELF);
 				}
