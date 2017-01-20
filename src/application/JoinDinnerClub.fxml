@@ -36,7 +36,7 @@
                   <Font size="15.0" />
                </font>
             </TextField>
-            <Label fx:id="emptyLabel" textFill="#bc0707" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+            <Label fx:id="emptyLabel" textFill="#d6d4d2" GridPane.columnSpan="2" GridPane.rowIndex="3" />
          </children>
       </GridPane>
       <Label layoutX="94.0" layoutY="166.0" text="Please enter a dinner club's name: " />
